@@ -67,6 +67,6 @@
 
 const enum API_INPUT_TYPE get_api_input_type(const char* value);
 
-const enum TRUSONA_SDK_RESULT trusonafy(const char* runtime_settings, const char* value);
+const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* email_or_trusona_id);
 
 #endif /* TRUSONA_H */
