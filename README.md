@@ -6,5 +6,5 @@
 ## Usage
 
 ```c
-const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* value);
+const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* email_or_trusona_id);
 ```
