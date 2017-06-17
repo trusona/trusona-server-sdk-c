@@ -108,13 +108,13 @@ SettingsStruct load_settings(const char *json_settings_file) {
   return settings;
 }
 
-int trusonafy_by_type(const enum API_INPUT_TYPE api_input_type, const char *value) {
+const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_input_type, const char *value) {
   if(!settings.valid) {
     syslog(LOG_NOTICE, "%s: Opps! Settings are not valid!", lib_module_name);
     return TRUSONA_SERVICE_ERR;
   }
 
-  int rc = TRUSONA_CRED_INSUFFICIENT;
+  enum TRUSONA_SDK_RESULT rc = TRUSONA_CRED_INSUFFICIENT;
   char *status, *json, *body;
   int accepted_level;
   json_t *map;

@@ -42,7 +42,15 @@ struct MemoryStruct {
 
 enum API_INPUT_TYPE {EMAIL_ADDRESS, TRUSONA_ID, INVALID_TYPE};
 
-int trusonafy_by_type(const enum API_INPUT_TYPE api_input_type, const char *value);
+enum TRUSONA_SDK_RESULT {
+  TRUSONA_SUCCESS,
+  TRUSONA_SERVICE_ERR,
+  TRUSONA_CONV_ERR,
+  TRUSONA_AUTH_ERR,
+  TRUSONA_CRED_INSUFFICIENT
+};
+
+const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_input_type, const char *value);
 
 char *concat_str(const char *arr1, const char *arr2);
 

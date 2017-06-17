@@ -27,7 +27,7 @@
 static const char *lib_module_name = "trusona";
 static const char *default_settings = "/usr/local/etc/trusona/settings.json"; // the default location
 
-int trusonafy(const char* runtime_settings, const char* value) {
+const enum TRUSONA_SDK_RESULT trusonafy(const char* runtime_settings, const char* value) {
   syslog(LOG_NOTICE, "%s: Hold on to your C pants - here we go!", lib_module_name);
   char *settings = NULL;
 
@@ -54,7 +54,7 @@ int trusonafy(const char* runtime_settings, const char* value) {
   fprintf(stderr, "Respond to Trusona via your mobile device. You have 99 seconds...");
 
   syslog(LOG_NOTICE, "%s: %s: Attempting trusonafication for '%s'", lib_module_name, global_settings.request_id, value);
-  const int rc = trusonafy_by_type(get_api_input_type(value), value);
+  const enum TRUSONA_SDK_RESULT rc = trusonafy_by_type(get_api_input_type(value), value);
 
   if(rc == TRUSONA_SUCCESS ) {
     syslog(LOG_NOTICE, "%s: %s: Yeah! Trusonafication succeeded for '%s'", lib_module_name, global_settings.request_id, value);

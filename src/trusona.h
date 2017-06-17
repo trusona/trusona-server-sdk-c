@@ -51,30 +51,6 @@
 #define MAX_LOA_LEVEL 4
 #endif
 
-#ifndef TRUSONA_SUCCESS
-#define TRUSONA_SUCCESS 0
-#endif
-
-#ifndef TRUSONA_SERVICE_ERR
-#define TRUSONA_SERVICE_ERR -1
-#endif
-
-#ifndef TRUSONA_CONV_ERR
-#define TRUSONA_CONV_ERR -2
-#endif
-
-#ifndef TRUSONA_CRED_INSUFFICIENT
-#define TRUSONA_CRED_INSUFFICIENT -3
-#endif
-
-#ifndef TRUSONA_AUTH_ERR
-#define TRUSONA_AUTH_ERR -4
-#endif
-
-#ifndef TRUSONA_CRED_INSUFFICIENT
-#define TRUSONA_CRED_INSUFFICIENT -5
-#endif
-
 #ifndef TRUSONA_SLEEP
 #define TRUSONA_SLEEP 5 // 5 seconds
 #endif
@@ -91,6 +67,6 @@
 
 const enum API_INPUT_TYPE get_api_input_type(const char* value);
 
-int trusonafy(const char* runtime_settings, const char* value);
+const enum TRUSONA_SDK_RESULT trusonafy(const char* runtime_settings, const char* value);
 
 #endif /* TRUSONA_H */
