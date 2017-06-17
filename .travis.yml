@@ -1,0 +1,24 @@
+branches:
+  only:
+  - master
+  - release
+
+language: c
+compiler: gcc
+
+sudo: required
+
+install:
+  - sudo -H apt-get update -q -qq -y
+  - sudo -H apt-get install -q -qq -y libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev
+  #- sudo -H ./ci/helper.sh
+
+script:
+  - cd src && make
+
+notifications:
+  slack:
+    on_success: always
+    on_failure: always
+    rooms:
+      - lighthauz:L9vNoLRwptkWOXxmnX7ztYjQ
