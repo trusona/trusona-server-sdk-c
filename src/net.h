@@ -31,4 +31,4 @@ int do_get_request(SettingsStruct settings, const char *uri, char **response);
 
 int do_post_request(SettingsStruct settings, const char *uri, const char *post_data, char **response);
 
-#endif
+#endif /* TRUSONA_NET_H */

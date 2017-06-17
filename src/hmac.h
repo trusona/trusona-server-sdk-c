@@ -37,4 +37,4 @@ char *generate_md5(const char *data);
 
 char *base64_hmac_sha256(const char *key, const char *data);
 
-#endif
+#endif /* TRUSONA_HMAC_H */

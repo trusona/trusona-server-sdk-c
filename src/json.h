@@ -35,4 +35,4 @@ const int  get_int_value(json_t  *root, const char  *data);
 
 const char *get_str_value(json_t  *root, const char  *data);
 
-#endif
+#endif /* TRUSONA_JSON_H */

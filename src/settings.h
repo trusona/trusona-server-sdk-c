@@ -36,4 +36,4 @@ typedef struct SettingsStruct {
   bool valid;
 } SettingsStruct;
 
-#endif
+#endif /* TRUSONA_SETTINGS_H */
