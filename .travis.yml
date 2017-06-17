@@ -10,7 +10,7 @@ sudo: required
 
 install:
   - sudo -H apt-get update -q -qq -y
-  - sudo -H apt-get install -q -qq -y libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev libjansson4 libjansson4-dev
+  - sudo -H apt-get install -q -qq -y libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev libjansson4 libjansson-dev
   #- sudo -H ./ci/helper.sh
 
 script:
