@@ -34,7 +34,7 @@
 #include <unistd.h>
 
 #include "settings.h"
-#include "utils.h"
+#include "internal.h"
 #include "json.h"
 #include "net.h"
 #include "hmac.h"

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "utils.h"
+#include "internal.h"
 
 static struct SettingsStruct settings;
 
@@ -114,7 +114,7 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
     return TRUSONA_SERVICE_ERR;
   }
 
-  enum TRUSONA_SDK_RESULT rc = TRUSONA_CRED_INSUFFICIENT;
+  enum TRUSONA_SDK_RESULT rc = TRUSONA_INSUFFICIENT;
   char *status, *json, *body;
   int accepted_level;
   json_t *map;
@@ -141,7 +141,7 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
   json = NULL;
 
   if(do_post_request(settings, settings.verifications_uri, body, &json) == INVALID_REQ) {
-    return TRUSONA_CONV_ERR;
+    return TRUSONA_SERVICE_ERR;
   }
 
   const char *verification_id = json_str_value(&json, "verification_id");
@@ -178,16 +178,16 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
         syslog(LOG_NOTICE, "%s: Opps! Response's accepted_level of %d does not meet or exceed desired_level of %d",
                lib_module_name, accepted_level, settings.desired_level);
 
-        rc = TRUSONA_CRED_INSUFFICIENT;
+        rc = TRUSONA_INSUFFICIENT;
         break;
       }
     }
     else if(status && strcmp(status, REJECTED_CODE) == 0) {
-      rc = TRUSONA_AUTH_ERR;
+      rc = TRUSONA_FAILURE;
       break;
     }
     else {
-      rc = TRUSONA_CRED_INSUFFICIENT;
+      rc = TRUSONA_INSUFFICIENT;
       status = NULL;
       json = NULL;
 

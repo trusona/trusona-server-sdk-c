@@ -56,7 +56,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* v
   syslog(LOG_NOTICE, "%s: %s: Attempting trusonafication for '%s'", lib_module_name, global_settings.request_id, value);
   const enum TRUSONA_SDK_RESULT rc = trusonafy_by_type(get_api_input_type(value), value);
 
-  if(rc == TRUSONA_SUCCESS ) {
+  if(rc == TRUSONA_SUCCESS) {
     syslog(LOG_NOTICE, "%s: %s: Yeah! Trusonafication succeeded for '%s'", lib_module_name, global_settings.request_id, value);
     fprintf(stderr, "\nTrusonafication succeeded!\n");
   }
