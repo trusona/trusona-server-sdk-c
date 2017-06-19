@@ -21,16 +21,16 @@
 # SOFTWARE.
 
 all: objects
-	cc -L /usr/local/lib -shared json.o net.o trusona.o utils.o hmac.o base64.o \
+	cc -L /usr/local/lib -shared json.o net.o trusona.o internal.o hmac.o base64.o \
 		-luuid -lcurl -ljansson -lcrypto -o trusona.so
 
 objects: clean
-	cc -Wall -fPIC -c trusona.c -o trusona.o
-	cc -Wall -fPIC -c base64.c  -o base64.o
-	cc -Wall -fPIC -c utils.c   -o utils.o
-	cc -Wall -fPIC -c json.c    -o json.o
-	cc -Wall -fPIC -c hmac.c    -o hmac.o
-	cc -Wall -fPIC -c net.c     -o net.o
+	cc -Wall -fPIC -c internal.c  -o internal.o
+	cc -Wall -fPIC -c trusona.c   -o trusona.o
+	cc -Wall -fPIC -c base64.c    -o base64.o
+	cc -Wall -fPIC -c json.c      -o json.o
+	cc -Wall -fPIC -c hmac.c      -o hmac.o
+	cc -Wall -fPIC -c net.c       -o net.o
 
 clean:
 	find . -name "*.o" -o -name "*.so" -o -name "a.out" | xargs rm -f
@@ -44,4 +44,9 @@ install: all
 
 test:
 	## infer is available here - http://fbinfer.com
-	infer -- make all
+	infer run -- cc -Wall -fPIC -c internal.c  -o internal.o
+	infer run -- cc -Wall -fPIC -c trusona.c   -o trusona.o
+	infer run -- cc -Wall -fPIC -c base64.c    -o base64.o
+	infer run -- cc -Wall -fPIC -c json.c      -o json.o
+	infer run -- cc -Wall -fPIC -c hmac.c      -o hmac.o
+	infer run -- cc -Wall -fPIC -c net.c       -o net.o
