@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef TRUSONA_UTILS_H
-#define TRUSONA_UTILS_H
+#ifndef TRUSONA_INTERNAL_H
+#define TRUSONA_INTERNAL_H
 
 #include "trusona.h"
 
@@ -59,4 +59,4 @@ SettingsStruct load_settings(const char *json_settings_file);
 
 char *now_rfc1123();
 
-#endif /* TRUSONA_UTILS_H */
+#endif /* TRUSONA_INTERNAL_H */
