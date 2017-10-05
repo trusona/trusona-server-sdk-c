@@ -33,8 +33,7 @@ objects: clean
 	cc -Wall -fPIC -c net.c       -o net.o
 
 clean:
-	find . -name "*.o" -o -name "*.so" -o -name "a.out" | xargs rm -f
-	rm -rf infer-out
+	find . -name "*.o" -o -name "*.so" -o -name "a.out" | xargs rm -rf
 
 install: all
 	$(shell mkdir -p /usr/local/lib)
@@ -44,9 +43,4 @@ install: all
 
 test:
 	## infer is available here - http://fbinfer.com
-	infer run -- cc -Wall -fPIC -c internal.c  -o internal.o
-	infer run -- cc -Wall -fPIC -c trusona.c   -o trusona.o
-	infer run -- cc -Wall -fPIC -c base64.c    -o base64.o
-	infer run -- cc -Wall -fPIC -c json.c      -o json.o
-	infer run -- cc -Wall -fPIC -c hmac.c      -o hmac.o
-	infer run -- cc -Wall -fPIC -c net.c       -o net.o
+	infer -- make all
