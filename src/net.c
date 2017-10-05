@@ -83,15 +83,21 @@ int do_get_request(SettingsStruct settings, const char *uri, char **json) {
     char *hmac_parts = calloc(1, sizeof(char) * MAX_STR);
     char *now = now_rfc1123();
 
-    append_str(&hmac_parts, GET);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, md5_hash);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, BLANK);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, now);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, uri);
+    if(hmac_parts != NULL) {
+      append_str(&hmac_parts, GET);
+      append_str(&hmac_parts, ENDL);
+      append_str(&hmac_parts, md5_hash);
+      append_str(&hmac_parts, ENDL);
+      append_str(&hmac_parts, BLANK);
+      append_str(&hmac_parts, ENDL);
+
+      if(now != NULL) {
+        append_str(&hmac_parts, now);
+      }
+
+      append_str(&hmac_parts, ENDL);
+      append_str(&hmac_parts, uri);
+    }
 
     char *signature = base64_hmac_sha256(settings.mac_key, hmac_parts);
     char *auth_header = calloc(1, sizeof(char) * MAX_STR);
@@ -169,15 +175,17 @@ int do_post_request(SettingsStruct settings, const char *uri, const char *post_d
 
     char *hmac_parts = calloc(1, sizeof(char) * MAX_STR);
 
-    append_str(&hmac_parts, POST);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, md5_hash);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, JSON_TYPE);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, now);
-    append_str(&hmac_parts, ENDL);
-    append_str(&hmac_parts, uri);
+    if(hmac_parts != NULL) {
+      append_str(&hmac_parts, POST);
+      append_str(&hmac_parts, ENDL);
+      append_str(&hmac_parts, md5_hash);
+      append_str(&hmac_parts, ENDL);
+      append_str(&hmac_parts, JSON_TYPE);
+      append_str(&hmac_parts, ENDL);
+      append_str(&hmac_parts, now);
+      append_str(&hmac_parts, ENDL);
+      append_str(&hmac_parts, uri);
+    }
 
     char *signature = base64_hmac_sha256(settings.mac_key, hmac_parts);
     char *auth_header = calloc(1, sizeof(char) * MAX_STR);
