@@ -21,4 +21,4 @@ notifications:
     on_success: always
     on_failure: always
     rooms:
-      - lighthauz:L9vNoLRwptkWOXxmnX7ztYjQ
+      - lighthauz:L9vNoLRwptkWOXxmnX7ztYjQ#travis-ci
