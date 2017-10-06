@@ -33,7 +33,7 @@ static const char *COLON = ":";
 static const char *SPACE = " ";
 static const char *BLANK = "";
 
-static const char *JSON_TYPE = "application/json";
+static const char *JSON_TYPE = "application/json;charset=UTF-8";
 static const char *POST = "POST";
 static const char *GET = "GET";
 
@@ -110,9 +110,10 @@ int do_get_request(SettingsStruct settings, const char *uri, char **json) {
 
     headers = curl_slist_append(headers, concat_str("x-request-id: ", settings.request_id));
     headers = curl_slist_append(headers, concat_str("authorization: ", auth_header));
+    headers = curl_slist_append(headers, concat_str("x-date: ", now));
     headers = curl_slist_append(headers, concat_str("date: ", now));
 
-    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona C API/3.2.1"); // minimum level
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona_C_API/3.2.1"); // minimum level
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&output);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
@@ -131,7 +132,7 @@ int do_get_request(SettingsStruct settings, const char *uri, char **json) {
       strncpy(*json, output.data, cnt);
     }
     else {
-      syslog(LOG_NOTICE, "%s: %s: Failed GET to %s", lib_module_name, settings.request_id, url);
+      syslog(LOG_WARNING, "%s: %s: Failed GET to %s", lib_module_name, settings.request_id, url);
       *json = NULL;
     }
 
@@ -199,9 +200,10 @@ int do_post_request(SettingsStruct settings, const char *uri, const char *post_d
     headers = curl_slist_append(headers, concat_str("x-request-id: ", settings.request_id));
     headers = curl_slist_append(headers, concat_str("authorization: ", auth_header));
     headers = curl_slist_append(headers, concat_str("content-type: ", JSON_TYPE));
+    headers = curl_slist_append(headers, concat_str("x-date: ", now));
     headers = curl_slist_append(headers, concat_str("date: ", now));
 
-    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona C API/3.2.1");
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona_C_API/3.2.1");
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&output);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_data);
@@ -222,7 +224,7 @@ int do_post_request(SettingsStruct settings, const char *uri, const char *post_d
       strncpy(*json, output.data, cnt);
     }
     else {
-      syslog(LOG_NOTICE, "%s: %s: Failed POST to %s (%lu)", lib_module_name, settings.request_id, url, status);
+      syslog(LOG_WARNING, "%s: %s: Failed POST to %s (%lu)", lib_module_name, settings.request_id, url, status);
       *json = NULL;
     }
 

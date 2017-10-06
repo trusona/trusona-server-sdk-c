@@ -89,10 +89,12 @@ SettingsStruct load_settings(const char *json_settings_file) {
   settings.valid = false;
 
   if(root) {
-    settings.desired_level = (int)get_int_value(root, "desired_level");
     settings.access_token = (char *)get_str_value(root, "access_token");
+    settings.desired_level = (int)get_int_value(root, "desired_level");
+    settings.resource = (char *)get_str_value(root, "resource");
     settings.api_host = (char *)get_str_value(root, "api_host");
     settings.mac_key = (char *)get_str_value(root, "mac_key");
+    settings.action = (char *)get_str_value(root, "action");
 
     settings.request_id = generate_guid();
 
