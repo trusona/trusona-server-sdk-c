@@ -23,23 +23,60 @@
  */
 
 #include <trusona/trusona.h>
-#include <stdio.h>
+#include <ctype.h>
 
 const char* settings = "/usr/local/etc/trusona/settings-hauz.json";
+char * trim(const char *str);
 
 int main() {
+  char* trimmed_value = NULL;
+  char* value;
+
   printf("Enter a trusona ID or an email address: ");
+  value = calloc(1, sizeof(char) * MAX_STR);
 
-  char* value = calloc(1, sizeof(char) * MAX_STR);
-  value = fgets(value, MAX_STR, stdin);
+  if(value != NULL) {
+    trimmed_value = trim(fgets(value, MAX_STR, stdin));
 
-  value[strlen(value)-1] = '\0'; // crude way to trim captured new line character
+    printf("Sending trusonafication to '%s'\n", trimmed_value);
+    printf("JSON settings will load from %s\n", settings);
 
-  printf("Sending trusonafication to '%s'\n", value);
-  printf("JSON settings will load from %s\n", settings);
+    enum TRUSONA_SDK_RESULT result = trusonafy(settings, trimmed_value);
+    printf("%d\n", result);
+  }
 
-  enum TRUSONA_SDK_RESULT result = trusonafy(settings, value);
+  free(trimmed_value);
+  free(value);
 
-  printf("%d\n", result);
+  trimmed_value = value = NULL;
 
+  return 0;
+
+}
+
+char *trim(const char *str) {
+  char *ptr = calloc(1, sizeof(char) * MAX_STR);
+
+  int first = -1;
+  int last = strnlen(str, MAX_STR);
+
+  while(isspace(str[++first])) {
+    // do nothing
+  }
+
+  while(isspace(str[--last])) {
+    // do nothing
+  }
+
+  int idx = 0;
+
+  if(first != last) {
+    for(; first <= last; ) {
+      ptr[idx++] = str[first++];
+    }
+  }
+
+  ptr[idx] = '\0';
+
+  return ptr;
 }
