@@ -22,7 +22,8 @@
 
 all: objects
 	cc -L /usr/local/lib -shared json.o net.o trusona.o internal.o hmac.o base64.o \
-		-luuid -lcurl -ljansson -lcrypto -o trusona.so
+		-luuid -lcurl -ljansson -lcrypto -o libtrusona.so && \
+		gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib
 
 objects: clean
 	cc -Wall -fPIC -c internal.c  -o internal.o
@@ -33,12 +34,14 @@ objects: clean
 	cc -Wall -fPIC -c net.c       -o net.o
 
 clean:
-	find . -name "*.o" -o -name "*.so" -o -name "a.out" | xargs rm -rf
+	find . -name "*.o" -o -name "*.so" -o -name "a.out" -o -name "libtrusona.*" | xargs rm -rf
 
 install: all
-	$(shell mkdir -p /usr/local/lib)
+	$(shell mkdir -p /usr/local/lib /usr/local/include/trusona)
 	$(shell strip trusona.so 2>/dev/null)
-	$(shell cp trusona.so /usr/local/lib)
+	$(shell cp libtrusona.so /usr/local/lib/)
+	$(shell cp libtrusona.dylib /usr/local/lib/)
+	$(shell cp *.h /usr/local/include/trusona)
 	$(shell rm -rf *.o infer-out)
 
 test:
