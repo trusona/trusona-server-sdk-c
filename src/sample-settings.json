@@ -1,0 +1,9 @@
+{
+  "access_token": "real_access_token",
+  "mac_key": "real_mac_key",
+  "api_host": "https://real_api_host.domain",
+  "desired_level": 2,
+  "expires_in_x_seconds": 99,
+  "action": "action",
+  "resource": "resource"
+}
