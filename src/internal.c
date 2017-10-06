@@ -97,7 +97,7 @@ SettingsStruct load_settings(const char *json_settings_file) {
     settings.request_id = generate_guid();
 
     // hard-coding values that will never change
-    settings.verifications_uri = "/api/v1/verifications";
+    settings.trusonafications_uri = "/api/v2/trusonafications";
     settings.token_type = "TRUSONA";
 
     settings.valid = true;
@@ -131,26 +131,23 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
     return TRUSONA_SERVICE_ERR;
   }
 
-  json_object_set_new(map, "email", json_string(value));
-
-
-  json_object_set_new(map, "resource", json_string("account"));
-  json_object_set_new(map, "action", json_string("trusonafy"));
+  json_object_set_new(map, "resource", json_string(settings.resource));
+  json_object_set_new(map, "action", json_string(settings.action));
   json_object_set_new(map, "desired_level", json_integer(settings.desired_level));
   body = json_dumps(map, 0);
   json = NULL;
 
-  if(do_post_request(settings, settings.verifications_uri, body, &json) == INVALID_REQ) {
+  if(do_post_request(settings, settings.trusonafications_uri, body, &json) == INVALID_REQ) {
     return TRUSONA_SERVICE_ERR;
   }
 
-  const char *verification_id = json_str_value(&json, "verification_id");
+  const char *trusonafication_id = json_str_value(&json, "id");
   char *uri = calloc(1, sizeof(char) * MAX_STR);
 
-  if(uri != NULL && verification_id != NULL) {
-    append_str(&uri, settings.verifications_uri);
+  if(uri != NULL && trusonafication_id != NULL) {
+    append_str(&uri, settings.trusonafications_uri);
     append_str(&uri, "/");
-    append_str(&uri, verification_id);
+    append_str(&uri, trusonafication_id);
   }
 
   unsigned int cnt = 0;

@@ -27,12 +27,14 @@
 
 typedef struct SettingsStruct {
   int desired_level;
-  char *verifications_uri;
+  char *trusonafications_uri;
   char *access_token;
   char *request_id;
   char *token_type;
   char *api_host;
   char *mac_key;
+  char *action;
+  char *resource;
   bool valid;
 } SettingsStruct;
 

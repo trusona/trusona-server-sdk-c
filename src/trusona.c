@@ -29,11 +29,14 @@ static const char *default_settings = "/usr/local/etc/trusona/settings.json"; //
 
 const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* value) {
   syslog(LOG_NOTICE, "%s: Hold on to your C pants - here we go!", lib_module_name);
-  char *settings = NULL;
+  const char *settings = NULL;
 
   if (json_settings == NULL) {
     syslog(LOG_ERR, "%s: Using settings' default location of '%s'", lib_module_name, default_settings);
     settings = (char *)default_settings;
+  }
+  else {
+    settings = json_settings;
   }
 
   SettingsStruct global_settings = load_settings(settings);

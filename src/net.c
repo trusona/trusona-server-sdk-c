@@ -112,7 +112,7 @@ int do_get_request(SettingsStruct settings, const char *uri, char **json) {
     headers = curl_slist_append(headers, concat_str("authorization: ", auth_header));
     headers = curl_slist_append(headers, concat_str("date: ", now));
 
-    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona C API/0.1");
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona C API/3.2.1"); // minimum level
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&output);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
@@ -201,7 +201,7 @@ int do_post_request(SettingsStruct settings, const char *uri, const char *post_d
     headers = curl_slist_append(headers, concat_str("content-type: ", JSON_TYPE));
     headers = curl_slist_append(headers, concat_str("date: ", now));
 
-    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona C API/0.1");
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "Trusona C API/3.2.1");
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&output);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_data);
@@ -214,7 +214,7 @@ int do_post_request(SettingsStruct settings, const char *uri, const char *post_d
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
     if(code == CURLE_OK && (status == 200 || status == 201)) {
-      syslog(LOG_NOTICE, "%s: %s: Successful POST to %s", lib_module_name, settings.request_id, url);
+      syslog(LOG_NOTICE, "%s: %s: Successful POST to %s (%lu)", lib_module_name, settings.request_id, url, status);
 
       int cnt = output.size + 1;
       *json = calloc(cnt, sizeof(char)  *cnt);
@@ -222,7 +222,7 @@ int do_post_request(SettingsStruct settings, const char *uri, const char *post_d
       strncpy(*json, output.data, cnt);
     }
     else {
-      syslog(LOG_NOTICE, "%s: %s: Failed POST to %s", lib_module_name, settings.request_id, url);
+      syslog(LOG_NOTICE, "%s: %s: Failed POST to %s (%lu)", lib_module_name, settings.request_id, url, status);
       *json = NULL;
     }
 
