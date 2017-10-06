@@ -29,6 +29,7 @@ const char* settings = "/usr/local/etc/trusona/settings-hauz.json";
 char * trim(const char *str);
 
 int main() {
+  enum TRUSONA_SDK_RESULT result = TRUSONA_INSUFFICIENT;
   char* trimmed_value = NULL;
   char* value;
 
@@ -41,8 +42,7 @@ int main() {
     printf("Sending trusonafication to '%s'\n", trimmed_value);
     printf("JSON settings will load from %s\n", settings);
 
-    enum TRUSONA_SDK_RESULT result = trusonafy(settings, trimmed_value);
-    printf("%d\n", result);
+    result = trusonafy(settings, trimmed_value);
   }
 
   free(trimmed_value);
@@ -50,27 +50,26 @@ int main() {
 
   trimmed_value = value = NULL;
 
-  return 0;
-
+  return result;
 }
 
 char *trim(const char *str) {
-  char *ptr = calloc(1, sizeof(char) * MAX_STR);
+  if(str == NULL) {
+    return NULL;
+  }
 
-  int first = -1;
+  char *ptr = calloc(1, sizeof(char) * MAX_STR);
   int last = strnlen(str, MAX_STR);
+  int first = -1;
+  int idx = 0;
 
   while(isspace(str[++first])) {
     // do nothing
   }
 
-  if(last > 0) {
-    while(isspace(str[--last])) {
-      // do nothing
-    }
+  while(isspace(str[--last])) {
+    // do nothing
   }
-
-  int idx = 0;
 
   if(first != last) {
     for(; first <= last; ) {
@@ -79,6 +78,5 @@ char *trim(const char *str) {
   }
 
   ptr[idx] = '\0';
-
   return ptr;
 }
