@@ -64,8 +64,10 @@ char *trim(const char *str) {
     // do nothing
   }
 
-  while(isspace(str[--last])) {
-    // do nothing
+  if(last > 0) {
+    while(isspace(str[--last])) {
+      // do nothing
+    }
   }
 
   int idx = 0;
