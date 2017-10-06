@@ -27,6 +27,7 @@
 
 typedef struct SettingsStruct {
   int desired_level;
+  int expires_in_x_seconds;
   char *trusonafications_uri;
   char *access_token;
   char *request_id;

@@ -54,7 +54,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* v
   syslog(LOG_NOTICE, "%s: Minimum LOA (also used in the API as 'desired_level') is %d", lib_module_name, global_settings.desired_level);
   syslog(LOG_NOTICE, "%s: We appear to be correctly configured.", lib_module_name);
 
-  fprintf(stderr, "Respond to Trusona via your mobile device. You have 99 seconds...");
+  fprintf(stderr, "Respond to Trusona via your mobile device. You have %d seconds...", global_settings.expires_in_x_seconds);
 
   syslog(LOG_NOTICE, "%s: %s: Attempting trusonafication for '%s'", lib_module_name, global_settings.request_id, value);
   const enum TRUSONA_SDK_RESULT rc = trusonafy_by_type(get_api_input_type(value), value);

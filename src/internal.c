@@ -66,6 +66,24 @@ char *generate_guid() {
   return guid;
 }
 
+char *rfc8601(int from_now_seconds) {
+  time_t rawtime;
+  struct tm * timeinfo;
+
+  // some realignment... max future time is 5 minutes for our needs
+  if(from_now_seconds > 300 || from_now_seconds <= 0) {
+    from_now_seconds = TRUSONA_MAX_WAIT;
+  }
+
+  char *val = calloc(1, sizeof(char) * MAX_STR);
+
+  long secs = from_now_seconds + time (&rawtime);
+  timeinfo = gmtime(&secs);
+
+  strftime (val, MAX_STR, "%Y-%m-%dT%H:%M:%S.000Z", timeinfo);
+
+  return val;
+}
 
 char *now_rfc1123() {
   time_t rawtime;
@@ -89,6 +107,7 @@ SettingsStruct load_settings(const char *json_settings_file) {
   settings.valid = false;
 
   if(root) {
+    settings.expires_in_x_seconds = (int)get_int_value(root, "expires_in_x_seconds");
     settings.access_token = (char *)get_str_value(root, "access_token");
     settings.desired_level = (int)get_int_value(root, "desired_level");
     settings.resource = (char *)get_str_value(root, "resource");
@@ -133,9 +152,11 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
     return TRUSONA_SERVICE_ERR;
   }
 
+  json_object_set_new(map, "expires_at", json_string(rfc8601(settings.expires_in_x_seconds)));
+  json_object_set_new(map, "desired_level", json_integer(settings.desired_level));
   json_object_set_new(map, "resource", json_string(settings.resource));
   json_object_set_new(map, "action", json_string(settings.action));
-  json_object_set_new(map, "desired_level", json_integer(settings.desired_level));
+
   body = json_dumps(map, 0);
   json = NULL;
 
