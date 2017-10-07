@@ -21,3 +21,37 @@ enum TRUSONA_SDK_RESULT {
 ```
 
 A value of `TRUSONA_SUCCESS` indicates trusonafication was successful.
+
+
+### example `main.c`
+
+```c
+#include <trusona/trusona.h>
+
+const char* settings = "/path/to/trusona/settings.json";
+
+int main() {
+  enum TRUSONA_SDK_RESULT result = TRUSONA_INSUFFICIENT;
+  char* trimmed_value = NULL;
+  char* value;
+
+  printf("Enter a trusona ID or an email address: ");
+  value = calloc(1, sizeof(char) * MAX_STR);
+
+  if(value != NULL) {
+    trimmed_value = trim(fgets(value, MAX_STR, stdin));
+
+    printf("Sending trusonafication to '%s'\n", trimmed_value);
+    printf("JSON settings will load from %s\n", settings);
+
+    result = trusonafy(settings, trimmed_value);
+  }
+
+  free(trimmed_value);
+  free(value);
+
+  trimmed_value = value = NULL;
+
+  return result;
+}
+```
