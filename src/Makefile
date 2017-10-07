@@ -40,8 +40,8 @@ clean:
 install: all
 	$(shell mkdir -p /usr/local/lib /usr/local/include/trusona)
 	$(shell strip trusona.so 2>/dev/null)
-	$(shell cp libtrusona.so /usr/local/lib/)
-	$(shell cp libtrusona.dylib /usr/local/lib/)
+	$(shell if [ `uname` = "Linux" ]; then cp libtrusona.so /usr/local/lib/; fi)
+	$(shell if [ `uname` = "Darwin" ]; then cp libtrusona.dylib /usr/local/lib/; fi)
 	$(shell cp *.h /usr/local/include/trusona)
 	$(shell rm -rf *.o infer-out)
 
