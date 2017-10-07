@@ -23,7 +23,7 @@
 all: objects
 	cc -L /usr/local/lib -shared json.o net.o trusona.o internal.o hmac.o base64.o \
 		-luuid -lcurl -ljansson -lcrypto -o libtrusona.so && \
-		gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib
+		if [ `uname` = "Darwin" ]; then gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib; fi
 
 objects: clean
 	cc -Wall -fPIC -c internal.c  -o internal.o
