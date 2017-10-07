@@ -22,31 +22,12 @@
  * SOFTWARE.
  */
 
-#include <trusona/trusona.h>
+#ifndef TRUSONA_UTILS_H
+#define TRUSONA_UTILS_H
 
-const char* settings = "/usr/local/etc/trusona/settings-hauz.json";
+#include <ctype.h>
+#include "trusona.h"
 
-int main() {
-  enum TRUSONA_SDK_RESULT result = TRUSONA_INSUFFICIENT;
-  char* trimmed_value = NULL;
-  char* value;
+char * trim(const char *str);
 
-  printf("Enter a trusona ID or an email address: ");
-  value = calloc(1, sizeof(char) * MAX_STR);
-
-  if(value != NULL) {
-    trimmed_value = trim(fgets(value, MAX_STR, stdin));
-
-    printf("Sending trusonafication to '%s'\n", trimmed_value);
-    printf("JSON settings will load from %s\n", settings);
-
-    result = trusonafy(settings, trimmed_value);
-  }
-
-  free(trimmed_value);
-  free(value);
-
-  trimmed_value = value = NULL;
-
-  return result;
-}
+#endif /* TRUSONA_UTILS_H */

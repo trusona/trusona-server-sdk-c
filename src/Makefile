@@ -29,6 +29,7 @@ objects: clean
 	cc -Wall -fPIC -c internal.c  -o internal.o
 	cc -Wall -fPIC -c trusona.c   -o trusona.o
 	cc -Wall -fPIC -c base64.c    -o base64.o
+	cc -Wall -fPIC -c utils.c     -o utils.o
 	cc -Wall -fPIC -c json.c      -o json.o
 	cc -Wall -fPIC -c hmac.c      -o hmac.o
 	cc -Wall -fPIC -c net.c       -o net.o

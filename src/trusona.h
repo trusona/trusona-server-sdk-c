@@ -38,6 +38,7 @@
 #include "json.h"
 #include "net.h"
 #include "hmac.h"
+#include "utils.h"
 
 #ifndef TRUSONA_MAX_WAIT
 #define TRUSONA_MAX_WAIT 99 // 99 seconds
