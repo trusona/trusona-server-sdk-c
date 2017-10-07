@@ -59,6 +59,4 @@ SettingsStruct load_settings(const char *json_settings_file);
 
 char *now_rfc1123();
 
-char *rfc8601(int from_now_seconds);
-
 #endif /* TRUSONA_INTERNAL_H */

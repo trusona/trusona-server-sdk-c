@@ -139,7 +139,7 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
   }
 
   enum TRUSONA_SDK_RESULT rc = TRUSONA_INSUFFICIENT;
-  char *status, *json, *body;
+  char *status, *json, *body, *expires_at;
   int accepted_level;
   json_t *map;
 
@@ -155,7 +155,9 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
     return TRUSONA_SERVICE_ERR;
   }
 
-  json_object_set_new(map, "expires_at", json_string(rfc8601(settings.expires_in_x_seconds)));
+  expires_at = rfc8601(settings.expires_in_x_seconds);
+
+  json_object_set_new(map, "expires_at", json_string(expires_at));
   json_object_set_new(map, "desired_level", json_integer(settings.desired_level));
   json_object_set_new(map, "resource", json_string(settings.resource));
   json_object_set_new(map, "action", json_string(settings.action));
@@ -218,7 +220,10 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
     }
   }
 
+  free(expires_at);
   free(json);
+
+  expires_at = NULL;
   json = NULL;
 
   return rc;
