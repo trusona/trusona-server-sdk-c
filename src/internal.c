@@ -80,7 +80,10 @@ char *rfc8601(int from_now_seconds) {
   long secs = from_now_seconds + time (&rawtime);
   timeinfo = gmtime(&secs);
 
-  strftime (val, MAX_STR, "%Y-%m-%dT%H:%M:%S.000Z", timeinfo);
+  strftime (val, MAX_STR, "%Y-%m-%dT%H:%M:%SZ", timeinfo);
+
+  free(timeinfo);
+  timeinfo = NULL;
 
   return val;
 }
