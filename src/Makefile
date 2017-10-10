@@ -21,27 +21,31 @@
 # SOFTWARE.
 
 all: objects
-	cc -L /usr/local/lib -shared json.o net.o trusona.o internal.o hmac.o base64.o \
-		-luuid -lcurl -ljansson -lcrypto -o libtrusona.so && \
-		if [ `uname` = "Darwin" ]; then gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib; fi
+	if [ `uname` = "Linux" ]; then gcc -L/usr/local/lib -shared json.o net.o trusona.o internal.o hmac.o base64.o -luuid -lcurl -ljansson -lcrypto -o libtrusona.so; fi
+	if [ `uname` = "Darwin" ]; then gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib; fi
+	make -s clean
 
-objects: clean
-	cc -Wall -fPIC -c internal.c  -o internal.o
-	cc -Wall -fPIC -c trusona.c   -o trusona.o
-	cc -Wall -fPIC -c base64.c    -o base64.o
-	cc -Wall -fPIC -c utils.c     -o utils.o
-	cc -Wall -fPIC -c json.c      -o json.o
-	cc -Wall -fPIC -c hmac.c      -o hmac.o
-	cc -Wall -fPIC -c net.c       -o net.o
+objects: clean-all
+	gcc -Wall -fPIC -c internal.c  -o internal.o
+	gcc -Wall -fPIC -c trusona.c   -o trusona.o
+	gcc -Wall -fPIC -c base64.c    -o base64.o
+	gcc -Wall -fPIC -c utils.c     -o utils.o
+	gcc -Wall -fPIC -c json.c      -o json.o
+	gcc -Wall -fPIC -c hmac.c      -o hmac.o
+	gcc -Wall -fPIC -c net.c       -o net.o
+
+clean-all: clean
+	$(shell rm -f *.so libtrusona.* a.out)
 
 clean:
-	find . -name "*.o" -o -name "*.so" -o -name "a.out" -o -name "libtrusona.*" | xargs rm -rf
+	$(shell rm -f *.o)
 
 install: all
 	$(shell mkdir -p /usr/local/lib /usr/local/include/trusona)
 	$(shell strip trusona.so 2>/dev/null)
 	$(shell if [ `uname` = "Linux" ]; then cp libtrusona.so /usr/local/lib/; fi)
 	$(shell if [ `uname` = "Darwin" ]; then cp libtrusona.dylib /usr/local/lib/; fi)
+	$(shell rm -f /usr/local/include/trusona/*.h)
 	$(shell cp *.h /usr/local/include/trusona)
 	$(shell rm -rf *.o infer-out)
 
