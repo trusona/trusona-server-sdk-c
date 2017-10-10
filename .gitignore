@@ -1,4 +1,4 @@
-example/example
+src/example/example
 infer-out/
 *.iml
 
