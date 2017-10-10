@@ -21,7 +21,9 @@
 # SOFTWARE.
 
 example: clean
-	gcc -Wall -fPIC -L/usr/local/lib -ltrusona  main.c -o example
+	gcc -L../ -Wall -fPIC -ltrusona  main.c -o example
 
 clean:
-	rm -f example
+	$(shell rm -f example)
+
+clean-all: clean
