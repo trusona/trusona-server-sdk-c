@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include
+
 all: objects
 	gcc -L../ -lpam -ltrusona -shared trusona_pam.o -o trusona_pam.so
 	make -s clean
@@ -31,7 +33,7 @@ uninstall:
 	$(shell rm -f /usr/local/lib/trusona_pam.so)
 
 objects: clean-all
-	gcc -Wall -fPIC -c trusona_pam.c
+	gcc $(INCLUDES) -Wall -fPIC -c trusona_pam.c
 
 clean-all: clean
 	$(shell rm -f *.so)

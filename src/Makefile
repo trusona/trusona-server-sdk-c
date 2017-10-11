@@ -20,19 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include
+
 all: objects
-	if [ `uname` = "Linux" ]; then gcc -L/usr/local/lib -shared json.o net.o trusona.o internal.o hmac.o base64.o -luuid -lcurl -ljansson -lcrypto -o libtrusona.so; fi
+	if [ `uname` = "Linux" ]; then gcc -shared json.o net.o trusona.o internal.o hmac.o base64.o -luuid -lcurl -ljansson -lcrypto -o libtrusona.so; fi
 	if [ `uname` = "Darwin" ]; then gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib; fi
 	make -s clean
 
 objects: clean-all
-	gcc -Wall -fPIC -c internal.c  -o internal.o
-	gcc -Wall -fPIC -c trusona.c   -o trusona.o
-	gcc -Wall -fPIC -c base64.c    -o base64.o
-	gcc -Wall -fPIC -c utils.c     -o utils.o
-	gcc -Wall -fPIC -c json.c      -o json.o
-	gcc -Wall -fPIC -c hmac.c      -o hmac.o
-	gcc -Wall -fPIC -c net.c       -o net.o
+	gcc $(INCLUDES) -Wall -fPIC -c internal.c  -o internal.o
+	gcc $(INCLUDES) -Wall -fPIC -c trusona.c   -o trusona.o
+	gcc $(INCLUDES) -Wall -fPIC -c base64.c    -o base64.o
+	gcc $(INCLUDES) -Wall -fPIC -c utils.c     -o utils.o
+	gcc $(INCLUDES) -Wall -fPIC -c json.c      -o json.o
+	gcc $(INCLUDES) -Wall -fPIC -c hmac.c      -o hmac.o
+	gcc $(INCLUDES) -Wall -fPIC -c net.c       -o net.o
 
 clean-all: clean
 	$(shell rm -f *.so libtrusona.* a.out)

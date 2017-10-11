@@ -20,8 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include
+
 example: clean
-	gcc -L../ -Wall -fPIC -ltrusona  main.c -o example
+	gcc $(INCLUDES) -L../ -Wall -fPIC -ltrusona  main.c -o example
 
 clean:
 	$(shell rm -f example)
