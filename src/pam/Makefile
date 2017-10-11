@@ -27,6 +27,9 @@ all: objects
 install: all
 	$(shell mkdir -p /usr/local/lib && cp trusona_pam.so /usr/local/lib)
 
+uninstall:
+	$(shell rm -f /usr/local/lib/trusona_pam.so)
+
 objects: clean-all
 	gcc -Wall -fPIC -c trusona_pam.c
 

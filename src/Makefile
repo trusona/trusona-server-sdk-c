@@ -49,6 +49,9 @@ install: all
 	$(shell cp *.h /usr/local/include/trusona)
 	$(shell rm -rf *.o infer-out)
 
+uninstall:
+	$(shell rm -rf /usr/local/include/trusona/ /usr/local/lib/libtrusona.*)
+
 test:
 	## infer is available here - http://fbinfer.com
 	infer -- make all

@@ -29,6 +29,10 @@ install:
 	make install -C src
 	make install -C src/pam
 
+uninstall:
+		make uninstall -C src
+		make uninstall -C src/pam
+
 clean:
 	make clean-all -C src
 	make clean-all -C src/pam

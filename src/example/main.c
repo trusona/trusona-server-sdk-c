@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include <trusona/trusona.h>
+#include "../trusona.h"
 
 const char* settings = "/usr/local/etc/trusona/settings-hauz.json";
 
