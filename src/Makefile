@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include
+INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 
 all: objects
 	if [ `uname` = "Linux" ]; then gcc -shared json.o net.o trusona.o internal.o hmac.o base64.o -luuid -lcurl -ljansson -lcrypto -o libtrusona.so; fi
