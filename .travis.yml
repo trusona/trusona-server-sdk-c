@@ -14,7 +14,7 @@ install:
   - sudo -H ./ci/jansson-installer.sh
 
 script:
-  - make
+  - make -C src && make -C src/pam
 
 notifications:
   slack:
