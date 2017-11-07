@@ -26,27 +26,28 @@
 
 const char* settings = "/usr/local/etc/trusona/settings-hauz.json";
 
-int main() {
+int main (int argc, char *argv[]) {
   enum TRUSONA_SDK_RESULT result = TRUSONA_INSUFFICIENT;
-  char* trimmed_value = NULL;
-  char* value;
+  char* value = NULL;
 
-  printf("Enter a trusona ID or an email address: ");
-  value = calloc(1, sizeof(char) * MAX_STR);
-
-  if(value != NULL) {
-    trimmed_value = trim(fgets(value, MAX_STR, stdin));
-
-    printf("Sending trusonafication to '%s'\n", trimmed_value);
-    printf("JSON settings will load from %s\n", settings);
-
-    result = trusonafy(settings, trimmed_value);
+  if(argc != 2) {
+    printf("Enter a trusona ID or an email address: ");
+    value = calloc(1, sizeof(char) * MAX_STR);
+    value = trim(fgets(value, MAX_STR, stdin));
+  }
+  else {
+    value = trim(argv[1]);
   }
 
-  free(trimmed_value);
-  free(value);
+  if(value != NULL) {
+    printf("Sending trusonafication to '%s'\n", value);
+    printf("JSON settings will load from %s\n", settings);
 
-  trimmed_value = value = NULL;
+    result = trusonafy(settings, value);
+  }
+
+  free(value);
+  value = NULL;
 
   return result;
 }
