@@ -82,7 +82,6 @@ char *rfc8601(int from_now_seconds) {
 
   strftime (val, MAX_STR, "%Y-%m-%dT%H:%M:%SZ", timeinfo);
 
-  free(timeinfo);
   timeinfo = NULL;
 
   return val;
@@ -219,9 +218,6 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_in
       sleep(TRUSONA_SLEEP);
     }
   }
-
-  free(expires_at);
-  free(json);
 
   expires_at = NULL;
   json = NULL;

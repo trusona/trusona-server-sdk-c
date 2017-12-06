@@ -139,12 +139,6 @@ int do_get_request(SettingsStruct settings, const char *uri, char **json) {
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
 
-    free(auth_header);
-    free(hmac_parts);
-    free(signature);
-    free(url);
-    free(now);
-
     auth_header = hmac_parts = signature = NULL;
     md5_hash = url = now = NULL;
   }
@@ -230,13 +224,6 @@ int do_post_request(SettingsStruct settings, const char *uri, const char *post_d
 
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
-
-    free(auth_header);
-    free(hmac_parts);
-    free(signature);
-    free(md5_hash);
-    free(url);
-    free(now);
 
     auth_header = hmac_parts = signature = NULL;
     md5_hash = url = now = NULL;

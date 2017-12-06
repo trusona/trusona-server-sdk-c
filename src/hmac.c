@@ -61,7 +61,6 @@ char *base64_hmac_sha256(const char *key, const char *data) {
   base64_val = calloc(1, sizeof(char)  *MAX_STR);
 
   Base64encode(base64_val, hex_digest, strnlen(hex_digest, MAX_STR));
-  free(hex_digest);
 
   hex_digest = NULL;
   digest = NULL;
