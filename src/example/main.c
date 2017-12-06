@@ -46,8 +46,5 @@ int main (int argc, char *argv[]) {
     result = trusonafy(settings, value);
   }
 
-  free(value);
-  value = NULL;
-
   return result;
 }
