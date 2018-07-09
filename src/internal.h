@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016, 2017 Trusona Inc (www.trusona.com) All Rights Reserved
+ * Copyright (c) 2016, 2017, 2018 Trusona Inc (www.trusona.com) All Rights Reserved
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,17 +40,6 @@ struct MemoryStruct {
   size_t size;
 };
 
-enum API_INPUT_TYPE {EMAIL_ADDRESS, TRUSONA_ID, INVALID_TYPE};
-
-enum TRUSONA_SDK_RESULT {
-  TRUSONA_SUCCESS,
-  TRUSONA_SERVICE_ERR,
-  TRUSONA_INSUFFICIENT,
-  TRUSONA_FAILURE
-};
-
-const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum API_INPUT_TYPE api_input_type, const char *value);
-
 char *concat_str(const char *arr1, const char *arr2);
 
 void append_str(char **buffer, const char *data);
@@ -59,4 +48,8 @@ SettingsStruct load_settings(const char *json_settings_file);
 
 char *now_rfc1123();
 
-#endif /* TRUSONA_INTERNAL_H */
+char *rfc8601(int from_now_seconds);
+
+#endif
+
+/* TRUSONA_INTERNAL_H */

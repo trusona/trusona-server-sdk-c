@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016, 2017 Trusona Inc (www.trusona.com) All Rights Reserved
+ * Copyright (c) 2016, 2017, 2018 Trusona Inc (www.trusona.com) All Rights Reserved
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,44 +26,46 @@
 #include "base64.h"
 
 static const unsigned int SHA256_BITS = 32;
-static const unsigned int MD5_BITS = 16;
+static const unsigned int MD5_BITS    = 16;
 
-
-char *generate_md5(const char *data) {
+char *generate_md5(const char *data)
+{
   unsigned char *raw_digest;
-  int i;
+  int            i;
 
-  char *hex_digest = calloc(1, sizeof(char)  *MAX_STR);
+  char *hex_digest = calloc(1, sizeof(char) * MAX_STR);
+
   raw_digest = MD5((const unsigned char *)data, strnlen((const char *)data, MAX_STR), NULL);
 
-  for(i = 0; i < MD5_BITS; i++) {
-    snprintf((char*)&hex_digest[i*2], MAX_STR, "%02x", (unsigned int)raw_digest[i]);
+  for (i = 0; i < MD5_BITS; i++) {
+    snprintf((char *)&hex_digest[i * 2], MAX_STR, "%02x", (unsigned int)raw_digest[i]);
   }
 
   raw_digest = NULL;
 
-  return hex_digest;
+  return(hex_digest);
 }
 
-char *base64_hmac_sha256(const char *key, const char *data) {
+char *base64_hmac_sha256(const char *key, const char *data)
+{
   unsigned char *digest;
-  char *hex_digest;
-  char *base64_val;
-  int i;
+  char *         hex_digest;
+  char *         base64_val;
+  int            i;
 
-  digest = HMAC(EVP_sha256(), key, strnlen(key, MAX_STR), (const unsigned char *)data, strnlen((char *)data, MAX_STR), NULL, NULL);
-  hex_digest = calloc(1, sizeof(char)  *MAX_STR);
+  digest     = HMAC(EVP_sha256(), key, strnlen(key, MAX_STR), (const unsigned char *)data, strnlen((char *)data, MAX_STR), NULL, NULL);
+  hex_digest = calloc(1, sizeof(char) * MAX_STR);
 
-  for(i = 0; i < SHA256_BITS; i++) {
-    snprintf((char*)&hex_digest[i*2], MAX_STR, "%02x", (unsigned int)digest[i]);
+  for (i = 0; i < SHA256_BITS; i++) {
+    snprintf((char *)&hex_digest[i * 2], MAX_STR, "%02x", (unsigned int)digest[i]);
   }
 
-  base64_val = calloc(1, sizeof(char)  *MAX_STR);
+  base64_val = calloc(1, sizeof(char) * MAX_STR);
 
   Base64encode(base64_val, hex_digest, strnlen(hex_digest, MAX_STR));
 
   hex_digest = NULL;
-  digest = NULL;
+  digest     = NULL;
 
-  return base64_val;
+  return(base64_val);
 }

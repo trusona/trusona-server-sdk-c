@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016, 2017 Trusona Inc (www.trusona.com) All Rights Reserved
+ * Copyright (c) 2016, 2017, 2018 Trusona Inc (www.trusona.com) All Rights Reserved
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,30 +24,33 @@
 
 #include "utils.h"
 
-char *trim(const char *str) {
-  if(str == NULL) {
-    return NULL;
+char *trim(const char *str)
+{
+  if (str == NULL) {
+    return(NULL);
   }
 
-  char *ptr = calloc(1, sizeof(char) * MAX_STR);
-  int last = strnlen(str, MAX_STR);
-  int first = -1;
-  int idx = 0;
+  char *ptr   = calloc(1, sizeof(char) * MAX_STR);
+  int   last  = strnlen(str, MAX_STR);
+  int   first = -1;
+  int   idx   = 0;
 
-  while(isspace(str[++first])) {
+  while (isspace(str[++first]))
+  {
     // do nothing
   }
 
-  while(isspace(str[--last])) {
+  while (isspace(str[--last]))
+  {
     // do nothing
   }
 
-  if(first != last) {
-    for(; first <= last; ) {
+  if (first != last) {
+    for (; first <= last;) {
       ptr[idx++] = str[first++];
     }
   }
 
   ptr[idx] = '\0';
-  return ptr;
+  return(ptr);
 }

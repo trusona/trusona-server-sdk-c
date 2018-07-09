@@ -22,17 +22,24 @@
  * SOFTWARE.
  */
 
-#ifndef TRUSONA_JSON_H
-#define TRUSONA_JSON_H
+#ifndef TRUSONAFICATION_H
+#define TRUSONAFICATION_H
 
 #include "trusona.h"
 
-const char *json_str_value(char **json, const char *data);
+enum SDK_INPUT_TYPE {EMAIL_ADDRESS, TRUSONA_ID, INVALID_TYPE};
 
-const int  json_int_value(char **json, const char *data);
+enum TRUSONA_SDK_RESULT {
+  TRUSONA_SUCCESS,
+  TRUSONA_SERVICE_ERR,
+  TRUSONA_INSUFFICIENT,
+  TRUSONA_FAILURE
+};
 
-const int  get_int_value(json_t  *root, const char  *data);
+const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum SDK_INPUT_TYPE sdk_input_type, const char *value);
 
-const char *get_str_value(json_t  *root, const char  *data);
+const enum TRUSONA_SDK_RESULT trusonafy_by_user_identifier(const char *user_identifier);
 
-#endif /* TRUSONA_JSON_H */
+#endif
+
+/* TRUSONAFICATION_H */

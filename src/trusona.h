@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016, 2017 Trusona Inc (www.trusona.com) All Rights Reserved
+ * Copyright (c) 2016, 2017, 2018 Trusona Inc (www.trusona.com) All Rights Reserved
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@
 #include "net.h"
 #include "hmac.h"
 #include "utils.h"
+#include "trusonafication.h"
 
 #ifndef TRUSONA_MAX_WAIT
 #define TRUSONA_MAX_WAIT 99 // 99 seconds
@@ -66,8 +67,10 @@
 #define TRUE !FALSE
 #endif
 
-const enum API_INPUT_TYPE get_api_input_type(const char* value);
+const enum SDK_INPUT_TYPE get_sdk_input_type(const char* value);
 
 const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* email_or_trusona_id);
+
+const enum TRUSONA_SDK_RESULT tilted_trusonafy(const char* json_settings, const char* user_identifier);
 
 #endif /* TRUSONA_H */

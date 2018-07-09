@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2016, 2017 Trusona Inc (www.trusona.com) All Rights Reserved
+ * Copyright (c) 2016, 2017, 2018 Trusona Inc (www.trusona.com) All Rights Reserved
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,72 +26,80 @@
 
 static const char *lib_module_name = "trusona";
 
-const char  *json_str_value(char **json, const char *data) {
+const char *json_str_value(char **json, const char *data)
+{
   json_error_t error;
-  json_t *root = json_loads(*json, 0, &error);
+  json_t *     root = json_loads(*json, 0, &error);
 
-  if(!root) {
+  if (!root) {
     syslog(LOG_NOTICE, "%s: Failed to validate JSON %s", lib_module_name, *json);
-    return NULL;
+    return(NULL);
   }
 
   const char *key;
-  char *val = NULL;
-  json_t *value;
+  char *      val = NULL;
+  json_t *    value;
 
-  json_object_foreach(root, key, value) {
-    if(!val && strcmp(key, data) == 0) {
-      val = (char*)json_string_value(value);
+  json_object_foreach(root, key, value)
+  {
+    if (!val && strcmp(key, data) == 0) {
+      val = (char *)json_string_value(value);
     }
   }
 
-  return val;
+  return(val);
 }
 
-const int json_int_value(char **json, const char *data) {
+const int json_int_value(char **json, const char *data)
+{
   json_error_t error;
-  json_t *root = json_loads(*json, 0, &error);
+  json_t *     root = json_loads(*json, 0, &error);
 
-  if(!root) {
+  if (!root) {
     syslog(LOG_NOTICE, "%s: Failed to validate JSON %s", lib_module_name, *json);
-    return INT_MIN;
+    return(INT_MIN);
   }
 
   const char *key;
-  json_t *value;
+  json_t *    value;
 
-  json_object_foreach(root, key, value) {
-    if(strcmp(key, data) == 0) {
-      return (int)json_integer_value(value);
+  json_object_foreach(root, key, value)
+  {
+    if (strcmp(key, data) == 0) {
+      return((int)json_integer_value(value));
     }
   }
 
-  return INT_MIN;
+  return(INT_MIN);
 }
 
-const int get_int_value(json_t  *root, const char  *data) {
+const int get_int_value(json_t *root, const char *data)
+{
   const char *key;
-  json_t *value;
+  json_t *    value;
 
-  json_object_foreach(root, key, value) {
-    if(strcmp(key, data) == 0) {
-      return (int)json_integer_value(value);
+  json_object_foreach(root, key, value)
+  {
+    if (strcmp(key, data) == 0) {
+      return((int)json_integer_value(value));
     }
   }
 
-  return INT_MIN;
+  return(INT_MIN);
 }
 
-const char  *get_str_value(json_t  *root, const char  *data) {
+const char *get_str_value(json_t *root, const char *data)
+{
   const char *key;
-  char *val = NULL;
-  json_t *value;
+  char *      val = NULL;
+  json_t *    value;
 
-  json_object_foreach(root, key, value) {
-    if(!val && strcmp(key, data) == 0) {
-      val = (char*)json_string_value(value);
+  json_object_foreach(root, key, value)
+  {
+    if (!val && strcmp(key, data) == 0) {
+      val = (char *)json_string_value(value);
     }
   }
 
-  return val;
+  return(val);
 }

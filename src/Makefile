@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2016, 2017 Trusona Inc (www.trusona.com) All Rights Reserved
+# Copyright (c) 2016, 2017, 2018 Trusona Inc (www.trusona.com) All Rights Reserved
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,19 @@
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 
 all: objects
-	if [ `uname` = "Linux" ]; then gcc -shared -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.so; fi
+	if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then gcc -shared -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.so; fi
 	if [ `uname` = "Darwin" ]; then gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib; fi
 	make -s clean
 
 objects: clean-all
-	gcc $(INCLUDES) -Wall -fPIC -c internal.c  -o internal.o
-	gcc $(INCLUDES) -Wall -fPIC -c trusona.c   -o trusona.o
-	gcc $(INCLUDES) -Wall -fPIC -c base64.c    -o base64.o
-	gcc $(INCLUDES) -Wall -fPIC -c utils.c     -o utils.o
-	gcc $(INCLUDES) -Wall -fPIC -c json.c      -o json.o
-	gcc $(INCLUDES) -Wall -fPIC -c hmac.c      -o hmac.o
-	gcc $(INCLUDES) -Wall -fPIC -c net.c       -o net.o
+	gcc $(INCLUDES) -Wall -fPIC -c trusonafication.c  -o trusonafication.o
+	gcc $(INCLUDES) -Wall -fPIC -c internal.c         -o internal.o
+	gcc $(INCLUDES) -Wall -fPIC -c trusona.c          -o trusona.o
+	gcc $(INCLUDES) -Wall -fPIC -c base64.c           -o base64.o
+	gcc $(INCLUDES) -Wall -fPIC -c utils.c            -o utils.o
+	gcc $(INCLUDES) -Wall -fPIC -c json.c             -o json.o
+	gcc $(INCLUDES) -Wall -fPIC -c hmac.c             -o hmac.o
+	gcc $(INCLUDES) -Wall -fPIC -c net.c              -o net.o
 
 clean-all: clean
 	$(shell rm -f *.so libtrusona.* a.out)
@@ -45,7 +46,7 @@ clean:
 install: all
 	$(shell mkdir -p /usr/local/lib /usr/local/include/trusona)
 	$(shell strip trusona.so 2>/dev/null)
-	$(shell if [ `uname` = "Linux" ]; then cp libtrusona.so /usr/local/lib/; fi)
+	$(shell if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then cp libtrusona.so /usr/local/lib/; fi)
 	$(shell if [ `uname` = "Darwin" ]; then cp libtrusona.dylib /usr/local/lib/; fi)
 	$(shell rm -f /usr/local/include/trusona/*.h)
 	$(shell cp *.h /usr/local/include/trusona)
