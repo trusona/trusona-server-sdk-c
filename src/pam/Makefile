@@ -27,16 +27,16 @@ all: objects
 	make -s clean
 
 install: all
-	$(shell mkdir -p /usr/local/lib && cp trusona_pam.so /usr/local/lib)
+	mkdir -p /usr/local/lib && cp trusona_pam.so /usr/local/lib
 
 uninstall:
-	$(shell rm -f /usr/local/lib/trusona_pam.so)
+	rm -f /usr/local/lib/trusona_pam.so
 
 objects: clean-all
 	gcc $(INCLUDES) -Wall -fPIC -c trusona_pam.c
 
 clean-all: clean
-	$(shell rm -f *.so)
+	rm -f *.so
 
 clean:
-	$(shell rm -f *.o)
+	rm -f *.o

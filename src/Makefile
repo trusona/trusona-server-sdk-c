@@ -38,22 +38,22 @@ objects: clean-all
 	gcc $(INCLUDES) -Wall -fPIC -c net.c              -o net.o
 
 clean-all: clean
-	$(shell rm -f *.so libtrusona.* a.out)
+	rm -f *.so libtrusona.* a.out
 
 clean:
-	$(shell rm -f *.o)
+	rm -f *.o
 
 install: all
-	$(shell mkdir -p /usr/local/lib /usr/local/include/trusona)
-	$(shell strip trusona.so 2>/dev/null)
-	$(shell if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then cp libtrusona.so /usr/local/lib/; fi)
-	$(shell if [ `uname` = "Darwin" ]; then cp libtrusona.dylib /usr/local/lib/; fi)
-	$(shell rm -f /usr/local/include/trusona/*.h)
-	$(shell cp *.h /usr/local/include/trusona)
-	$(shell rm -rf *.o infer-out)
+	mkdir -p /usr/local/lib /usr/local/include/trusona
+	rm -f /usr/local/lib/libtrusona.*
+	if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then cp libtrusona.so /usr/local/lib/; fi
+	if [ `uname` = "Darwin" ]; then cp libtrusona.dylib /usr/local/lib/; fi
+	rm -f /usr/local/include/trusona/*.h
+	cp *.h /usr/local/include/trusona
+	rm -rf *.o infer-out
 
 uninstall:
-	$(shell rm -rf /usr/local/include/trusona/ /usr/local/lib/libtrusona.*)
+	rm -rf /usr/local/include/trusona/ /usr/local/lib/libtrusona.*
 
 test:
 	## infer is available here - http://fbinfer.com

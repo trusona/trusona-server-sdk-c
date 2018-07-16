@@ -26,6 +26,6 @@ example: clean
 	gcc $(INCLUDES) -L../ -Wall -fPIC -ltrusona  main.c -o example
 
 clean:
-	$(shell rm -f example)
+	rm -rf example
 
 clean-all: clean

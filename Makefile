@@ -30,8 +30,8 @@ install:
 	make install -C src/pam
 
 uninstall:
-		make uninstall -C src
-		make uninstall -C src/pam
+	make uninstall -C src
+	make uninstall -C src/pam
 
 clean:
 	make clean-all -C src
