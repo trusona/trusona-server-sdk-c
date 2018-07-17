@@ -24,7 +24,9 @@
 
 #include "../trusona.h"
 
-const char *settings = "/usr/local/etc/trusona/settings-hauz.json";
+const char *json_settings = "/usr/local/etc/trusona/settings.json";
+
+// tilted options: --user=<any_user_identifier> --prompt=yes  and/or --presence=yes
 
 int main(int argc, char *argv[])
 {
@@ -42,9 +44,9 @@ int main(int argc, char *argv[])
 
   if (value != NULL) {
     printf("Sending trusonafication to '%s'\n", value);
-    printf("JSON settings will load from %s\n", settings);
+    printf("JSON settings will load from %s\n", json_settings);
 
-    result = trusonafy(settings, value);
+    result = trusonafy_v1(json_settings, value);
   }
 
   return(result);
