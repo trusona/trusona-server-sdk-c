@@ -22,12 +22,16 @@
  * SOFTWARE.
  */
 
-#ifndef TRUSONA_SETTINGS_H
-#define TRUSONA_SETTINGS_H
+#ifndef TRUSONA_SESSION_H
+#define TRUSONA_SESSION_H
 
-typedef struct SettingsStruct {
+
+typedef struct TrusonaSession {
+  int input_type;
   int desired_level;
   int expires_in_x_seconds;
+
+  char *user_identifier;
   char *trusonafications_uri;
   char *access_token;
   char *request_id;
@@ -36,7 +40,12 @@ typedef struct SettingsStruct {
   char *mac_key;
   char *action;
   char *resource;
-  bool valid;
-} SettingsStruct;
 
-#endif /* TRUSONA_SETTINGS_H */
+  bool user_presence;
+  bool prompt;
+
+  bool valid;
+
+} TrusonaSession;
+
+#endif /* TRUSONA_SESSION_H */

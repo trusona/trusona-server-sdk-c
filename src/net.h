@@ -27,8 +27,8 @@
 
 #include "trusona.h"
 
-int do_get_request(SettingsStruct settings, const char *uri, char **response);
+int do_get_request(TrusonaSession settings, const char *uri, char **response);
 
-int do_post_request(SettingsStruct settings, const char *uri, const char *post_data, char **response);
+int do_post_request(TrusonaSession settings, const char *uri, const char *post_data, char **response);
 
 #endif /* TRUSONA_NET_H */

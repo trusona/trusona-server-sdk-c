@@ -44,7 +44,7 @@ char *concat_str(const char *arr1, const char *arr2);
 
 void append_str(char **buffer, const char *data);
 
-SettingsStruct load_settings(const char *json_settings_file);
+TrusonaSession load_settings(const char *json_settings_file);
 
 char *now_rfc1123();
 

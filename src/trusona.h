@@ -33,7 +33,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#include "settings.h"
+#include "session.h"
 #include "internal.h"
 #include "json.h"
 #include "net.h"
@@ -67,10 +67,11 @@
 #define TRUE !FALSE
 #endif
 
-const enum SDK_INPUT_TYPE get_sdk_input_type(const char* value);
+const enum TRUSONA_SDK_RESULT trusonafy_v1(const char* json_settings, const char* email_or_trusona_id);
 
-const enum TRUSONA_SDK_RESULT trusonafy(const char* json_settings, const char* email_or_trusona_id);
+// default; with prompt and with presence
+const enum TRUSONA_SDK_RESULT trusonafy_v2(const char* json_settings, const char* user_identifier);
 
-const enum TRUSONA_SDK_RESULT tilted_trusonafy(const char* json_settings, const char* user_identifier);
+const enum TRUSONA_SDK_RESULT trusonafy_v2_ext(const char* json_settings, const char* user_identifier, const bool prompt, const bool presence);
 
 #endif /* TRUSONA_H */

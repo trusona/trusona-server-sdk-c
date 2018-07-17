@@ -24,99 +24,41 @@
 
 #include "trusona.h"
 
+static struct TrusonaSession trusona_session;
+
 static const char *lib_module_name  = "trusona";
-static const char *default_settings =
-  "/usr/local/etc/trusona/settings.json";       // the default location
+static const char *default_settings = "/usr/local/etc/trusona/settings.json";       // the default location
 
-const enum TRUSONA_SDK_RESULT tilted_trusonafy(const char *json_settings, const char *user_identifier)
+const int init(const char *json_settings_file)
 {
   syslog(LOG_NOTICE, "%s: Hold on to your C pants - here we go!", lib_module_name);
-  const char *settings = NULL;
 
-  if (json_settings == NULL) {
+  if (json_settings_file == NULL) {
     syslog(LOG_ERR, "%s: Using settings' default location of '%s'", lib_module_name, default_settings);
-    settings = (char *)default_settings;
+    trusona_session = load_settings((char *)default_settings);
   }
   else {
-    settings = json_settings;
+    trusona_session = load_settings(json_settings_file);
   }
 
-  SettingsStruct global_settings = load_settings(settings);
-
-  if (!global_settings.valid) {
-    syslog(LOG_ERR, "%s: Failed to load Trusona settings from '%s'", lib_module_name, settings);
-    return(TRUSONA_SERVICE_ERR);
+  if (!trusona_session.valid) {
+    syslog(LOG_ERR, "%s: Failed to load Trusona settings from '%s' or '%s'", lib_module_name, json_settings_file, default_settings);
+    return(-1);
   }
-  else if (global_settings.desired_level < MIN_LOA_LEVEL || global_settings.desired_level > MAX_LOA_LEVEL) {
-    syslog(LOG_ERR, "%s: Oops! desired_level setting is invalid with a value of '%d'", lib_module_name, global_settings.desired_level);
-    return(TRUSONA_SERVICE_ERR);
+  else if (trusona_session.desired_level < MIN_LOA_LEVEL || trusona_session.desired_level > MAX_LOA_LEVEL) {
+    syslog(LOG_ERR, "%s: Oops! desired_level setting is invalid with a value of '%d'", lib_module_name, trusona_session.desired_level);
+    return(-1);
   }
 
-  syslog(LOG_NOTICE, "%s: Minimum LOA (also used in the API as 'desired_level') is %d", lib_module_name, global_settings.desired_level);
+  syslog(LOG_NOTICE, "%s: Minimum LOA (also used in the API as 'desired_level') is %d", lib_module_name, trusona_session.desired_level);
   syslog(LOG_NOTICE, "%s: We appear to be correctly configured.", lib_module_name);
 
-  fprintf(stderr, "Respond to Trusona via your mobile device. You have %d seconds...", global_settings.expires_in_x_seconds);
-  syslog(LOG_NOTICE, "%s: %s: Attempting trusonafication for '%s'", lib_module_name, global_settings.request_id, user_identifier);
+  fprintf(stderr, "Respond to Trusona via your mobile device. You have %d seconds...", trusona_session.expires_in_x_seconds);
 
-  const enum TRUSONA_SDK_RESULT rc = trusonafy_by_user_identifier(user_identifier);
-
-  if (rc == TRUSONA_SUCCESS) {
-    syslog(LOG_NOTICE, "%s: %s: Yeah! Trusonafication succeeded for '%s'", lib_module_name, global_settings.request_id, user_identifier);
-    fprintf(stderr, "\nTrusonafication succeeded!\n");
-  }
-  else{
-    syslog(LOG_ERR, "%s: %s: Oops! Trusonafication failed for '%s'", lib_module_name, global_settings.request_id, user_identifier);
-    fprintf(stderr, "\nTrusonafication failed!\n");
-  }
-
-  return(rc);
+  return(0);
 }
 
-const enum TRUSONA_SDK_RESULT trusonafy(const char *json_settings, const char *value)
-{
-  syslog(LOG_NOTICE, "%s: Hold on to your C pants - here we go!", lib_module_name);
-  const char *settings = NULL;
-
-  if (json_settings == NULL) {
-    syslog(LOG_ERR, "%s: Using settings' default location of '%s'", lib_module_name, default_settings);
-    settings = (char *)default_settings;
-  }
-  else {
-    settings = json_settings;
-  }
-
-  SettingsStruct global_settings = load_settings(settings);
-
-  if (!global_settings.valid) {
-    syslog(LOG_ERR, "%s: Failed to load Trusona settings from '%s'", lib_module_name, settings);
-    return(TRUSONA_SERVICE_ERR);
-  }
-  else if (global_settings.desired_level < MIN_LOA_LEVEL || global_settings.desired_level > MAX_LOA_LEVEL) {
-    syslog(LOG_ERR, "%s: Oops! desired_level setting is invalid with a value of '%d'", lib_module_name, global_settings.desired_level);
-    return(TRUSONA_SERVICE_ERR);
-  }
-
-  syslog(LOG_NOTICE, "%s: Minimum LOA (also used in the API as 'desired_level') is %d", lib_module_name, global_settings.desired_level);
-  syslog(LOG_NOTICE, "%s: We appear to be correctly configured.", lib_module_name);
-
-  fprintf(stderr, "Respond to Trusona via your mobile device. You have %d seconds...", global_settings.expires_in_x_seconds);
-
-  syslog(LOG_NOTICE, "%s: %s: Attempting trusonafication for '%s'", lib_module_name, global_settings.request_id, value);
-  const enum TRUSONA_SDK_RESULT rc = trusonafy_by_type(get_sdk_input_type(value), value);
-
-  if (rc == TRUSONA_SUCCESS) {
-    syslog(LOG_NOTICE, "%s: %s: Yeah! Trusonafication succeeded for '%s'", lib_module_name, global_settings.request_id, value);
-    fprintf(stderr, "\nTrusonafication succeeded!\n");
-  }
-  else {
-    syslog(LOG_ERR, "%s: %s: Oops! Trusonafication failed for '%s'", lib_module_name, global_settings.request_id, value);
-    fprintf(stderr, "\nTrusonafication failed!\n");
-  }
-
-  return(rc);
-}
-
-const enum SDK_INPUT_TYPE get_sdk_input_type(const char *value)
+const enum INPUT_TYPE get_input_type(const char *value)
 {
   if (value != NULL && strlen(value) > 0) {
     if (strchr(value, '@') != NULL) {
@@ -136,4 +78,67 @@ const enum SDK_INPUT_TYPE get_sdk_input_type(const char *value)
   }
 
   return(INVALID_TYPE);
+}
+
+const enum TRUSONA_SDK_RESULT trusonafy_v2(const char *json_settings_file, const char *user_identifier)
+{
+  return(trusonafy_v2_ext(json_settings_file, user_identifier, true, true));
+}
+
+const enum TRUSONA_SDK_RESULT trusonafy_v2_ext(const char *json_settings_file, const char *user_identifier, const bool prompt, const bool presence)
+{
+  const int state = init(json_settings_file);
+
+  if (state == 0) {
+    syslog(LOG_NOTICE, "%s: %s: Attempting trusonafication for '%s'", lib_module_name, trusona_session.request_id, user_identifier);
+  }
+  else {
+    return(TRUSONA_INIT_ERR);
+  }
+
+  trusona_session.user_identifier = (char *)user_identifier;
+  trusona_session.input_type      = USER_IDENTIFIER;
+  trusona_session.user_presence   = presence;
+  trusona_session.prompt          = prompt;
+
+  const enum TRUSONA_SDK_RESULT rc = trusonafy(trusona_session);
+
+  if (rc == TRUSONA_SUCCESS) {
+    syslog(LOG_NOTICE, "%s: %s: Yeah! Trusonafication succeeded for '%s'", lib_module_name, trusona_session.request_id, user_identifier);
+    fprintf(stderr, "\nTrusonafication succeeded!\n");
+  }
+  else{
+    syslog(LOG_ERR, "%s: %s: Oops! Trusonafication failed for '%s'", lib_module_name, trusona_session.request_id, user_identifier);
+    fprintf(stderr, "\nTrusonafication failed!\n");
+  }
+
+  return(rc);
+}
+
+const enum TRUSONA_SDK_RESULT trusonafy_v1(const char *json_settings, const char *value)
+{
+  const int state = init(json_settings);
+
+  if (state == 0) {
+    syslog(LOG_NOTICE, "%s: %s: Attempting trusonafication for '%s'", lib_module_name, trusona_session.request_id, value);
+  }
+  else {
+    return(TRUSONA_INIT_ERR);
+  }
+
+  trusona_session.user_identifier = (char *)value;
+  trusona_session.input_type      = get_input_type(value);
+
+  const enum TRUSONA_SDK_RESULT rc = trusonafy(trusona_session);
+
+  if (rc == TRUSONA_SUCCESS) {
+    syslog(LOG_NOTICE, "%s: %s: Yeah! Trusonafication succeeded for '%s'", lib_module_name, trusona_session.request_id, value);
+    fprintf(stderr, "\nTrusonafication succeeded!\n");
+  }
+  else {
+    syslog(LOG_ERR, "%s: %s: Oops! Trusonafication failed for '%s'", lib_module_name, trusona_session.request_id, value);
+    fprintf(stderr, "\nTrusonafication failed!\n");
+  }
+
+  return(rc);
 }

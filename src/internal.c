@@ -24,8 +24,6 @@
 
 #include "internal.h"
 
-static struct SettingsStruct settings;
-
 static const char *lib_module_name = "trusona";
 
 char *concat_str(const char *arr1, const char *arr2)
@@ -98,33 +96,36 @@ char *now_rfc1123()
   return(val);
 }
 
-SettingsStruct load_settings(const char *json_settings_file)
+TrusonaSession load_settings(const char *json_settings_file)
 {
   json_error_t *error = NULL;
   json_t *      root;
 
-  root           = json_load_file(json_settings_file, 0, error);
-  settings.valid = false;
+  root = json_load_file(json_settings_file, 0, error);
+
+  struct TrusonaSession trusona_settings;
+  trusona_settings.valid = false;
 
   if (root) {
-    settings.expires_in_x_seconds = (int)get_int_value(root, "expires_in_x_seconds");
-    settings.access_token         = (char *)get_str_value(root, "access_token");
-    settings.desired_level        = (int)get_int_value(root, "desired_level");
-    settings.resource             = (char *)get_str_value(root, "resource");
-    settings.api_host             = (char *)get_str_value(root, "api_host");
-    settings.mac_key = (char *)get_str_value(root, "mac_key");
-    settings.action  = (char *)get_str_value(root, "action");
+    trusona_settings.expires_in_x_seconds = (int)get_int_value(root, "expires_in_x_seconds");
 
-    settings.request_id = generate_guid();
+    trusona_settings.access_token  = (char *)get_str_value(root, "access_token");
+    trusona_settings.desired_level = (int)get_int_value(root, "desired_level");
+    trusona_settings.resource      = (char *)get_str_value(root, "resource");
+    trusona_settings.api_host      = (char *)get_str_value(root, "api_host");
+    trusona_settings.mac_key       = (char *)get_str_value(root, "mac_key");
+    trusona_settings.action        = (char *)get_str_value(root, "action");
+
+    trusona_settings.request_id = generate_guid();
 
     // hard-coding values that will never change
-    settings.trusonafications_uri = "/api/v2/trusonafications";
-    settings.token_type           = "TRUSONA";
+    trusona_settings.trusonafications_uri = "/api/v2/trusonafications";
+    trusona_settings.token_type           = "TRUSONA";
 
-    settings.valid = true;
+    trusona_settings.valid = true;
 
     syslog(LOG_NOTICE, "%s: Yea! Settings loaded from '%s'", lib_module_name, json_settings_file);
   }
 
-  return(settings);
+  return(trusona_settings);
 }

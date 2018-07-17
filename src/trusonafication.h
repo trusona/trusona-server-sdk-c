@@ -27,18 +27,22 @@
 
 #include "trusona.h"
 
-enum SDK_INPUT_TYPE {EMAIL_ADDRESS, TRUSONA_ID, INVALID_TYPE};
+enum INPUT_TYPE {
+  EMAIL_ADDRESS,
+  TRUSONA_ID,
+  USER_IDENTIFIER,
+  INVALID_TYPE
+};
 
 enum TRUSONA_SDK_RESULT {
   TRUSONA_SUCCESS,
   TRUSONA_SERVICE_ERR,
   TRUSONA_INSUFFICIENT,
-  TRUSONA_FAILURE
+  TRUSONA_FAILURE,
+  TRUSONA_INIT_ERR
 };
 
-const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum SDK_INPUT_TYPE sdk_input_type, const char *value);
-
-const enum TRUSONA_SDK_RESULT trusonafy_by_user_identifier(const char *user_identifier);
+const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session);
 
 #endif
 

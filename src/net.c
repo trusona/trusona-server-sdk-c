@@ -64,7 +64,7 @@ size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *ptr)
   return(realsize);
 }
 
-int do_get_request(SettingsStruct settings, const char *uri, char **json)
+int do_get_request(TrusonaSession settings, const char *uri, char **json)
 {
   CURL *   curl;
   CURLcode code;
@@ -150,7 +150,7 @@ int do_get_request(SettingsStruct settings, const char *uri, char **json)
   return(*json == NULL ? INVALID_REQ : VALID_REQ);
 }
 
-int do_post_request(SettingsStruct settings, const char *uri, const char *post_data, char **json)
+int do_post_request(TrusonaSession settings, const char *uri, const char *post_data, char **json)
 {
   CURL *   curl;
   CURLcode code;

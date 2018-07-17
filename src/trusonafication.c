@@ -24,8 +24,6 @@
 
 #include "trusonafication.h"
 
-static struct SettingsStruct settings;
-
 static const char *ACCEPTED_AT_HIGHER_LEVEL_CODE = "ACCEPTED_AT_HIGHER_LEVEL";
 static const char *ACCEPTED_AT_LOWER_LEVEL_CODE  = "ACCEPTED_AT_LOWER_LEVEL";
 static const char *ACCEPTED_CODE = "ACCEPTED";
@@ -33,46 +31,56 @@ static const char *REJECTED_CODE = "REJECTED";
 
 static const char *lib_module_name = "trusona";
 
-const enum TRUSONA_SDK_RESULT trusonafy_by_user_identifier(const char *user_identifier)
+char *create_trusonafication(struct TrusonaSession trusona_session)
 {
-  return TRUSONA_SUCCESS;
+  const enum INPUT_TYPE input_type = trusona_session.input_type;
+  const char *          value      = trusona_session.user_identifier;
+
+  json_t *map = json_object();
+
+  if (input_type == TRUSONA_ID) {
+    json_object_set_new(map, "trusona_id", json_string(value));
+  }
+  else if (input_type == EMAIL_ADDRESS) {
+    json_object_set_new(map, "email", json_string(value));
+  }
+  else if (input_type == USER_IDENTIFIER) {
+    json_object_set_new(map, "user_identifier", json_string(value));
+    json_object_set_new(map, "user_presence", json_boolean(trusona_session.user_presence));
+    json_object_set_new(map, "prompt", json_boolean(trusona_session.prompt));
+  }
+  else {
+    return(NULL);
+  }
+
+  json_object_set_new(map, "expires_at", json_string(rfc8601(trusona_session.expires_in_x_seconds)));
+  json_object_set_new(map, "desired_level", json_integer(trusona_session.desired_level));
+  json_object_set_new(map, "resource", json_string(trusona_session.resource));
+  json_object_set_new(map, "action", json_string(trusona_session.action));
+
+  return(json_dumps(map, 0));
 }
 
-const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum SDK_INPUT_TYPE sdk_input_type, const char *value)
+const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
 {
-  if (!settings.valid) {
+  if (!trusona_session.valid) {
+    fprintf(stderr, "\nOops! Current settings state is not valid. Bailing!\n");
     syslog(LOG_NOTICE, "%s: Opps! Settings are not valid!", lib_module_name);
     return(TRUSONA_SERVICE_ERR);
   }
 
   enum TRUSONA_SDK_RESULT rc = TRUSONA_INSUFFICIENT;
-  char *  status, *json, *body, *expires_at;
-  int     accepted_level;
-  json_t *map;
+  char *status, *json, *body, *expires_at;
+  int   accepted_level;
 
-  map = json_object();
-
-  if (sdk_input_type == TRUSONA_ID) {
-    json_object_set_new(map, "trusona_id", json_string(value));
-  }
-  else if (sdk_input_type == EMAIL_ADDRESS) {
-    json_object_set_new(map, "email", json_string(value));
-  }
-  else {
-    return(TRUSONA_SERVICE_ERR);
-  }
-
-  expires_at = rfc8601(settings.expires_in_x_seconds);
-
-  json_object_set_new(map, "expires_at", json_string(expires_at));
-  json_object_set_new(map, "desired_level", json_integer(settings.desired_level));
-  json_object_set_new(map, "resource", json_string(settings.resource));
-  json_object_set_new(map, "action", json_string(settings.action));
-
-  body = json_dumps(map, 0);
+  body = create_trusonafication(trusona_session);
   json = NULL;
 
-  if (do_post_request(settings, settings.trusonafications_uri, body, &json) == INVALID_REQ) {
+  if (body == NULL) {
+    return(TRUSONA_INSUFFICIENT);
+  }
+
+  if (do_post_request(trusona_session, trusona_session.trusonafications_uri, body, &json) == INVALID_REQ) {
     return(TRUSONA_SERVICE_ERR);
   }
 
@@ -80,7 +88,7 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum SDK_INPUT_TYPE sdk_in
   char *      uri = calloc(1, sizeof(char) * MAX_STR);
 
   if (uri != NULL && trusonafication_id != NULL) {
-    append_str(&uri, settings.trusonafications_uri);
+    append_str(&uri, trusona_session.trusonafications_uri);
     append_str(&uri, "/");
     append_str(&uri, trusonafication_id);
   }
@@ -90,7 +98,7 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum SDK_INPUT_TYPE sdk_in
 
   while (cnt < TRUSONA_MAX_WAIT)
   {
-    do_get_request(settings, uri, &json);
+    do_get_request(trusona_session, uri, &json);
     cnt += TRUSONA_SLEEP;
 
     if (json) {
@@ -103,13 +111,13 @@ const enum TRUSONA_SDK_RESULT trusonafy_by_type(const enum SDK_INPUT_TYPE sdk_in
       break;
     }
     else if (status && strcmp(status, ACCEPTED_AT_LOWER_LEVEL_CODE) == 0) {
-      if (accepted_level >= settings.desired_level) {
+      if (accepted_level >= trusona_session.desired_level) {
         rc = TRUSONA_SUCCESS;
         break;
       }
       else {
         syslog(LOG_NOTICE, "%s: Opps! Response's accepted_level of %d does not meet or exceed desired_level of %d",
-               lib_module_name, accepted_level, settings.desired_level);
+               lib_module_name, accepted_level, trusona_session.desired_level);
 
         rc = TRUSONA_INSUFFICIENT;
         break;
