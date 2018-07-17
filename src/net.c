@@ -26,16 +26,14 @@
 
 static bool curl_is_ready = false;
 
-static const char *lib_module_name = "trusona";
+static const char *JSON_TYPE = "application/json;charset=UTF-8";
 
 static const char *ENDL  = "\n";
 static const char *COLON = ":";
 static const char *SPACE = " ";
 static const char *BLANK = "";
-
-static const char *JSON_TYPE = "application/json;charset=UTF-8";
-static const char *POST      = "POST";
-static const char *GET       = "GET";
+static const char *POST  = "POST";
+static const char *GET   = "GET";
 
 static void init_curl()
 {
@@ -64,7 +62,7 @@ size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *ptr)
   return(realsize);
 }
 
-int do_get_request(TrusonaSession settings, const char *uri, char **json)
+int do_get_request(TrusonaSession trusona_session, const char *uri, char **json)
 {
   CURL *   curl;
   CURLcode code;
@@ -80,7 +78,7 @@ int do_get_request(TrusonaSession settings, const char *uri, char **json)
     output.data = calloc(1, sizeof(char) * 1);
     output.size = 0;
 
-    char *url        = concat_str(settings.api_host, uri);
+    char *url        = concat_str(trusona_session.api_host, uri);
     char *md5_hash   = "d41d8cd98f00b204e9800998ecf8427e"; // MD5 hash of "" (aka nothing)
     char *hmac_parts = calloc(1, sizeof(char) * MAX_STR);
     char *now        = now_rfc1123();
@@ -101,16 +99,16 @@ int do_get_request(TrusonaSession settings, const char *uri, char **json)
       append_str(&hmac_parts, uri);
     }
 
-    char *signature   = base64_hmac_sha256(settings.mac_key, hmac_parts);
+    char *signature   = base64_hmac_sha256(trusona_session.mac_key, hmac_parts);
     char *auth_header = calloc(1, sizeof(char) * MAX_STR);
 
-    append_str(&auth_header, settings.token_type);
+    append_str(&auth_header, trusona_session.token_type);
     append_str(&auth_header, SPACE);
-    append_str(&auth_header, settings.access_token);
+    append_str(&auth_header, trusona_session.access_token);
     append_str(&auth_header, COLON);
     append_str(&auth_header, signature);
 
-    headers = curl_slist_append(headers, concat_str("x-request-id: ", settings.request_id));
+    headers = curl_slist_append(headers, concat_str("x-request-id: ", trusona_session.request_id));
     headers = curl_slist_append(headers, concat_str("authorization: ", auth_header));
     headers = curl_slist_append(headers, concat_str("x-date: ", now));
     headers = curl_slist_append(headers, concat_str("date: ", now));
@@ -127,14 +125,14 @@ int do_get_request(TrusonaSession settings, const char *uri, char **json)
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
     if (code == CURLE_OK && (status == 200 || status == 201)) {
-      syslog(LOG_NOTICE, "%s: %s: Successful GET to %s", lib_module_name, settings.request_id, url);
+      syslog(LOG_NOTICE, "%s: %s: Successful GET to %s", TRUSONA_LIB, trusona_session.request_id, url);
 
       int cnt = output.size + 1;
       *json = calloc(cnt, sizeof(char) * cnt);
       strncpy(*json, output.data, cnt);
     }
     else {
-      syslog(LOG_WARNING, "%s: %s: Failed GET to %s", lib_module_name, settings.request_id, url);
+      syslog(LOG_WARNING, "%s: %s: Failed GET to %s", TRUSONA_LIB, trusona_session.request_id, url);
       *json = NULL;
     }
 
@@ -150,7 +148,7 @@ int do_get_request(TrusonaSession settings, const char *uri, char **json)
   return(*json == NULL ? INVALID_REQ : VALID_REQ);
 }
 
-int do_post_request(TrusonaSession settings, const char *uri, const char *post_data, char **json)
+int do_post_request(TrusonaSession trusona_session, const char *uri, const char *post_data, char **json)
 {
   CURL *   curl;
   CURLcode code;
@@ -166,7 +164,7 @@ int do_post_request(TrusonaSession settings, const char *uri, const char *post_d
     output.data = calloc(1, sizeof(char) * 1);
     output.size = 0;
 
-    char *url      = concat_str(settings.api_host, uri);
+    char *url      = concat_str(trusona_session.api_host, uri);
     char *md5_hash = generate_md5(post_data);
     char *now      = now_rfc1123();
 
@@ -184,16 +182,16 @@ int do_post_request(TrusonaSession settings, const char *uri, const char *post_d
       append_str(&hmac_parts, uri);
     }
 
-    char *signature   = base64_hmac_sha256(settings.mac_key, hmac_parts);
+    char *signature   = base64_hmac_sha256(trusona_session.mac_key, hmac_parts);
     char *auth_header = calloc(1, sizeof(char) * MAX_STR);
 
-    append_str(&auth_header, settings.token_type);
+    append_str(&auth_header, trusona_session.token_type);
     append_str(&auth_header, SPACE);
-    append_str(&auth_header, settings.access_token);
+    append_str(&auth_header, trusona_session.access_token);
     append_str(&auth_header, COLON);
     append_str(&auth_header, signature);
 
-    headers = curl_slist_append(headers, concat_str("x-request-id: ", settings.request_id));
+    headers = curl_slist_append(headers, concat_str("x-request-id: ", trusona_session.request_id));
     headers = curl_slist_append(headers, concat_str("authorization: ", auth_header));
     headers = curl_slist_append(headers, concat_str("content-type: ", JSON_TYPE));
     headers = curl_slist_append(headers, concat_str("x-date: ", now));
@@ -212,7 +210,7 @@ int do_post_request(TrusonaSession settings, const char *uri, const char *post_d
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
     if (code == CURLE_OK && (status == 200 || status == 201)) {
-      syslog(LOG_NOTICE, "%s: %s: Successful POST to %s (%lu)", lib_module_name, settings.request_id, url, status);
+      syslog(LOG_NOTICE, "%s: %s: Successful POST to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
 
       int cnt = output.size + 1;
       *json = calloc(cnt, sizeof(char) * cnt);
@@ -220,7 +218,7 @@ int do_post_request(TrusonaSession settings, const char *uri, const char *post_d
       strncpy(*json, output.data, cnt);
     }
     else {
-      syslog(LOG_WARNING, "%s: %s: Failed POST to %s (%lu)", lib_module_name, settings.request_id, url, status);
+      syslog(LOG_WARNING, "%s: %s: Failed POST to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
       *json = NULL;
     }
 

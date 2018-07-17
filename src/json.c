@@ -24,15 +24,13 @@
 
 #include "json.h"
 
-static const char *lib_module_name = "trusona";
-
 const char *json_str_value(char **json, const char *data)
 {
   json_error_t error;
   json_t *     root = json_loads(*json, 0, &error);
 
   if (!root) {
-    syslog(LOG_NOTICE, "%s: Failed to validate JSON %s", lib_module_name, *json);
+    syslog(LOG_NOTICE, "%s: Failed to validate JSON %s", TRUSONA_LIB, *json);
     return(NULL);
   }
 
@@ -56,7 +54,7 @@ const int json_int_value(char **json, const char *data)
   json_t *     root = json_loads(*json, 0, &error);
 
   if (!root) {
-    syslog(LOG_NOTICE, "%s: Failed to validate JSON %s", lib_module_name, *json);
+    syslog(LOG_NOTICE, "%s: Failed to validate JSON %s", TRUSONA_LIB, *json);
     return(INT_MIN);
   }
 

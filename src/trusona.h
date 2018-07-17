@@ -67,6 +67,10 @@
 #define TRUE !FALSE
 #endif
 
+#ifndef TRUSONA_LIB
+#define TRUSONA_LIB "TRUSONA"
+#endif
+
 const enum TRUSONA_SDK_RESULT trusonafy_v1(const char* json_settings, const char* email_or_trusona_id);
 
 // default; with prompt and with presence

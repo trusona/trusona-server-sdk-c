@@ -29,23 +29,18 @@ static const char *ACCEPTED_AT_LOWER_LEVEL_CODE  = "ACCEPTED_AT_LOWER_LEVEL";
 static const char *ACCEPTED_CODE = "ACCEPTED";
 static const char *REJECTED_CODE = "REJECTED";
 
-static const char *lib_module_name = "trusona";
-
 char *create_trusonafication(struct TrusonaSession trusona_session)
 {
-  const enum INPUT_TYPE input_type = trusona_session.input_type;
-  const char *          value      = trusona_session.user_identifier;
-
   json_t *map = json_object();
 
-  if (input_type == TRUSONA_ID) {
-    json_object_set_new(map, "trusona_id", json_string(value));
+  if (trusona_session.input_type == TRUSONA_ID) {
+    json_object_set_new(map, "trusona_id", json_string(trusona_session.user_identifier));
   }
-  else if (input_type == EMAIL_ADDRESS) {
-    json_object_set_new(map, "email", json_string(value));
+  else if (trusona_session.input_type == EMAIL_ADDRESS) {
+    json_object_set_new(map, "email", json_string(trusona_session.user_identifier));
   }
-  else if (input_type == USER_IDENTIFIER) {
-    json_object_set_new(map, "user_identifier", json_string(value));
+  else if (trusona_session.input_type == USER_IDENTIFIER) {
+    json_object_set_new(map, "user_identifier", json_string(trusona_session.user_identifier));
     json_object_set_new(map, "user_presence", json_boolean(trusona_session.user_presence));
     json_object_set_new(map, "prompt", json_boolean(trusona_session.prompt));
   }
@@ -65,8 +60,8 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
 {
   if (!trusona_session.valid) {
     fprintf(stderr, "\nOops! Current settings state is not valid. Bailing!\n");
-    syslog(LOG_NOTICE, "%s: Opps! Settings are not valid!", lib_module_name);
-    return(TRUSONA_SERVICE_ERR);
+    syslog(LOG_NOTICE, "%s: Opps! Settings are not valid!", TRUSONA_LIB);
+    return(TRUSONA_INIT_ERROR);
   }
 
   enum TRUSONA_SDK_RESULT rc = TRUSONA_INSUFFICIENT;
@@ -81,7 +76,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
   }
 
   if (do_post_request(trusona_session, trusona_session.trusonafications_uri, body, &json) == INVALID_REQ) {
-    return(TRUSONA_SERVICE_ERR);
+    return(TRUSONA_SERVICE_ERROR);
   }
 
   const char *trusonafication_id = json_str_value(&json, "id");
@@ -98,8 +93,14 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
 
   while (cnt < TRUSONA_MAX_WAIT)
   {
-    do_get_request(trusona_session, uri, &json);
-    cnt += TRUSONA_SLEEP;
+    int status_code = do_get_request(trusona_session, uri, &json);
+
+    if (status_code == INVALID_REQ) {
+      return(TRUSONA_INSUFFICIENT);
+    }
+    else {
+      cnt += TRUSONA_SLEEP;
+    }
 
     if (json) {
       accepted_level = (int)json_int_value(&json, "accepted_level");
@@ -117,7 +118,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
       }
       else {
         syslog(LOG_NOTICE, "%s: Opps! Response's accepted_level of %d does not meet or exceed desired_level of %d",
-               lib_module_name, accepted_level, trusona_session.desired_level);
+               TRUSONA_LIB, accepted_level, trusona_session.desired_level);
 
         rc = TRUSONA_INSUFFICIENT;
         break;

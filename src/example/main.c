@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     printf("Sending trusonafication to '%s'\n", value);
     printf("JSON settings will load from %s\n", json_settings);
 
-    result = trusonafy_v1(json_settings, value);
+    result = trusonafy_v2(json_settings, value);
   }
 
   return(result);

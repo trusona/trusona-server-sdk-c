@@ -24,8 +24,6 @@
 
 #include "internal.h"
 
-static const char *lib_module_name = "trusona";
-
 char *concat_str(const char *arr1, const char *arr2)
 {
   char *val = calloc(1, sizeof(char) * MAX_STR);
@@ -124,7 +122,7 @@ TrusonaSession load_settings(const char *json_settings_file)
 
     trusona_settings.valid = true;
 
-    syslog(LOG_NOTICE, "%s: Yea! Settings loaded from '%s'", lib_module_name, json_settings_file);
+    syslog(LOG_NOTICE, "%s: Yea! Settings loaded from '%s'", TRUSONA_LIB, json_settings_file);
   }
 
   return(trusona_settings);
