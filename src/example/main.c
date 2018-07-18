@@ -22,31 +22,54 @@
  * SOFTWARE.
  */
 
+#include <stdio.h>
+#include <unistd.h>
+#include <getopt.h>
+
 #include "../trusona.h"
 
 const char *json_settings = "/usr/local/etc/trusona/settings.json";
 
-// tilted options: --user=<any_user_identifier> --prompt=yes  and/or --presence=yes
+// tilted options: --user <any_user_identifier> --prompt --presence
 
 int main(int argc, char *argv[])
 {
   enum TRUSONA_SDK_RESULT result = TRUSONA_INSUFFICIENT;
-  char *value = NULL;
 
-  if (argc != 2) {
-    printf("Enter a trusona ID or an email address: ");
-    value = calloc(1, sizeof(char) * MAX_STR);
-    value = trim(fgets(value, MAX_STR, stdin));
-  }
-  else {
-    value = trim(argv[1]);
+  char *user_identifier = NULL;
+  bool  presence        = FALSE;
+  bool  prompt          = FALSE;
+  int   idx             = -1;
+
+  static struct option options[] =
+  {
+    { "prompt",   no_argument,       NULL, 0 },
+    { "presence", no_argument,       NULL, 0 },
+    { "user",     required_argument,    0, 0 },
+  };
+
+  while (getopt_long_only(argc, argv, "", options, &idx) != -1)
+  {
+    if (strcmp("presence", options[idx].name) == 0) {
+      presence = TRUE;
+      continue;
+    }
+
+    if (strcmp("prompt", options[idx].name) == 0) {
+      prompt = TRUE;
+      continue;
+    }
+
+    if (strcmp("user", options[idx].name) == 0) {
+      user_identifier = optarg;
+      continue;
+    }
   }
 
-  if (value != NULL) {
-    printf("Sending trusonafication to '%s'\n", value);
+  if (user_identifier != NULL) {
+    printf("Sending trusonafication to '%s'\n", user_identifier);
     printf("JSON settings will load from %s\n", json_settings);
-
-    result = trusonafy_v2(json_settings, value);
+    result = trusonafy_v2_ext(json_settings, user_identifier, prompt, presence);
   }
 
   return(result);
