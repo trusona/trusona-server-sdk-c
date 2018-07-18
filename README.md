@@ -9,13 +9,13 @@
 const enum TRUSONA_SDK_RESULT trusonafy_v2(const char* path_to_json_settings, const char* valid_user_identifier);
 ```
 
-Alternatively,
+Alternatively, for extended usage:
 
 ```c
 const enum TRUSONA_SDK_RESULT trusonafy_v2_ext(const char* path_to_json_settings, const char* valid_user_identifier, const bool prompt, const bool user_presence);
 ```
 
-#### Deprecated Usage:
+##### Deprecated Usage:
 
 ```c
 const enum TRUSONA_SDK_RESULT trusonafy_v1(const char* path_to_json_settings, const char* email_or_trusona_id);
@@ -26,11 +26,11 @@ const enum TRUSONA_SDK_RESULT trusonafy_v1(const char* path_to_json_settings, co
 
 ```c
 enum TRUSONA_SDK_RESULT {
-  TRUSONA_SUCCESS,        // good
-  TRUSONA_INIT_ERR        // bad
-  TRUSONA_SERVICE_ERR,    // bad
-  TRUSONA_INSUFFICIENT,   // bad
-  TRUSONA_FAILURE         // bad
+  TRUSONA_SUCCESS,          // what you want to see!
+  TRUSONA_INSUFFICIENT,     // the trusonafication was rejected
+  TRUSONA_FAILURE,          // other API error
+  TRUSONA_SERVICE_ERROR,    // API service error
+  TRUSONA_INIT_ERROR        // failure to initialize the API
 };
 ```
 
