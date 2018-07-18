@@ -39,11 +39,13 @@ int main(int argc, char *argv[])
   char *user_identifier = NULL;
   bool  presence        = FALSE;
   bool  prompt          = FALSE;
+  bool  tilted          = FALSE;
   int   idx             = -1;
 
   static struct option options[] =
   {
     { "prompt",   no_argument,       NULL, 0 },
+    { "tilted",   no_argument,       NULL, 0 },
     { "presence", no_argument,       NULL, 0 },
     { "user",     required_argument,    0, 0 },
   };
@@ -52,6 +54,11 @@ int main(int argc, char *argv[])
   {
     if (strcmp("presence", options[idx].name) == 0) {
       presence = TRUE;
+      continue;
+    }
+
+    if (strcmp("tilted", options[idx].name) == 0) {
+      tilted = TRUE;
       continue;
     }
 
@@ -69,7 +76,13 @@ int main(int argc, char *argv[])
   if (user_identifier != NULL) {
     printf("Sending trusonafication to '%s'\n", user_identifier);
     printf("JSON settings will load from %s\n", json_settings);
-    result = trusonafy_v2_ext(json_settings, user_identifier, prompt, presence);
+
+    if (tilted) {
+      result = trusonafy_v2_ext(json_settings, user_identifier, prompt, presence);
+    }
+    else {
+      result = trusonafy_v1(json_settings, user_identifier);
+    }
   }
 
   return(result);
