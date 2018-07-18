@@ -35,3 +35,12 @@ enum TRUSONA_SDK_RESULT {
 ```
 
 A value of `TRUSONA_SUCCESS` indicates trusonafication was successful.
+
+
+## Example 
+
+See [src/example/main.c](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/example/main.c) for a functional implementation.
+
+
+
+
