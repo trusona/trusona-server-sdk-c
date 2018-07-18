@@ -6,14 +6,28 @@
 ## Usage
 
 ```c
-const enum TRUSONA_SDK_RESULT trusonafy(const char* path_to_json_settings, const char* email_or_trusona_id);
+const enum TRUSONA_SDK_RESULT trusonafy_v2(const char* path_to_json_settings, const char* valid_user_identifier);
 ```
+
+Alternatively,
+
+```c
+const enum TRUSONA_SDK_RESULT trusonafy_v2_ext(const char* path_to_json_settings, const char* valid_user_identifier, const bool prompt, const bool user_presence);
+```
+
+#### Deprecated Usage:
+
+```c
+const enum TRUSONA_SDK_RESULT trusonafy_v1(const char* path_to_json_settings, const char* email_or_trusona_id);
+```
+
 
 `TRUSONA_SDK_RESULT` is an `enum` declared as follows:
 
 ```c
 enum TRUSONA_SDK_RESULT {
   TRUSONA_SUCCESS,        // good
+  TRUSONA_INIT_ERR        // bad
   TRUSONA_SERVICE_ERR,    // bad
   TRUSONA_INSUFFICIENT,   // bad
   TRUSONA_FAILURE         // bad
@@ -44,7 +58,7 @@ int main() {
     printf("Sending trusonafication to '%s'\n", trimmed_value);
     printf("JSON settings will load from %s\n", settings);
 
-    result = trusonafy(settings, trimmed_value);
+    result = trusonafy_v1(settings, trimmed_value);
   }
 
   free(trimmed_value);

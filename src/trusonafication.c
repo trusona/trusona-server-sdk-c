@@ -76,7 +76,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
   }
 
   if (do_post_request(trusona_session, trusona_session.trusonafications_uri, body, &json) == INVALID_REQ) {
-    return(TRUSONA_SERVICE_ERROR);
+    return(rc = TRUSONA_SERVICE_ERROR);
   }
 
   const char *trusonafication_id = json_str_value(&json, "id");
@@ -93,10 +93,9 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
 
   while (cnt < TRUSONA_MAX_WAIT)
   {
-    int status_code = do_get_request(trusona_session, uri, &json);
-
-    if (status_code == INVALID_REQ) {
-      return(TRUSONA_INSUFFICIENT);
+    if (do_get_request(trusona_session, uri, &json) == INVALID_REQ) {
+      rc = TRUSONA_INSUFFICIENT;
+      break;
     }
     else {
       cnt += TRUSONA_SLEEP;
