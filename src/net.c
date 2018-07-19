@@ -139,8 +139,8 @@ int do_get_request(TrusonaSession trusona_session, const char *uri, char **json)
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
 
-    auth_header = hmac_parts = signature = NULL;
-    md5_hash    = url = now = NULL;
+    //auth_header = hmac_parts = signature = NULL;
+    //md5_hash    = url = now = NULL;
   }
 
   curl_global_cleanup();
@@ -225,8 +225,8 @@ int do_post_request(TrusonaSession trusona_session, const char *uri, const char 
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
 
-    auth_header = hmac_parts = signature = NULL;
-    md5_hash    = url = now = NULL;
+    //auth_header = hmac_parts = signature = NULL;
+    //md5_hash    = url = now = NULL;
   }
 
   curl_global_cleanup();

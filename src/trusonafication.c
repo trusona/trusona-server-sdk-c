@@ -66,7 +66,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
 
   enum TRUSONA_SDK_RESULT rc = TRUSONA_INSUFFICIENT;
   char *status, *json, *body, *expires_at;
-  int   accepted_level;
+  int   accepted_level = INT_MIN;
 
   json_t *result_obj;
 
