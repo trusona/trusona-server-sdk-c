@@ -24,6 +24,15 @@
 
 #include "json.h"
 
+const json_t *get_object(char **json, const char *key)
+{
+  json_error_t error;
+  json_t *     root   = json_loads(*json, 0, &error);
+  json_t *     result = json_object_get(root, key);
+
+  return(result);
+}
+
 const char *json_str_value(char **json, const char *data)
 {
   json_error_t error;

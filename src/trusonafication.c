@@ -68,6 +68,8 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
   char *status, *json, *body, *expires_at;
   int   accepted_level;
 
+  json_t *result_obj;
+
   body = create_trusonafication(trusona_session);
   json = NULL;
 
@@ -75,9 +77,13 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
     return(TRUSONA_INSUFFICIENT);
   }
 
+  syslog(LOG_NOTICE, "\n%screated trusonafication: %s\n", TRUSONA_LIB, body);
+
   if (do_post_request(trusona_session, trusona_session.trusonafications_uri, body, &json) == INVALID_REQ) {
     return(rc = TRUSONA_SERVICE_ERROR);
   }
+
+  printf("\n%s\n", body);
 
   const char *trusonafication_id = json_str_value(&json, "id");
   char *      uri = calloc(1, sizeof(char) * MAX_STR);
@@ -102,8 +108,23 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
     }
 
     if (json) {
-      accepted_level = (int)json_int_value(&json, "accepted_level");
-      status         = (char *)json_str_value(&json, "status");
+      status     = (char *)json_str_value(&json, "status");
+      result_obj = (json_t *)get_object(&json, "result");
+
+      if (result_obj != NULL) {
+        char *result_json;
+
+        result_json    = json_dumps(result_obj, 0);
+        accepted_level = (int)json_int_value(&result_json, "accepted_level");
+
+        free(result_json);
+
+        result_obj  = NULL;
+        result_json = NULL;
+      }
+      else {
+        accepted_level = INT_MIN;
+      }
     }
 
     if (status && (strcmp(status, ACCEPTED_CODE) == 0 || strcmp(status, ACCEPTED_AT_HIGHER_LEVEL_CODE) == 0)) {
@@ -116,7 +137,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
         break;
       }
       else {
-        syslog(LOG_NOTICE, "%s: Opps! Response's accepted_level of %d does not meet or exceed desired_level of %d",
+        syslog(LOG_NOTICE, "%s: Opps! Response's accepted_level of %d does not meet or exceed desired_level of %d.",
                TRUSONA_LIB, accepted_level, trusona_session.desired_level);
 
         rc = TRUSONA_INSUFFICIENT;

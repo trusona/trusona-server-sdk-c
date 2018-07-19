@@ -40,7 +40,7 @@ typedef struct TrusonaSession {
   char *mac_key;
   char *action;
   char *resource;
-
+  
   bool user_presence;
   bool prompt;
 
