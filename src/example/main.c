@@ -22,18 +22,28 @@
  * SOFTWARE.
  */
 
-#include <stdio.h>
-#include <unistd.h>
 #include <getopt.h>
 
 #include "../trusona.h"
 
 const char *json_settings = "/usr/local/etc/trusona/settings.json";
 
-// tilted options: --user <any_user_identifier> --prompt --presence
+// tilted options: --settings <path_to_json_settings> --user <any_user_identifier> --prompt --presence --tilted
 
 int main(int argc, char *argv[])
 {
+  if (argc <= 1) {
+    char *user     = "--user <any_user_identifier> - required; user to send trusonafication to";
+    char *settings = "--settings <path_to_json_settings> - optional; otherwise will use the default";
+    char *prompt   = "--prompt   optional; otherwise will not create a prompting trusonafication";
+    char *presence = "--presence optional; otherwise will not prompt for presence";
+    char *tilted   = "--tilted   optional; otherwise, will not create a \"tilted\" trusonafication";
+
+    printf("\nOptions:\n  %s\n  %s\n  %s\n  %s\n  %s\n\n", user, settings, prompt, presence, tilted);
+
+    return(TRUSONA_INIT_ERROR);
+  }
+
   enum TRUSONA_SDK_RESULT result = TRUSONA_INSUFFICIENT;
 
   char *user_identifier = NULL;
