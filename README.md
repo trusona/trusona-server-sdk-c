@@ -6,16 +6,15 @@
 
 - [libcurl](https://curl.haxx.se/libcurl/c) ver. 7.61.0, for interweb communication
 - [jansson](http://www.digip.org/jansson) ver. [2.11](https://jansson.readthedocs.io/en/2.11) for JSON manipulation
-- [openssl](https://www.openssl.org) ver. [1.0.2o](https://www.openssl.org/source) for cryptographic functions; and
-- [ossp-uuid](https://github.com/sean-/ossp-uuid) - or equivalent provider of `uuid/uuid.h` - for UUID v4 generation.
-- [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html)
-    - Optional. If you do not require PAM support, delete `src/pam` before running `make`
+- [openssl](https://www.openssl.org) ver. [1.0.2o](https://www.openssl.org/source) for cryptographic functions
+- [ossp-uuid](https://github.com/sean-/ossp-uuid) - or equivalent provider of `uuid/uuid.h` - for UUID v4 generation
+- [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html) - optional. If you do not require PAM support, delete `src/pam` before running `make`
 
 
 ## Building & Installation
 
 - With all the dependencies in place, `make all` should complete successfully.
-- By default, `make install` will install the library into `/usr/local/lib`.
+- By default, `make install` will install the shared library into `/usr/local/lib`.
   - Development headers will be installed into `/usr/local/include`
 
 
