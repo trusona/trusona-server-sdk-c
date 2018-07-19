@@ -2,6 +2,21 @@
 
 [![Build Status](https://travis-ci.com/lighthauz/trusona-ceee-sdk.svg?token=ERoqgs7tKf7xAGTsABr8&branch=master)](https://travis-ci.com/lighthauz/trusona-ceee-sdk)
 
+## Dependencies
+
+- [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html)
+    - Optional. If you do not require PAM support, delete `src/pam` before running `make`
+- [libcurl](https://curl.haxx.se/libcurl/c) ver. 7.43.0, for interweb communication
+- [jansson](http://www.digip.org/jansson) ver. [2.7](https://jansson.readthedocs.io/en/2.7) for JSON manipulation
+- [openssl](https://www.openssl.org) ver. [1.0.2h](https://www.openssl.org/news/openssl-1.0.2-notes.html) for HMAC cryptographic functions; and
+- [ossp-uuid](http://www.ossp.org/pkg/lib/uuid) (or equivalent) for UUID generation.
+
+
+## Building & Installation
+
+- With all the dependencies in place, `make all` should complete successfully.
+- By default, `make install` will install the library into `/usr/local/lib` and headers into `/usr/local/include/trusona`
+
 
 ## Usage
 
