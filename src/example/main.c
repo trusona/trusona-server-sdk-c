@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     char *settings = "--settings <path_to_json_settings> - optional; otherwise will use the default";
     char *prompt   = "--prompt   optional; otherwise will not create a prompting trusonafication";
     char *presence = "--presence optional; otherwise will not prompt for presence";
-    char *tilted   = "--tilted   optional; otherwise, will not create a \"tilted\" trusonafication";
+    char *tilted   = "--tilted   optional; otherwise will not create a \"tilted\" trusonafication";
 
     printf("\nOptions:\n  %s\n  %s\n  %s\n  %s\n  %s\n\n", user, settings, prompt, presence, tilted);
 
