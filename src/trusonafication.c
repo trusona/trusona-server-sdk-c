@@ -83,8 +83,6 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
     return(rc = TRUSONA_SERVICE_ERROR);
   }
 
-  printf("\n%s\n", body);
-
   const char *trusonafication_id = json_str_value(&json, "id");
   char *      uri = calloc(1, sizeof(char) * MAX_STR);
 
