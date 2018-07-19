@@ -4,18 +4,19 @@
 
 ## Dependencies
 
+- [libcurl](https://curl.haxx.se/libcurl/c) ver. 7.61.0, for interweb communication
+- [jansson](http://www.digip.org/jansson) ver. [2.11](https://jansson.readthedocs.io/en/2.11) for JSON manipulation
+- [openssl](https://www.openssl.org) ver. [1.0.2o](https://www.openssl.org/source) for cryptographic functions; and
+- [ossp-uuid](https://github.com/sean-/ossp-uuid) - or equivalent provider of `uuid/uuid.h` - for UUID v4 generation.
 - [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html)
     - Optional. If you do not require PAM support, delete `src/pam` before running `make`
-- [libcurl](https://curl.haxx.se/libcurl/c) ver. 7.43.0, for interweb communication
-- [jansson](http://www.digip.org/jansson) ver. [2.7](https://jansson.readthedocs.io/en/2.7) for JSON manipulation
-- [openssl](https://www.openssl.org) ver. [1.0.2h](https://www.openssl.org/news/openssl-1.0.2-notes.html) for HMAC cryptographic functions; and
-- [ossp-uuid](http://www.ossp.org/pkg/lib/uuid) (or equivalent) for UUID generation.
 
 
 ## Building & Installation
 
 - With all the dependencies in place, `make all` should complete successfully.
-- By default, `make install` will install the library into `/usr/local/lib` and headers into `/usr/local/include/trusona`
+- By default, `make install` will install the library into `/usr/local/lib`.
+  - Development headers will be installed into `/usr/local/include`
 
 
 ## Usage
@@ -61,6 +62,6 @@ A value of `TRUSONA_SUCCESS` indicates trusonafication was successful.
 
 See [src/example/main.c](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/example/main.c) for a functional implementation.
 
-## TODO
+### TODO
 
 - Add debuging output option.
