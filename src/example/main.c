@@ -60,8 +60,14 @@ int main(int argc, char *argv[])
     { "user",     required_argument,    0, 0 },
   };
 
-  while (getopt_long_only(argc, argv, "", options, &idx) != -1)
+  int c;
+
+  while ((c = getopt_long_only(argc, argv, "", options, &idx)) != -1)
   {
+    if (c < 0 || c > (sizeof(options) - 1)) {
+      continue;
+    }
+
     if (strcmp("presence", options[idx].name) == 0) {
       presence = TRUE;
       continue;
