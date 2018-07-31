@@ -6,16 +6,12 @@ It typically involves:
   - naming an authorization process i.e. `auth`, `account`, `password`, or `session`
   - providing a control flag - `optional` or `required`
   - the name (and path?) of the configured module; and
-  - key-value settings that are optional
+  - key-value settings if required by the module
 
-The authorization process are one of:
-- `auth`
-- `account`
-- `password`
-- `session`
 
 ## Trusona PAM Settings
 Trusona's PAM module has several key-value settings:
+
 - `domain`
   - Optional
   - Would be a top-level email domain - for instance `example.com`
