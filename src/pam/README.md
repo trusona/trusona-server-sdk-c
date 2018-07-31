@@ -43,6 +43,7 @@ Trusona's PAM module has several key-value settings:
 ### Example
 
 ```plain
-auth required /absolute/path/to/trusona_pam.so domain=[example.com]  \
-    settings=/absolute/path/to/settings.json prompt=[no|yes] presence=[no|yes] tilted=[no|yes]
+auth required /absolute/path/to/trusona_pam.so  \
+  settings=/absolute/path/to/trusona/settings.json  \
+    domain=[example.com] prompt=[no|yes] presence=[no|yes] tilted=[no|yes]
 ```
