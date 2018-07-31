@@ -61,20 +61,20 @@ int trusona_pam(pam_handle_t *pam, int flags, int argc, const char **argv)
       if (kv.key != NULL && kv.value != NULL) {
         syslog(LOG_NOTICE, "%s: parsed key-value pair: %s:%s", pam_module_name, kv.key, kv.value);
 
-        if (!settings && strcmp(kv.key, "settings") == 0) {
+        if (strcmp(kv.key, "settings") == 0) {
           settings = kv.value;
         }
-        else if (!domain && strcmp(kv.key, "domain") == 0) {
+        else if (strcmp(kv.key, "domain") == 0) {
           domain = kv.value;
         }
         else if (strcmp(kv.key, "presence") == 0) {
           presence = strcmp(kv.value, "yes") == 0;
         }
         else if (strcmp(kv.key, "tilted") == 0) {
-          tilted = strcmp(kv.value, "yes") == 0;;
+          tilted = strcmp(kv.value, "yes") == 0;
         }
         else if (strcmp(kv.key, "prompt") == 0) {
-          prompt = strcmp(kv.value, "yes") == 0;;
+          prompt = strcmp(kv.value, "yes") == 0;
         }
       }
     }
