@@ -114,7 +114,7 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, cons
 /* PAM entry point for session creation - http://linux.die.net/man/3/pam_open_session */
 PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
-  return(PAM_IGNORE);
+  return(trusona_pam(pamh, flags, argc, argv));
 }
 
 /* PAM entry point for session cleanup - http://linux.die.net/man/3/pam_close_session */
@@ -133,7 +133,7 @@ PAM_EXTERN int pam_sm_acct_mgmt(pam_handle_t *pamh, int flags, int argc, const c
 // user's credentials to the service provider) - http://linux.die.net/man/3/pam_setcred
 PAM_EXTERN int pam_sm_setcred(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
-  return(PAM_SUCCESS);
+  return(trusona_pam(pamh, flags, argc, argv));
 }
 
 /* PAM entry point for authentication token changes - http://linux.die.net/man/3/pam_chauthtok */
