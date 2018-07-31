@@ -2,7 +2,11 @@
 
 PAM Configuration varies across Linux & Unix distributions; however the gist of the settings is always the same.
 
-It typically involves naming an authorization process, providing a control flag, specifying the name of the configured module and key-value settings that are optional.
+It typically involves:
+  - naming an authorization process i.e. `auth`, `account`, `password`, or `session`
+  - providing a control flag - `optional` or `required`
+  - the name (and path?) of the configured module; and
+  - key-value settings that are optional
 
 The authorization process are one of:
 - `auth`
@@ -19,7 +23,7 @@ Trusona's PAM module has several key-value settings:
 
 - `settings`
   - Optional
-  - Path to the trusona settings JSON file
+  - If provided, expected to be the absolute path to the Trusona settings JSON file
   - If not provided, the default path of `/usr/local/etc/trusona/settings.json` is used
 
 - `tilted`
