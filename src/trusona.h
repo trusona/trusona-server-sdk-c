@@ -58,7 +58,7 @@
 #endif
 
 #ifndef MAX_STR
-#define MAX_STR 128
+#define MAX_STR 256
 #endif
 
 #ifndef FALSE

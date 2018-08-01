@@ -12,11 +12,6 @@ It typically involves:
 ## Trusona PAM Settings
 Trusona's PAM module has several key-value settings:
 
-- `domain`
-  - Optional
-  - Would be a top-level email domain - for instance `example.com`
-  - If provided, it is appended to the username to form a valid email address to be sent a trusonafication
-
 - `settings`
   - Optional
   - If provided, expected to be the absolute path to the Trusona settings JSON file
@@ -39,8 +34,13 @@ Trusona's PAM module has several key-value settings:
   - Only valid when `tilted=yes` is also specified
   - If `yes`, trusonafication will require verification of presence, otherwise not
 
+- `domain`
+  - Optional
+  - Would be a top-level email domain - for instance `example.com`
+  - If provided, it is appended to the username to form a valid email address to be sent a trusonafication
 
-## Alternative User Identifier Configuration via `$HOME`
+
+## User Identifier Configuration via `$HOME/.trusona`
 
 An alternative way to specify a user identifier that is different from the username is to create a file at `$HOME/.trusona` and insert a single line of the desired user identifier who owns `$HOME`.
 

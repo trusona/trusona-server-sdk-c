@@ -57,6 +57,10 @@ enum TRUSONA_SDK_RESULT {
 A value of `TRUSONA_SUCCESS` indicates trusonafication was successful.
 
 
+## PAM Usage
+
+See the PAM [configuration](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/pam/README.md) documentation.
+
 ## Example
 
 See [src/example/main.c](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/example/main.c) for a functional implementation.
