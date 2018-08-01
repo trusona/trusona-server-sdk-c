@@ -22,8 +22,9 @@
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 
+
 all: objects
-	gcc -L../ -lpam -ltrusona -shared trusona_pam.o -o trusona_pam.so
+	gcc -L../ -lpam -ltrusona -shared *.o -o trusona_pam.so
 	make -s clean
 
 install: all
@@ -33,6 +34,7 @@ uninstall:
 	rm -f /usr/local/lib/trusona_pam.so
 
 objects: clean-all
+	gcc $(INCLUDES) -Wall -fPIC -c internal_pam.c
 	gcc $(INCLUDES) -Wall -fPIC -c trusona_pam.c
 
 clean-all: clean
