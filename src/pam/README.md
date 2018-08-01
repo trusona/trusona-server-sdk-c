@@ -57,7 +57,7 @@ Finally, if this file is found, and its contents read, concatenation of the valu
 ### Example
 
 ```plain
-auth required /absolute/path/to/trusona_pam.so  \
+auth required /absolute/path/to/pam_trusona.so  \
   settings=/absolute/path/to/trusona/settings.json  \
     domain=[optional-example.com] prompt=[no|yes] presence=[no|yes] tilted=[no|yes]
 ```

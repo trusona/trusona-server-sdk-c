@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef INTERNAL_PAM_H
-#define INTERNAL_PAM_H
+#ifndef PAM_TRUSONA_INTERNAL_H
+#define PAM_TRUSONA_INTERNAL_H
 
 #include <sys/stat.h>
 #include <math.h>
@@ -33,4 +33,4 @@ const char *configured_user_identifier(const char *home_dir);
 
 #endif
 
-/* INTERNAL_PAM_H */
+/* PAM_TRUSONA_INTERNAL_H */

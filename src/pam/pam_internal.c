@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "internal_pam.h"
+#include "pam_internal.h"
 
 const int min(const int x, const int y)
 {

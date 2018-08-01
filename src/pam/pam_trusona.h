@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef TRUSONA_PAM_H
-#define TRUSONA_PAM_H
+#ifndef PAM_TRUSONA_H
+#define PAM_TRUSONA_H
 
 #include <arpa/inet.h>
 #include <ctype.h>
@@ -48,7 +48,7 @@
 #include <pwd.h>
 
 #include "config.h"
-#include "internal_pam.h"
+#include "pam_internal.h"
 #include "../trusona.h"
 
 #if defined(HAVE_SECURITY_PAM_APPL_H)
@@ -64,14 +64,6 @@
 #else
 # error security/pam_modules.h or pam/pam_modules.h required
 #endif
-
-int trusona_pam_authenticate(pam_handle_t *pam, int flags, int argc, const char **argv);
-
-int pam_sm_open_session(pam_handle_t *pamh, int flags, int argc, const char **argv);
-
-int pam_sm_setcred(pam_handle_t *pamh, int flags, int argc, const char **argv);
-
-int pam_sm_chauthtok(pam_handle_t *pamh, int flags, int argc, const char **argv);
 
 /*************************************************************************
 * Platform specific defines
