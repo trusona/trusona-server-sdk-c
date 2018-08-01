@@ -116,7 +116,6 @@ TrusonaSession load_settings(const char *json_settings_file)
 
     trusona_settings.request_id = generate_guid();
 
-    // hard-coding values that will never change
     trusona_settings.trusonafications_uri = "/api/v2/trusonafications";
     trusona_settings.token_type           = "TRUSONA";
 

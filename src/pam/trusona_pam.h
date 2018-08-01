@@ -43,7 +43,7 @@
 #include <sys/types.h>
 #include <syslog.h>
 #include <time.h>
-#include <utmp.h>
+#include <utmpx.h>
 #include <sys/types.h>
 #include <pwd.h>
 

@@ -152,8 +152,8 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
 
-/* Define to 1 if you have the <utmp.h> header file. */
-#define HAVE_UTMP_H 1
+// /* Define to 1 if you have the <utmp.h> header file. */
+// #define HAVE_UTMP_H 1
 
 /* Define to the address where bug reports for this package should be sent. */
 //#define PACKAGE_BUGREPORT "http://bugs.freeradius.org"
