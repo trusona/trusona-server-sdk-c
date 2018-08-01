@@ -49,25 +49,27 @@ const char *file_contents(const char *filename)
 
 const char *configured_user_identifier(const char *home_dir)
 {
-  if (home_dir == NULL) {
-    return(NULL);
-  }
+  const char *user_identifier = NULL;
 
-  char *file = concat_str(home_dir, "/.trusona");
+  if (home_dir != NULL) {
+    char *file = concat_str(home_dir, "/.trusona");
 
-  syslog(LOG_NOTICE, "%s: %s", TRUSONA_LIB, file);
+    if (access(file, F_OK) != -1) {
+      struct stat file_stats;
 
-  if (access(file, F_OK) != -1) {
-    struct stat file_stats;
-
-    if (stat(file, &file_stats) >= 0) {
-      if (S_ISREG(file_stats.st_mode)) {
-        // todo: check file permissions and enforce 100400 or 100600 only
-        // also, enforce file ownership in that current $USER must be the owner of the .trusona file
-        return(file_contents(file));
+      if (stat(file, &file_stats) >= 0) {
+        if (S_ISREG(file_stats.st_mode)) {
+          // todo: check file permissions and enforce 100400 or 100600 only
+          // also, enforce file ownership in that current $USER must be the owner of the .trusona file
+          user_identifier = file_contents(file);
+          syslog(LOG_NOTICE, "%s: Configured user identifier for trusona is '%s'", TRUSONA_LIB, user_identifier);
+        }
       }
+    }
+    else {
+      syslog(LOG_NOTICE, "%s: %s/.trusona does not exist", TRUSONA_LIB, home_dir);
     }
   }
 
-  return(NULL);
+  return(user_identifier);
 }

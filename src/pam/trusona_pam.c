@@ -24,7 +24,6 @@
 
 #include "trusona_pam.h"
 
-const char *pam_module_name  = "trusona_pam";
 const char *default_settings = "/usr/local/etc/trusona/settings.json";
 
 int trusona_pam(pam_handle_t *pam, int flags, int argc, const char **argv)
@@ -46,20 +45,20 @@ int trusona_pam(pam_handle_t *pam, int flags, int argc, const char **argv)
   };
 
   pam_get_user(pam, &username, NULL);
-  syslog(LOG_NOTICE, "%s: System username is '%s'", pam_module_name, username);
+  syslog(LOG_NOTICE, "%s: System username is '%s'", TRUSONA_LIB, username);
 
   for (i = 0; i < argc; i++) {
     char *value = (char *)argv[i];
 
     if (value != NULL) {
-      syslog(LOG_NOTICE, "%s: configured key-value pair: %s", pam_module_name, value);
+      syslog(LOG_DEBUG, "%s: configured key-value pair: %s", TRUSONA_LIB, value);
       struct key_value kv;
 
       kv.key   = strtok(value, "=");
       kv.value = strtok(NULL, "=");
 
       if (kv.key != NULL && kv.value != NULL) {
-        syslog(LOG_NOTICE, "%s: parsed key-value pair: %s:%s", pam_module_name, kv.key, kv.value);
+        syslog(LOG_DEBUG, "%s: parsed key-value pair: '%s' <-> '%s'", TRUSONA_LIB, kv.key, kv.value);
 
         if (strcmp(kv.key, "settings") == 0) {
           settings = kv.value;
