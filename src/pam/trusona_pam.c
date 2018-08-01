@@ -99,11 +99,11 @@ int trusona_pam(pam_handle_t *pam, int flags, int argc, const char **argv)
   }
 
   if (rc == TRUSONA_SUCCESS) {
-    fprintf(stderr, "\nTrusonafication succeeded!\n");
+    syslog(LOG_NOTICE, "%s: Trusonafication succeeded!", TRUSONA_LIB);
     return(PAM_SUCCESS);
   }
   else {
-    fprintf(stderr, "\nTrusonafication failed!\n");
+    syslog(LOG_ERR, "%s: Trusonafication failed!", TRUSONA_LIB);
     return(PAM_AUTH_ERR);
   }
 }
