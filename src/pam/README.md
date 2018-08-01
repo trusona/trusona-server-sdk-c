@@ -40,10 +40,24 @@ Trusona's PAM module has several key-value settings:
   - If `yes`, trusonafication will require verification of presence, otherwise not
 
 
+## Alternative User Identifier Configuration via `$HOME`
+
+An alternative way to specify a user identifier that is different from the username is to create a file at `$HOME/.trusona` and insert a single line of the desired user identifier who owns `$HOME`.
+
+This file must be a regular file - not a symbolic link - and should have octal permissions of `10400` or `10600`.
+
+The file must be owned by the owner of `$HOME`.
+
+Additionally, the contents of this file should be less than 128 bytes; otherwise, bytes beyond that count will be ignored.
+
+Finally, if this file is found, and its contents read, concatenation of the value specified by the `domain` setting will not be done.
+
+
+
 ### Example
 
 ```plain
 auth required /absolute/path/to/trusona_pam.so  \
   settings=/absolute/path/to/trusona/settings.json  \
-    domain=[example.com] prompt=[no|yes] presence=[no|yes] tilted=[no|yes]
+    domain=[optional-example.com] prompt=[no|yes] presence=[no|yes] tilted=[no|yes]
 ```
