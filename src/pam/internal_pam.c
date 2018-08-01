@@ -24,6 +24,11 @@
 
 #include "internal_pam.h"
 
+const int min(const int x, const int y)
+{
+  return(x <= y ? x : y);
+}
+
 const char *file_contents(const char *filename)
 {
   FILE *file = fopen(filename, "r");
@@ -33,7 +38,7 @@ const char *file_contents(const char *filename)
   }
 
   fseek(file, 0, SEEK_END);
-  long file_size = fmin(ftell(file), MAX_STR / 2 / 2 / 2); // max 128 bytes
+  long file_size = min(ftell(file), 128); // max bytes are 128
   fseek(file, 0, SEEK_SET);
 
   if (file_size <= 0) {
@@ -41,7 +46,7 @@ const char *file_contents(const char *filename)
     return(NULL);
   }
 
-  char *file_buffer = calloc(1, sizeof(char) * file_size);
+  char *file_buffer = calloc(1, sizeof(char) * (file_size + 1)); // plus 1 for \0
   fread(file_buffer, 1, file_size, file);
   fclose(file);
   return(trim(file_buffer));
