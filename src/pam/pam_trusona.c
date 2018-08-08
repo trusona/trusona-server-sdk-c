@@ -28,14 +28,14 @@ const char *default_settings = "/usr/local/etc/trusona/settings.json";
 
 int pam_trusona(pam_handle_t *pam, int flags, int argc, const char **argv)
 {
-  const char *settings = NULL;
-  const char *domain   = NULL;
-  const char *username = NULL;
+  const char *user_identifier = NULL;
+  const char *settings        = NULL;
+  const char *domain          = NULL;
+  const char *username        = NULL;
 
-  bool presence     = FALSE;
-  bool prompt       = FALSE;
-  bool tilted       = FALSE;
-  bool has_username = FALSE;
+  bool presence = FALSE;
+  bool prompt   = FALSE;
+  bool tilted   = FALSE;
   int  i;
 
   struct passwd *pwd;
@@ -83,21 +83,20 @@ int pam_trusona(pam_handle_t *pam, int flags, int argc, const char **argv)
   settings = settings == NULL ? default_settings : settings;
 
   if ((pwd = getpwnam(username)) != NULL) {
-    username     = configured_user_identifier(pwd->pw_dir);
-    has_username = TRUE;
+    user_identifier = configured_user_identifier(pwd->pw_dir);
   }
 
-  if (!has_username && domain != NULL) {
-    username = concat_str(username, concat_str("@", domain));
+  if (user_identifier == NULL && domain != NULL) {
+    user_identifier = concat_str(username, concat_str("@", domain));
   }
 
   enum TRUSONA_SDK_RESULT rc;
 
   if (tilted) {
-    rc = trusonafy_v2_ext(settings, username, prompt, presence);
+    rc = trusonafy_v2_ext(settings, user_identifier, prompt, presence);
   }
   else {
-    rc = trusonafy_v1(settings, username);
+    rc = trusonafy_v1(settings, user_identifier);
   }
 
   if (rc == TRUSONA_SUCCESS) {
