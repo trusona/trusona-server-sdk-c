@@ -32,9 +32,10 @@ int pam_trusona(pam_handle_t *pam, int flags, int argc, const char **argv)
   const char *domain   = NULL;
   const char *username = NULL;
 
-  bool presence = FALSE;
-  bool prompt   = FALSE;
-  bool tilted   = FALSE;
+  bool presence     = FALSE;
+  bool prompt       = FALSE;
+  bool tilted       = FALSE;
+  bool has_username = FALSE;
   int  i;
 
   struct passwd *pwd;
@@ -82,10 +83,11 @@ int pam_trusona(pam_handle_t *pam, int flags, int argc, const char **argv)
   settings = settings == NULL ? default_settings : settings;
 
   if ((pwd = getpwnam(username)) != NULL) {
-    username = configured_user_identifier(pwd->pw_dir);
+    username     = configured_user_identifier(pwd->pw_dir);
+    has_username = TRUE;
   }
 
-  if (username == NULL && domain != NULL) {
+  if (!has_username && domain != NULL) {
     username = concat_str(username, concat_str("@", domain));
   }
 
