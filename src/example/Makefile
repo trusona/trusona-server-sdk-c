@@ -17,9 +17,15 @@
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 
 example: clean
-	gcc $(INCLUDES) -L../ -Wall -fPIC -ltrusona  main.c -o example
+	gcc $(INCLUDES) -L../ -Wall -fPIC -ltrusona  main.c -o trusona
 
 clean:
-	rm -rf example
+	rm -rf trusona
+
+install: example
+	cp trusona /usr/local/bin/trusona
+
+uninstall:
+	rm -f /usr/local/bin/trusona
 
 clean-all: clean

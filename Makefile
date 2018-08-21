@@ -22,10 +22,12 @@ all:
 install:
 	make install -C src
 	make install -C src/pam
+	make install -C src/example
 
 uninstall:
 	make uninstall -C src
 	make uninstall -C src/pam
+	make uninstall -C src/example
 
 clean:
 	make clean-all -C src
