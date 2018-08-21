@@ -13,8 +13,8 @@
 
 ## Building & Installation
 
-- With all the dependencies in place, `make all` should complete successfully.
-- By default, `make install` will install the shared library into `/usr/local/lib`.
+- With all the dependencies in place, `sudo make all` should complete successfully.
+- By default, `sudo make install` will install the shared library into `/usr/local/lib`.
   - Development headers will be installed into `/usr/local/include`
 
 

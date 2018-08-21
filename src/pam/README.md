@@ -40,16 +40,18 @@ Trusona's PAM module has several key-value settings:
   - If provided, it is appended to the username to form a valid email address to be sent a trusonafication
 
 ## The `settings.json` file
-The settings file is a JSON file with a simple object with various properties that are needed by the PAM module. By default it is stored in `/usr/local/etc/trusona/settings.json`
+The settings file is a JSON file with a simple object with various properties that are needed by the PAM module.
+
+By default, it is expected to be found at `/usr/local/etc/trusona/settings.json`
 
 | name | type | description | required? |
 |------|------|-------------|-----------|
 | `access_token` | string | your server SDK token from Trusona | yes |
 | `mac_key` | string | your server SDK secret from Trusona | yes |
-| `api_host` | string | Base URL for the Trusona server (Use `https://api.trusona.net` unless otherwise instructed) | yes |
-| `desired_level` | integer | Set to 1 for Essential, 2 for Executive | yes |
-| `action` | string | The action shown to the user in the Trusonafication prompt | yes |
-| `resource` | string | The resource shown to the user in the Trusonafication prompt | yes |
+| `api_host` | string | Base URL for Trusona services. Use `https://api.trusona.net` unless otherwise instructed | yes |
+| `desired_level` | integer | Set to `2` for Essential, `3` for Executive | yes |
+| `action` | string | The `action` shown to the user in the Trusonafication prompt | yes |
+| `resource` | string | The `resource` shown to the user in the Trusonafication prompt | yes |
 | `expires_in_x_seconds` | integer | number of seconds before the Trusonafication expires (must be within 0-300) | no |
 
 ### Example
