@@ -19,7 +19,7 @@ INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 LOCAL_LIBS=$(shell pwd)/..
 
 all: objects
-	gcc -L$(LOCAL_LIBS) -lpam -ltrusona -shared *.o -o pam_trusona.so
+	gcc -L$(LOCAL_LIBS) -shared *.o -lpam -ltrusona -o pam_trusona.so
 	make -s clean
 
 install: all
