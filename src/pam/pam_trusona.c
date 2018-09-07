@@ -82,6 +82,10 @@ int pam_trusona(pam_handle_t *pam, int flags, int argc, const char **argv)
     user_identifier = concat_str(username, concat_str("@", domain));
   }
 
+  if (user_identifier == NULL) {
+    user_identifier = username;
+  }
+
   enum TRUSONA_SDK_RESULT rc;
 
   if (tilted) {
