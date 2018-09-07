@@ -18,7 +18,7 @@ INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 LOCAL_LIBS=$(shell pwd)/..
 
 example: clean
-	gcc $(INCLUDES) -L$(LOCAL_LIBS) -Wall -fPIC -ltrusona  main.c -o trusona
+	gcc $(INCLUDES) -L$(LOCAL_LIBS) -Wall -fPIC main.c -ltrusona -o trusona
 
 clean:
 	rm -rf trusona

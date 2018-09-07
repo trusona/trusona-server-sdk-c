@@ -17,7 +17,7 @@
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 
 all: objects
-	if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then gcc -shared -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.so; fi
+	if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then gcc -shared  *.o -luuid -lcurl -ljansson -lcrypto -o libtrusona.so; fi
 	if [ `uname` = "Darwin" ]; then gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib; fi
 	make -s clean
 
