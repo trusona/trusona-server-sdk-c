@@ -18,21 +18,20 @@
 
 #include "../trusona.h"
 
-const char *json_settings = "/usr/local/etc/trusona/settings.json";
+const char *default_json_settings = "/usr/local/etc/trusona/settings.json";
 
 // tilted options: --settings <path_to_json_settings> --user <any_user_identifier> --prompt --presence --tilted
 
 int main(int argc, char *argv[])
 {
   if (argc <= 1) {
-    char *user = "--user <any_user_identifier> - required; user to send trusonafication to";
-    // todo: update options strut below with "settings" - then enable next line
-    //char *settings = "--settings <path_to_json_settings> - optional; otherwise will use the default";
+    char *user     = "--user <any_user_identifier> - required; user to send trusonafication to";
+    char *settings = "--settings <path_to_json_settings> - optional; otherwise will use the default /usr/local/etc/trusona/settings.json";
     char *prompt   = "--prompt   optional; otherwise will not create a prompting trusonafication";
     char *presence = "--presence optional; otherwise will not prompt for presence";
     char *tilted   = "--tilted   optional; otherwise will not create a \"tilted\" trusonafication";
 
-    printf("\nOptions:\n  %s\n  %s\n  %s\n  %s\n\n", user, prompt, presence, tilted);
+    printf("\nOptions:\n  %s\n  %s\n  %s\n  %s\n  %s\n\n", user, settings, prompt, presence, tilted);
 
     return(TRUSONA_INIT_ERROR);
   }
@@ -40,6 +39,7 @@ int main(int argc, char *argv[])
   enum TRUSONA_SDK_RESULT result = TRUSONA_INSUFFICIENT;
 
   char *user_identifier = NULL;
+  char *settings_path   = (char *)default_json_settings;
   bool  presence        = FALSE;
   bool  prompt          = FALSE;
   bool  tilted          = FALSE;
@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     { "tilted",   no_argument,       NULL, 0 },
     { "presence", no_argument,       NULL, 0 },
     { "user",     required_argument,    0, 0 },
+    { "settings", required_argument,    0, 0 }
   };
 
   int c;
@@ -80,17 +81,22 @@ int main(int argc, char *argv[])
       user_identifier = optarg;
       continue;
     }
+
+    if (strcmp("settings", options[idx].name) == 0) {
+      settings_path = optarg;
+      continue;
+    }
   }
 
   if (user_identifier != NULL) {
     printf("Sending trusonafication to '%s'\n", user_identifier);
-    printf("JSON settings will load from %s\n", json_settings);
+    printf("JSON settings will load from %s\n", settings_path);
 
     if (tilted) {
-      result = trusonafy_v2_ext(json_settings, user_identifier, prompt, presence);
+      result = trusonafy_v2_ext(settings_path, user_identifier, prompt, presence);
     }
     else {
-      result = trusonafy_v1(json_settings, user_identifier);
+      result = trusonafy_v1(settings_path, user_identifier);
     }
   }
 
