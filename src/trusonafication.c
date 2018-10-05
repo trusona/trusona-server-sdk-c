@@ -69,7 +69,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
     return(TRUSONA_INSUFFICIENT);
   }
 
-  syslog(LOG_NOTICE, "%s: created trusonafication: %s\n", TRUSONA_LIB, body);
+  syslog(LOG_NOTICE, "%s: JSON sent to create trusonafication: %s\n", TRUSONA_LIB, body);
 
   if (do_post_request(trusona_session, trusona_session.trusonafications_uri, body, &json) == INVALID_REQ) {
     return(rc = TRUSONA_SERVICE_ERROR);
@@ -81,6 +81,9 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
   if (!trusonafication_id || strcmp(status, "IN_PROGRESS") != 0) {
     syslog(LOG_NOTICE, "%s: Failed to successfully create a trusonafication: %s", TRUSONA_LIB, json);
     return(rc = TRUSONA_SERVICE_ERROR);
+  }
+  else {
+    syslog(LOG_NOTICE, "%s: Successfully create a trusonafication: %s", TRUSONA_LIB, json);
   }
 
   char *uri = calloc(1, sizeof(char) * MAX_STR);
