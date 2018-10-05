@@ -76,7 +76,14 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
   }
 
   const char *trusonafication_id = json_str_value(&json, "id");
-  char *      uri = calloc(1, sizeof(char) * MAX_STR);
+  status = (char *)json_str_value(&json, "status");
+
+  if (!trusonafication_id || strcmp(status, "IN_PROGRESS") != 0) {
+    syslog(LOG_NOTICE, "%s: Failed to successfully create a trusonafication: %s", TRUSONA_LIB, json);
+    return(rc = TRUSONA_SERVICE_ERROR);
+  }
+
+  char *uri = calloc(1, sizeof(char) * MAX_STR);
 
   if (uri != NULL && trusonafication_id != NULL) {
     append_str(&uri, trusona_session.trusonafications_uri);
