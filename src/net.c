@@ -117,14 +117,14 @@ int do_get_request(TrusonaSession trusona_session, const char *uri, char **json)
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
     if (code == CURLE_OK && (status == 200 || status == 201)) {
-      syslog(LOG_NOTICE, "%s: %s: Successful GET to %s", TRUSONA_LIB, trusona_session.request_id, url);
+      syslog(LOG_NOTICE, "%s: %s: Successful GET to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
 
       int cnt = output.size + 1;
       *json = calloc(cnt, sizeof(char) * cnt);
       strncpy(*json, output.data, cnt);
     }
     else {
-      syslog(LOG_WARNING, "%s: %s: Failed GET to %s", TRUSONA_LIB, trusona_session.request_id, url);
+      syslog(LOG_WARNING, "%s: %s: Failed GET to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
       *json = NULL;
     }
 
