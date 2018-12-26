@@ -7,7 +7,7 @@ sudo: required
 
 install:
   - sudo -H apt-get -q -qq -y update
-  - sudo -H apt-get -q -qq -y install libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev dh-autoreconf autotools-dev clang cmake pkg-config texi2html texinfo
+  - sudo -H apt-get -q -qq -y install libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev dh-autoreconf autotools-dev clang cmake pkg-config texinfo libssl-dev
   - sudo -H ./ci/dependencies.sh
 
 script:
