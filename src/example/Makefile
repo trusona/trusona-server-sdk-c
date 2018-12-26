@@ -15,18 +15,17 @@
 # limitations under the License.
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
-LOCAL_LIBS=$(shell pwd)/..
+LOCAL_LIBS=-L$(shell pwd)/..
 
 example: clean
-	gcc $(INCLUDES) -L$(LOCAL_LIBS) -Wall -fPIC main.c -ltrusona -o trusona
+	gcc $(LOCAL_LIBS) $(INCLUDES) -Wall -fPIC main.c -ltrusona -o trusona
+	@ln -sf ../libtrusona.* .
 
 clean:
-	rm -rf trusona
+	rm -rf trusona libtrusona.*
 
 install: example
 	cp trusona /usr/local/bin/trusona
 
 uninstall:
 	rm -f /usr/local/bin/trusona
-
-clean-all: clean
