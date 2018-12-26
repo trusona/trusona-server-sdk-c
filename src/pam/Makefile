@@ -16,24 +16,21 @@
 
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
-LOCAL_LIBS=$(shell pwd)/..
+LOCAL_LIBS=-L$(shell pwd)/..
 
 all: objects
-	gcc -L$(LOCAL_LIBS) -shared *.o -lpam -ltrusona -o pam_trusona.so
-	make -s clean
+	gcc $(LOCAL_LIBS) -shared *.o -lpam -ltrusona -o pam_trusona.so
 
 install: all
 	mkdir -p /usr/local/lib && cp pam_trusona.so /usr/local/lib
+	@make clean
 
 uninstall:
 	rm -f /usr/local/lib/pam_trusona.so
 
-objects: clean-all
+objects: clean
 	gcc $(INCLUDES) -Wall -fPIC -c pam_internal.c
 	gcc $(INCLUDES) -Wall -fPIC -c pam_trusona.c
 
-clean-all: clean
-	rm -f *.so
-
 clean:
-	rm -f *.o
+	rm -f *.so *.o

@@ -18,6 +18,7 @@ all:
 	make -C src
 	make -C src/pam
 	make -C src/example
+	@make test
 
 install:
 	make install -C src
@@ -30,6 +31,11 @@ uninstall:
 	make uninstall -C src/example
 
 clean:
-	make clean-all -C src
-	make clean-all -C src/pam
-	make clean-all -C src/example
+	@make clean -C src
+	@make clean -C src/pam
+	@make clean -C src/example
+	@make clean -C src/tests
+
+test:
+	@if [ `ls src/libtrusona.* 2>/dev/null | wc -l` -eq 0 ]; then make -C src; fi
+	@make test -C src/tests

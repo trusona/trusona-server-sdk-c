@@ -19,23 +19,19 @@ INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 all: objects
 	if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then gcc -shared  *.o -luuid -lcurl -ljansson -lcrypto -o libtrusona.so; fi
 	if [ `uname` = "Darwin" ]; then gcc -dynamiclib -luuid -lcurl -ljansson -lcrypto *.o -o libtrusona.dylib; fi
-	make -s clean
 
-objects: clean-all
-	gcc $(INCLUDES) -Wall -fPIC -c trusonafication.c  -o trusonafication.o
-	gcc $(INCLUDES) -Wall -fPIC -c internal.c         -o internal.o
-	gcc $(INCLUDES) -Wall -fPIC -c trusona.c          -o trusona.o
-	gcc $(INCLUDES) -Wall -fPIC -c base64.c           -o base64.o
-	gcc $(INCLUDES) -Wall -fPIC -c utils.c            -o utils.o
-	gcc $(INCLUDES) -Wall -fPIC -c json.c             -o json.o
-	gcc $(INCLUDES) -Wall -fPIC -c hmac.c             -o hmac.o
-	gcc $(INCLUDES) -Wall -fPIC -c net.c              -o net.o
-
-clean-all: clean
-	rm -f *.so libtrusona.* a.out
+objects: clean
+	gcc $(INCLUDES) -Wall -fPIC -c trusonafication.c
+	gcc $(INCLUDES) -Wall -fPIC -c internal.c
+	gcc $(INCLUDES) -Wall -fPIC -c trusona.c
+	gcc $(INCLUDES) -Wall -fPIC -c base64.c
+	gcc $(INCLUDES) -Wall -fPIC -c utils.c
+	gcc $(INCLUDES) -Wall -fPIC -c json.c
+	gcc $(INCLUDES) -Wall -fPIC -c hmac.c
+	gcc $(INCLUDES) -Wall -fPIC -c net.c
 
 clean:
-	rm -f *.o
+	rm -f *.so libtrusona.* *.out *.o
 
 install: all
 	mkdir -p /usr/local/lib /usr/local/include/trusona
@@ -44,11 +40,6 @@ install: all
 	if [ `uname` = "Darwin" ]; then cp libtrusona.dylib /usr/local/lib/; fi
 	rm -f /usr/local/include/trusona/*.h
 	cp *.h /usr/local/include/trusona
-	rm -rf *.o infer-out
 
 uninstall:
 	rm -rf /usr/local/include/trusona/ /usr/local/lib/libtrusona.*
-
-test:
-	## infer is available here - http://fbinfer.com
-	infer -- make all
