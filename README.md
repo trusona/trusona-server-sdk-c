@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.com/lighthauz/trusona-ceee-sdk.svg?token=ERoqgs7tKf7xAGTsABr8&branch=master)](https://travis-ci.com/lighthauz/trusona-ceee-sdk)
 
+## Build Tools
+
+You will need a [C](https://en.wikipedia.org/wiki/C_programming_language) language compiler like [gcc](https://github.com/gcc-mirror/gcc) or [clang](https://github.com/llvm-mirror/clang).
+
 ## Dependencies
 
 - [libcurl](https://curl.haxx.se/libcurl/c) ver. 7.61.0, for interweb communication
@@ -10,11 +14,17 @@
 - [ossp-uuid](https://github.com/sean-/ossp-uuid) - or equivalent provider of `uuid/uuid.h` - for UUID v4 generation
 - [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html) - optional. If you do not require PAM support, delete `src/pam` before running `make`
 
+### Test Dependencies
+
+To successfully run the tests via `make test`, you will need to install [Check](https://libcheck.github.io/check) in your local development environment.
+
+> See their [installation](https://libcheck.github.io/check/web/install.html) page for various ways to get that accomplished.
+
 
 ## Building & Installation
 
-- With all the dependencies in place, `sudo make all` should complete successfully.
-- By default, `sudo make install` will install the shared library into `/usr/local/lib`.
+- With all the dependencies in place, `[sudo] make all` should complete successfully.
+- By default, `[sudo] make install` will install the shared libraries into `/usr/local/lib`.
   - Development headers will be installed into `/usr/local/include`
 
 
