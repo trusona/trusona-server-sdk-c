@@ -22,15 +22,13 @@ START_TEST(trim_removes_leading_and_trailing_whitespaces)
   ck_assert_str_eq(trim("     test"), "test");
   ck_assert_str_eq(trim("   test  "), "test");
   ck_assert_str_eq(trim("test     "), "test");
-  ck_assert(trim(NULL) == NULL);
-  ck_assert(trim(NULL) != "");
 }
 END_TEST
 
 START_TEST(trim_does_not_fail_on_NULL_input)
 {
-  ck_assert(trim(NULL) == NULL);
-  ck_assert(trim(NULL) != "");
+  ck_assert_pstr_eq(trim(NULL), NULL);
+  ck_assert_pstr_ne(trim(NULL), "");
 }
 
 END_TEST
