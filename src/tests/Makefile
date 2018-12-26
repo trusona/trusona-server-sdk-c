@@ -18,7 +18,7 @@ INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 LOCAL_LIBS=-L$(shell pwd)/..
 
 build: clean
-	gcc $(LOCAL_LIBS) $(INCLUDES) -Wall -fPIC check_utils.c -lcheck -ltrusona -o check_utils
+	gcc $(LOCAL_LIBS) $(INCLUDES) -Wall -fPIC check_utils.c -pthread -lcheck -ltrusona -o check_utils
 	@ln -sf ../libtrusona.* .
 
 clean:
