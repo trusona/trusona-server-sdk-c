@@ -1,12 +1,15 @@
 language: c
-compiler: gcc
+compiler:
+  - gcc
+  - clang
 
 sudo: required
 
 install:
   - sudo -H apt-get update -q -qq -y
-  - sudo -H apt-get install -q -qq -y libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev check
+  - sudo -H apt-get install -q -qq -y libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev dh-autoreconf autotools-dev
   - sudo -H ./ci/jansson-installer.sh
+  - sudo -H ./ci/check-installer.sh
 
 script:
   - make
