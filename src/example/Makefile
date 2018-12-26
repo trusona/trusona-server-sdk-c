@@ -15,10 +15,13 @@
 # limitations under the License.
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
-LOCAL_LIBS=-L$(shell pwd)/..
+LOCAL_LIBS_DIR=$(shell pwd)/..
+LOCAL_LIBS_OPT=-L$(LOCAL_LIBS_DIR)
+
+RPATH_OPTIONS=-Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS_DIR)
 
 example: clean
-	gcc $(LOCAL_LIBS) $(INCLUDES) -Wall -fPIC main.c -ltrusona -o trusona
+	gcc $(LOCAL_LIBS_OPT) $(INCLUDES) $(RPATH_OPTIONS) -Wall -fPIC main.c -ltrusona -o trusona
 	@ln -sf ../libtrusona.* .
 
 clean:

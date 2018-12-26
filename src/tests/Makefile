@@ -15,10 +15,14 @@
 # limitations under the License.
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
-LOCAL_LIBS=-L$(shell pwd)/..
+
+LOCAL_LIBS_DIR=$(shell pwd)/..
+LOCAL_LIBS_OPT=-L$(LOCAL_LIBS_DIR)
+
+RPATH_OPTIONS=-Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS_DIR)
 
 build: clean
-	gcc $(LOCAL_LIBS) $(INCLUDES) -Wall -fPIC check_utils.c -pthread -lcheck -ltrusona -o check_utils
+	gcc $(LOCAL_LIBS_OPT) $(INCLUDES) $(RPATH_OPTIONS) -Wall -fPIC check_utils.c -lcheck -ltrusona -o check_utils
 	@ln -sf ../libtrusona.* .
 
 clean:
