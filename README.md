@@ -9,14 +9,14 @@ You will need a [C](https://en.wikipedia.org/wiki/C_programming_language) langua
 ## Dependencies
 
 - [libcurl](https://curl.haxx.se/libcurl/c) ver. 7.61.0, for interweb communication
-- [jansson](http://www.digip.org/jansson) ver. [2.11](https://jansson.readthedocs.io/en/2.11) for JSON manipulation
-- [openssl](https://www.openssl.org) ver. [1.0.2o](https://www.openssl.org/source) for cryptographic functions
+- [jansson](https://github.com/akheron/jansson) ver. [2.12](https://github.com/akheron/jansson/releases) for JSON manipulation
+- [openssl](https://www.openssl.org) ver. [1.0.2q](https://www.openssl.org/source) for cryptographic functions
 - [ossp-uuid](https://github.com/sean-/ossp-uuid) - or equivalent provider of `uuid/uuid.h` - for UUID v4 generation
-- [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html) - optional. If you do not require PAM support, delete `src/pam` before running `make`
+- [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html) - optional. If you do not require PAM support, delete `src/pam` before running any `make` commands
 
 ### Test Dependencies
 
-To successfully run the tests via `make test`, you will need to install [Check](https://libcheck.github.io/check) in your local development environment.
+To successfully run the tests, you will need to install the [check](https://libcheck.github.io/check) library in your local environment.
 
 > See their [installation](https://libcheck.github.io/check/web/install.html) page for various ways to get that accomplished.
 
@@ -73,7 +73,7 @@ See the PAM [configuration](https://github.com/lighthauz/trusona-ceee-sdk/blob/m
 
 ## Example
 
-See [src/example/main.c](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/example/main.c) for a functional implementation.
+See [src/example/main.c](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/example/main.c) for a fully functional implementation.
 
 ### TODO
 
