@@ -52,16 +52,16 @@ Suite *utils_suite(void)
 
 int main(void)
 {
-  int      number_failed;
+  int      failures;
   Suite *  suite;
   SRunner *runner;
 
-  suite         = utils_suite();
-  runner        = srunner_create(suite);
-  number_failed = -1;
+  suite    = utils_suite();
+  runner   = srunner_create(suite);
+  failures = -1;
 
   srunner_run_all(runner, CK_NORMAL);
-  number_failed = srunner_ntests_failed(runner);
+  failures = srunner_ntests_failed(runner);
   srunner_free(runner);
-  return((number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE);
+  return((failures == 0) ? EXIT_SUCCESS : EXIT_FAILURE);
 }
