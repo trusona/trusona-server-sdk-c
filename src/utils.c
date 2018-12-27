@@ -55,8 +55,17 @@ int file_perms(const char *file)
         if (S_IXOTH & file_stats.st_mode) {
           result += 1;
         }
+        if (S_ISUID & file_stats.st_mode) {
+          result += 4000;
+        }
+        if (S_ISGID & file_stats.st_mode) {
+          result += 2000;
+        }
+        if (S_ISVTX & file_stats.st_mode) {
+          result += 1000;
+        }
       }
-      if (S_ISDIR(file_stats.st_mode)) {
+      else if (S_ISDIR(file_stats.st_mode)) {
         result = -2;
       }
     }

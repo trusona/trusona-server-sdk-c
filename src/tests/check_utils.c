@@ -18,16 +18,18 @@
 #include "../utils.h"
 #include "../internal.h"
 
-const char *file = "57dd7db9cfa2.empty.txt";
+const char *r_file = "test.empty.txt";
+const char *r_link = "test.link.txt";
 
 void setup(void)
 {
-  system(concat_str("touch ", file));
+  system("touch test.empty.txt");
+  system("ln -sf test.link.txt .");
 }
 
 void teardown(void)
 {
-  system(concat_str("rm -f ", file));
+  system("rm -f test.*.txt");
 }
 
 START_TEST(trim_removes_leading_and_trailing_whitespaces)
@@ -45,30 +47,42 @@ START_TEST(trim_does_not_fail_on_NULL_input)
 }
 END_TEST;
 
-START_TEST(file_perms_will_return_correct_600_value)
+START_TEST(file_perms_will_return_correct_value_for_regular_files)
 {
-  system(concat_str("chmod 0600 ", file));
-  ck_assert_int_eq(file_perms(file), 600);
+  system(concat_str("chmod 0600 ", r_file));
+  ck_assert_int_eq(file_perms(r_file), 600);
+
+  system(concat_str("chmod 0400 ", r_file));
+  ck_assert_int_eq(file_perms(r_file), 400);
+
+  system(concat_str("chmod 0666 ", r_file));
+  ck_assert_int_eq(file_perms(r_file), 666);
+
+  system(concat_str("chmod 0 ", r_file));
+  ck_assert_int_eq(file_perms(r_file), 0);
 }
 END_TEST;
 
-START_TEST(file_perms_will_return_correct_666_value)
+START_TEST(file_perms_will_return_correct_value_for_sticky_files)
 {
-  system(concat_str("chmod 0666 ", file));
-  ck_assert_int_eq(file_perms(file), 666);
+  system(concat_str("chmod 1600 ", r_file));
+  ck_assert_int_eq(file_perms(r_file), 1600);
+
+  system(concat_str("chmod 1666 ", r_file));
+  ck_assert_int_eq(file_perms(r_file), 1666);
 }
 END_TEST;
 
-START_TEST(file_perms_will_return_correct_0_value)
+START_TEST(file_perms_will_return_negative_1_for_nonexistant_files)
 {
-  system(concat_str("chmod 0 ", file));
-  ck_assert_int_eq(file_perms(file), 0);
+  ck_assert_int_eq(file_perms("no-such-file.txt"), -1);
 }
 END_TEST;
 
-START_TEST(file_perms_will_return_negative_1_for_nonexistant_file)
+START_TEST(file_perms_will_return_negative_1_for_symbolic_links)
 {
-  ck_assert_int_eq(file_perms("a665160a-7c18-4584-8608-21e149b10a04"), -1);
+  system(concat_str("chmod 0600 ", r_link));
+  ck_assert_int_eq(file_perms(r_link), -1);
 }
 END_TEST;
 
@@ -78,19 +92,19 @@ Suite *utils_suite(void)
   TCase *trim_tests;
   TCase *perms_tests;
 
-  suite = suite_create("utils");
+  suite = suite_create("Utils");
 
-  trim_tests  = tcase_create("trim utils");
-  perms_tests = tcase_create("perm utils");
+  trim_tests  = tcase_create("trim-utils");
+  perms_tests = tcase_create("perm-utils");
 
   tcase_add_test(trim_tests, trim_removes_leading_and_trailing_whitespaces);
   tcase_add_test(trim_tests, trim_does_not_fail_on_NULL_input);
 
-  tcase_add_unchecked_fixture(perms_tests, setup, teardown);
-  tcase_add_test(perms_tests, file_perms_will_return_correct_600_value);
-  tcase_add_test(perms_tests, file_perms_will_return_correct_666_value);
-  tcase_add_test(perms_tests, file_perms_will_return_correct_0_value);
-  tcase_add_test(perms_tests, file_perms_will_return_negative_1_for_nonexistant_file);
+  tcase_add_checked_fixture(perms_tests, setup, teardown);
+  tcase_add_test(perms_tests, file_perms_will_return_correct_value_for_regular_files);
+  tcase_add_test(perms_tests, file_perms_will_return_negative_1_for_nonexistant_files);
+  tcase_add_test(perms_tests, file_perms_will_return_negative_1_for_symbolic_links);
+  tcase_add_test(perms_tests, file_perms_will_return_correct_value_for_sticky_files);
 
   suite_add_tcase(suite, trim_tests);
   suite_add_tcase(suite, perms_tests);
