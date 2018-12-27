@@ -15,19 +15,40 @@
 // limitations under the License.
 
 #include <sys/stat.h>
+#include <fcntl.h>
 #include "utils.h"
 
 int file_perms(const char *file)
 {
   int result = -1;
 
-  if (access(file, F_OK) != -1) {
+  if (access(file, F_OK) == 0) {
     struct stat file_stats;
 
-    if (stat(file, &file_stats) >= 0) {
+    if (lstat(file, &file_stats) == 0) {
       if (S_ISREG(file_stats.st_mode)) {
         result = 0;
+      }
+      else if (S_ISDIR(file_stats.st_mode)) {
+        result = -2;
+      }
+      else if (S_ISCHR(file_stats.st_mode)) {
+        result = -3;
+      }
+      else if (S_ISFIFO(file_stats.st_mode)) {
+        result = -4;
+      }
+      else if (S_ISLNK(file_stats.st_mode)) {
+        result = -5;
+      }
+      else if (S_ISSOCK(file_stats.st_mode)) {
+        result = -6;
+      }
+      else if (S_ISBLK(file_stats.st_mode)) {
+        result = -7;
+      }
 
+      if (result == 0) {
         if (S_IRUSR & file_stats.st_mode) {
           result += 400;
         }
@@ -64,9 +85,6 @@ int file_perms(const char *file)
         if (S_ISVTX & file_stats.st_mode) {
           result += 1000;
         }
-      }
-      else if (S_ISDIR(file_stats.st_mode)) {
-        result = -2;
       }
     }
   }

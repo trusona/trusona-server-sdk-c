@@ -23,8 +23,8 @@ const char *r_link = "test.link.txt";
 
 void setup(void)
 {
-  system("touch test.empty.txt");
-  system("ln -sf test.link.txt .");
+  system("echo 1 > test.empty.txt");
+  system("ln -sf test.empty.txt test.link.txt");
 }
 
 void teardown(void)
@@ -73,16 +73,16 @@ START_TEST(file_perms_will_return_correct_value_for_sticky_files)
 }
 END_TEST;
 
-START_TEST(file_perms_will_return_negative_1_for_nonexistant_files)
+START_TEST(file_perms_will_return_correct_value_for_nonexistant_files)
 {
   ck_assert_int_eq(file_perms("no-such-file.txt"), -1);
 }
 END_TEST;
 
-START_TEST(file_perms_will_return_negative_1_for_symbolic_links)
+START_TEST(file_perms_will_return_correct_value_for_symbolic_links)
 {
   system(concat_str("chmod 0600 ", r_link));
-  ck_assert_int_eq(file_perms(r_link), -1);
+  ck_assert_int_eq(file_perms(r_link), -5);
 }
 END_TEST;
 
@@ -101,9 +101,9 @@ Suite *utils_suite(void)
   tcase_add_test(trim_tests, trim_does_not_fail_on_NULL_input);
 
   tcase_add_checked_fixture(perms_tests, setup, teardown);
+  tcase_add_test(perms_tests, file_perms_will_return_correct_value_for_nonexistant_files);
+  tcase_add_test(perms_tests, file_perms_will_return_correct_value_for_symbolic_links);
   tcase_add_test(perms_tests, file_perms_will_return_correct_value_for_regular_files);
-  tcase_add_test(perms_tests, file_perms_will_return_negative_1_for_nonexistant_files);
-  tcase_add_test(perms_tests, file_perms_will_return_negative_1_for_symbolic_links);
   tcase_add_test(perms_tests, file_perms_will_return_correct_value_for_sticky_files);
 
   suite_add_tcase(suite, trim_tests);
