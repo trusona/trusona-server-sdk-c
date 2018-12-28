@@ -22,6 +22,8 @@
 
 char *trim(const char *str);
 
-int file_perms(const char *file);
+const int file_perms(const char *file);
+
+const int owned_by(const char *file);
 
 #endif /* TRUSONA_UTILS_H */

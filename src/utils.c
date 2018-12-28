@@ -17,7 +17,33 @@
 #include <sys/stat.h>
 #include "utils.h"
 
-int file_perms(const char *file)
+const int owned_by(const char *file)
+{
+  int uid = -1;
+
+  if (access(file, F_OK) == 0) {
+    struct stat file_stats;
+
+    if (lstat(file, &file_stats) == 0) {
+      if ((file_stats.st_mode & S_IFMT) == S_IFREG) {
+        uid = file_stats.st_uid;
+      }
+      else {
+        uid = -2;
+      }
+    }
+    else {
+      uid = -3;
+    }
+  }
+  else {
+    uid = -4;
+  }
+
+  return(uid);
+}
+
+const int file_perms(const char *file)
 {
   int result = -1;
 
