@@ -15,7 +15,6 @@
 // limitations under the License.
 
 #include <sys/stat.h>
-#include <fcntl.h>
 #include "utils.h"
 
 int file_perms(const char *file)
