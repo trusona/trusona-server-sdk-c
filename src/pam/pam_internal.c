@@ -48,23 +48,37 @@ const char *configured_user_identifier(const char *home_dir)
 {
   const char *user_identifier = NULL;
 
-  if (home_dir != NULL) {
-    char *file = concat_str(home_dir, "/.trusona");
+  const int e_uid = geteuid();
+  const int c_uid = getuid();
 
-    if (access(file, F_OK) != -1) {
-      const int permissions = file_perms(file);
+  if (home_dir == NULL) {
+    syslog(LOG_WARNING, "%s: The $HOME directory cannot be NULL", TRUSONA_LIB);
+    return(NULL);
+  }
+  else if (e_uid != c_uid) {
+    syslog(LOG_WARNING, "%s: The effective UID %d and the current UID %d are not the same", TRUSONA_LIB, e_uid, c_uid);
+    return(NULL);
+  }
 
-      if (permissions == 600 || permissions == 400) {
-        user_identifier = file_contents(file);
-        syslog(LOG_NOTICE, "%s: Configured user identifier for trusona is '%s'", TRUSONA_LIB, user_identifier);
-      }
-      else {
-        syslog(LOG_WARNING, "%s: File permissions for '%s' are expected to be 0400 or 0600", TRUSONA_LIB, file);
-      }
-    }
-    else {
-      syslog(LOG_NOTICE, "%s: %s/.trusona does not exist or is not a regular file", TRUSONA_LIB, home_dir);
-    }
+  const char *file  = concat_str(home_dir, "/.trusona");
+  const int   perms = file_perms(file);
+  const int   owner = owned_by(file);
+
+  if (perms < 0 || owner < 0) {
+    syslog(LOG_WARNING, "%s: %s/.trusona does not exist or is not a regular file", TRUSONA_LIB, home_dir);
+    return(NULL);
+  }
+  else if (owner != e_uid) {
+    syslog(LOG_WARNING, "%s: %s/.trusona is not owned by the current user with ID %d", TRUSONA_LIB, home_dir, e_uid);
+    return(NULL);
+  }
+
+  if (perms == 600 || perms == 400) {
+    user_identifier = file_contents(file);
+    syslog(LOG_NOTICE, "%s: Configured user identifier for trusona is '%s'", TRUSONA_LIB, user_identifier);
+  }
+  else {
+    syslog(LOG_WARNING, "%s: File permissions for '%s' are expected to be 0400 or 0600", TRUSONA_LIB, file);
   }
 
   return(user_identifier);
