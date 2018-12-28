@@ -52,11 +52,11 @@ const char *configured_user_identifier(const char *home_dir)
   const int c_uid = getuid();
 
   if (home_dir == NULL) {
-    syslog(LOG_WARNING, "%s: The $HOME directory cannot be NULL", TRUSONA_LIB);
+    syslog(LOG_WARNING, "%s: $HOME directory cannot be NULL", TRUSONA_LIB);
     return(NULL);
   }
   else if (e_uid != c_uid) {
-    syslog(LOG_WARNING, "%s: The effective UID %d and the current UID %d are not the same", TRUSONA_LIB, e_uid, c_uid);
+    syslog(LOG_WARNING, "%s: Effective (getuid()) UID %d and Current (getuid()) UID %d are not the same", TRUSONA_LIB, e_uid, c_uid);
     return(NULL);
   }
 
@@ -72,8 +72,7 @@ const char *configured_user_identifier(const char *home_dir)
     syslog(LOG_WARNING, "%s: %s/.trusona is not owned by the current user with ID %d", TRUSONA_LIB, home_dir, e_uid);
     return(NULL);
   }
-
-  if (perms == 600 || perms == 400) {
+  else if (perms == 600 || perms == 400) {
     user_identifier = file_contents(file);
     syslog(LOG_NOTICE, "%s: Configured user identifier for trusona is '%s'", TRUSONA_LIB, user_identifier);
   }
