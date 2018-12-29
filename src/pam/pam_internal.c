@@ -46,8 +46,6 @@ const char *file_contents(const char *filename)
 
 const char *configured_user_identifier(const char *home_dir)
 {
-  const char *user_identifier = NULL;
-
   const int e_uid = geteuid();
   const int c_uid = getuid();
 
@@ -56,7 +54,7 @@ const char *configured_user_identifier(const char *home_dir)
     return(NULL);
   }
   else if (e_uid != c_uid) {
-    syslog(LOG_WARNING, "%s: Effective (getuid()) UID %d and Current (getuid()) UID %d are not the same", TRUSONA_LIB, e_uid, c_uid);
+    syslog(LOG_WARNING, "%s: Effective UID '%d' and Current UID '%d' are not the same", TRUSONA_LIB, e_uid, c_uid);
     return(NULL);
   }
 
@@ -73,12 +71,12 @@ const char *configured_user_identifier(const char *home_dir)
     return(NULL);
   }
   else if (perms == 600 || perms == 400) {
-    user_identifier = file_contents(file);
+    const char *user_identifier = file_contents(file);
     syslog(LOG_NOTICE, "%s: Configured user identifier for trusona is '%s'", TRUSONA_LIB, user_identifier);
+    return(user_identifier);
   }
   else {
     syslog(LOG_WARNING, "%s: File permissions for '%s' are expected to be 0400 or 0600", TRUSONA_LIB, file);
+    return(NULL);
   }
-
-  return(user_identifier);
 }
