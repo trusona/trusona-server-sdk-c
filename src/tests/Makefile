@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_LIBS=$(shell pwd)/..
+LOCAL_LIBS=./..
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 COMPILE_OPTIONS=-L$(LOCAL_LIBS) $(INCLUDES) -Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS)
 
