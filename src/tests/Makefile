@@ -14,20 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+LOCAL_LIBS=./..
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
-
-LOCAL_LIBS_DIR=$(shell pwd)/..
-LOCAL_LIBS_OPT=-L$(LOCAL_LIBS_DIR)
-
-RPATH_OPTIONS=-Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS_DIR)
+COMPILE_OPTIONS=-L$(LOCAL_LIBS) $(INCLUDES) -Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS)
 
 build: clean
-	gcc $(LOCAL_LIBS_OPT) $(INCLUDES) $(RPATH_OPTIONS) -Wall -fPIC check_utils.c -lcheck -ltrusona -o check_utils
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_file_perms_utils.c -lcheck -ltrusona -o check_file_perms_utils.bin
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_owned_by_utils.c   -lcheck -ltrusona -o check_owned_by_utils.bin
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_trim_utils.c       -lcheck -ltrusona -o check_trim_utils.bin
 	@ln -sf ../libtrusona.* .
 
 clean:
-	@rm -f *.o check_utils libtrusona.*
+	@rm -f *.bin libtrusona.*
 
 test: build
-	@./check_utils
+	@./check_file_perms_utils.bin
+	@./check_owned_by_utils.bin
+	@./check_trim_utils.bin
 	@make clean

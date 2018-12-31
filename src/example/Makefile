@@ -15,7 +15,7 @@
 # limitations under the License.
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
-LOCAL_LIBS_DIR=$(shell pwd)/..
+LOCAL_LIBS_DIR=./..
 LOCAL_LIBS_OPT=-L$(LOCAL_LIBS_DIR)
 
 RPATH_OPTIONS=-Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS_DIR)
