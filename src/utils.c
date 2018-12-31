@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sys/stat.h>
 #include "utils.h"
 
 const uid_t owned_by(const char *file)

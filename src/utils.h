@@ -17,6 +17,7 @@
 #ifndef TRUSONA_UTILS_H
 #define TRUSONA_UTILS_H
 
+#include <sys/stat.h>
 #include <ctype.h>
 #include "trusona.h"
 
