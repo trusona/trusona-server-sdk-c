@@ -29,15 +29,15 @@ const uid_t owned_by(const char *file)
         uid = file_stats.st_uid;
       }
       else {
-        uid = UINT_MAX - 2;
+        uid -= 2;
       }
     }
     else {
-      uid = UINT_MAX - 3;
+      uid -= 3;
     }
   }
   else {
-    uid = UINT_MAX - 4;
+    uid -= 4;
   }
 
   return(uid);
