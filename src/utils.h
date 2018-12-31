@@ -20,6 +20,8 @@
 #include <ctype.h>
 #include "trusona.h"
 
-char * trim(const char *str);
+char *trim(const char *str);
+
+int file_perms(const char *file);
 
 #endif /* TRUSONA_UTILS_H */

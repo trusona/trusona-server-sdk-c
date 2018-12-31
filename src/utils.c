@@ -14,7 +14,63 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <sys/stat.h>
 #include "utils.h"
+
+int file_perms(const char *file)
+{
+  int result = -1;
+
+  if (access(file, F_OK) == 0) {
+    struct stat file_stats;
+    result = -2;
+
+    if (lstat(file, &file_stats) == 0) {
+      if ((file_stats.st_mode & S_IFMT) == S_IFREG) {
+        result = 0;
+
+        if (S_IRUSR & file_stats.st_mode) {
+          result += 400;
+        }
+        if (S_IWUSR & file_stats.st_mode) {
+          result += 200;
+        }
+        if (S_IXUSR & file_stats.st_mode) {
+          result += 100;
+        }
+        if (S_IRGRP & file_stats.st_mode) {
+          result += 40;
+        }
+        if (S_IWGRP & file_stats.st_mode) {
+          result += 20;
+        }
+        if (S_IXGRP & file_stats.st_mode) {
+          result += 10;
+        }
+        if (S_IROTH & file_stats.st_mode) {
+          result += 4;
+        }
+        if (S_IWOTH & file_stats.st_mode) {
+          result += 2;
+        }
+        if (S_IXOTH & file_stats.st_mode) {
+          result += 1;
+        }
+        if (S_ISUID & file_stats.st_mode) {
+          result += 4000;
+        }
+        if (S_ISGID & file_stats.st_mode) {
+          result += 2000;
+        }
+        if (S_ISVTX & file_stats.st_mode) {
+          result += 1000;
+        }
+      }
+    }
+  }
+
+  return(result);
+}
 
 char *trim(const char *str)
 {

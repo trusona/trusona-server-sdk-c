@@ -52,19 +52,18 @@ const char *configured_user_identifier(const char *home_dir)
     char *file = concat_str(home_dir, "/.trusona");
 
     if (access(file, F_OK) != -1) {
-      struct stat file_stats;
+      const int permissions = file_perms(file);
 
-      if (stat(file, &file_stats) >= 0) {
-        if (S_ISREG(file_stats.st_mode)) {
-          // todo: check file permissions and enforce 100400 or 100600 only
-          // also, enforce file ownership in that current $USER must be the owner of the .trusona file
-          user_identifier = file_contents(file);
-          syslog(LOG_NOTICE, "%s: Configured user identifier for trusona is '%s'", TRUSONA_LIB, user_identifier);
-        }
+      if (permissions == 600 || permissions == 400) {
+        user_identifier = file_contents(file);
+        syslog(LOG_NOTICE, "%s: Configured user identifier for trusona is '%s'", TRUSONA_LIB, user_identifier);
+      }
+      else {
+        syslog(LOG_WARNING, "%s: File permissions for '%s' are expected to be 0400 or 0600", TRUSONA_LIB, file);
       }
     }
     else {
-      syslog(LOG_NOTICE, "%s: %s/.trusona does not exist", TRUSONA_LIB, home_dir);
+      syslog(LOG_NOTICE, "%s: %s/.trusona does not exist or is not a regular file", TRUSONA_LIB, home_dir);
     }
   }
 
