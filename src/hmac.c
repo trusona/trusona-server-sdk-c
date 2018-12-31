@@ -22,14 +22,17 @@ static const unsigned int MD5_BITS    = 16;
 
 char *generate_md5(const char *data)
 {
+  if (data == NULL) {
+    return(NULL);
+  }
+
   unsigned char *raw_digest;
-  int            i;
+  char *         hex_digest;
 
-  char *hex_digest = calloc(1, sizeof(char) * MAX_STR);
-
+  hex_digest = calloc(1, sizeof(char) * MAX_STR);
   raw_digest = MD5((const unsigned char *)data, strnlen((const char *)data, MAX_STR), NULL);
 
-  for (i = 0; i < MD5_BITS; i++) {
+  for (int i = 0; i < MD5_BITS; i++) {
     snprintf((char *)&hex_digest[i * 2], MAX_STR, "%02x", (unsigned int)raw_digest[i]);
   }
 
@@ -40,6 +43,10 @@ char *generate_md5(const char *data)
 
 char *base64_hmac_sha256(const char *key, const char *data)
 {
+  if (key == NULL || data == NULL) {
+    return(NULL);
+  }
+
   unsigned char *digest;
   char *         hex_digest;
   char *         base64_val;
