@@ -62,7 +62,7 @@ const char *configured_user_identifier(const char *home_dir)
   const int   perms = file_perms(file);
   const int   owner = owned_by(file);
 
-  if (perms < 0 || owner < 0) {
+  if (perms < 0) {
     syslog(LOG_WARNING, "%s: %s/.trusona does not exist or is not a regular file", TRUSONA_LIB, home_dir);
     return(NULL);
   }

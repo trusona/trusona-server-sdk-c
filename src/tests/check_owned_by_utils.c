@@ -33,13 +33,13 @@ void teardown()
 
 START_TEST(will_return_predefined_ID_for_nonexistant_files)
 {
-  ck_assert_int_eq(owned_by("no-such-file.txt"), -4);
+  ck_assert_int_eq(owned_by("no-such-file.txt"), UINT_MAX - 4);
 }
 END_TEST;
 
 START_TEST(will_return_predefined_ID_for_symbolic_links)
 {
-  ck_assert_int_eq(owned_by(r_link), -2);
+  ck_assert_int_eq(owned_by(r_link), UINT_MAX - 2);
 }
 END_TEST;
 

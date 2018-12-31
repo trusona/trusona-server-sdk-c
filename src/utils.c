@@ -17,9 +17,9 @@
 #include <sys/stat.h>
 #include "utils.h"
 
-const int owned_by(const char *file)
+const uid_t owned_by(const char *file)
 {
-  int uid = -1;
+  uid_t uid = UINT_MAX;
 
   if (access(file, F_OK) == 0) {
     struct stat file_stats;
@@ -29,15 +29,15 @@ const int owned_by(const char *file)
         uid = file_stats.st_uid;
       }
       else {
-        uid = -2;
+        uid = UINT_MAX - 2;
       }
     }
     else {
-      uid = -3;
+      uid = UINT_MAX - 3;
     }
   }
   else {
-    uid = -4;
+    uid = UINT_MAX - 4;
   }
 
   return(uid);
