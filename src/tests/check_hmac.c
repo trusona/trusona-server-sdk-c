@@ -26,7 +26,7 @@ START_TEST(will_generate_MD5_hash_successfully)
 }
 END_TEST;
 
-START_TEST(will_return_NULL_on_input_is_NULL)
+START_TEST(will_return_NULL_on_NULL_input)
 {
   ck_assert_pstr_eq(generate_md5(NULL), NULL);
 }
@@ -67,7 +67,7 @@ Suite *utils_suite(void)
   tcase_add_test(tests, will_generate_base64_hmac_sha256_successfully);
   tcase_add_test(tests, will_return_NULL_if_provided_data_is_NULL);
   tcase_add_test(tests, will_generate_MD5_hash_successfully);
-  tcase_add_test(tests, will_return_NULL_on_input_is_NULL);
+  tcase_add_test(tests, will_return_NULL_on_NULL_input);
 
   suite_add_tcase(suite, tests);
 
