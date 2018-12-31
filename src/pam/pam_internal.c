@@ -46,8 +46,8 @@ const char *file_contents(const char *filename)
 
 const char *configured_user_identifier(const char *home_dir)
 {
-  const int e_uid = geteuid();
-  const int c_uid = getuid();
+  const uid_t e_uid = geteuid();
+  const uid_t c_uid = getuid();
 
   if (home_dir == NULL) {
     syslog(LOG_WARNING, "%s: $HOME directory cannot be NULL", TRUSONA_LIB);
@@ -60,7 +60,7 @@ const char *configured_user_identifier(const char *home_dir)
 
   const char *file  = concat_str(home_dir, "/.trusona");
   const int   perms = file_perms(file);
-  const int   owner = owned_by(file);
+  const uid_t owner = owned_by(file);
 
   if (perms < 0) {
     syslog(LOG_WARNING, "%s: %s/.trusona does not exist or is not a regular file", TRUSONA_LIB, home_dir);
