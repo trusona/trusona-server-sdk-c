@@ -32,14 +32,40 @@ START_TEST(will_return_NULL_on_input_is_NULL)
 }
 END_TEST;
 
+START_TEST(will_generate_base64_hmac_sha256_successfully)
+{
+  ck_assert_str_eq(base64_hmac_sha256(" key ", "data"), "ODdlYjI1NTZlNmMzZDRlZGZlMjlhM2M4ZDViOGMwMzVjMjYyN2IyMDY1ZDU5ZDQxNTc4NWM1N2M5Yjc1NWI4OQ==");
+  ck_assert_str_eq(base64_hmac_sha256("key", "data"), "NTAzMWZlM2Q5ODljNmQxNTM3YTAxM2ZhNmU3MzlkYTIzNDYzZmRhZWMzYjcwMTM3ZDgyOGUzNmFjZTIyMWJkMA==");
+  ck_assert_str_eq(base64_hmac_sha256("key", "   "), "ODk5NTJkZDM3NzVjYjJhOTlmYWUxOWQ0NThhMjBhMjQ4NGExMjMwN2M4ZTg5NTliOWE0NGFiZmUyMjdjZjE5Yg==");
+  ck_assert_str_eq(base64_hmac_sha256("key", ""), "NWQ1ZDEzOTU2M2M5NWI1OTY3YjliZDlhOGM5YjIzM2E5ZGVkYjQ1MDcyNzk0Y2QyMzJkYzFiNzQ4MzI2MDdkMA==");
+}
+END_TEST;
+
+START_TEST(will_return_NULL_if_provided_key_is_blank_or_NULL)
+{
+  ck_assert_pstr_eq(base64_hmac_sha256("", "data"), NULL);
+  ck_assert_pstr_eq(base64_hmac_sha256("  ", "data"), NULL);
+  ck_assert_pstr_eq(base64_hmac_sha256(NULL, "data"), NULL);
+}
+END_TEST;
+
+START_TEST(will_return_NULL_if_provided_data_is_NULL)
+{
+  ck_assert_pstr_eq(base64_hmac_sha256("key", NULL), NULL);
+}
+END_TEST;
+
 Suite *utils_suite(void)
 {
   Suite *suite;
   TCase *tests;
 
-  suite = suite_create("HMAC Tests");
+  suite = suite_create("MD5 & HMAC/SHA256 Tests");
   tests = tcase_create("tests");
 
+  tcase_add_test(tests, will_return_NULL_if_provided_key_is_blank_or_NULL);
+  tcase_add_test(tests, will_generate_base64_hmac_sha256_successfully);
+  tcase_add_test(tests, will_return_NULL_if_provided_data_is_NULL);
   tcase_add_test(tests, will_generate_MD5_hash_successfully);
   tcase_add_test(tests, will_return_NULL_on_input_is_NULL);
 

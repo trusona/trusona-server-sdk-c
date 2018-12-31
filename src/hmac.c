@@ -15,7 +15,6 @@
 // limitations under the License.
 
 #include "hmac.h"
-#include "base64.h"
 
 static const unsigned int SHA256_BITS = 32;
 static const unsigned int MD5_BITS    = 16;
@@ -43,7 +42,7 @@ char *generate_md5(const char *data)
 
 char *base64_hmac_sha256(const char *key, const char *data)
 {
-  if (key == NULL || data == NULL) {
+  if (key == NULL || data == NULL || strnlen((char *)trim(key), MAX_STR) == 0) {
     return(NULL);
   }
 
