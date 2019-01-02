@@ -22,6 +22,7 @@ build: clean
 	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_file_perms_utils.c -lcheck -ltrusona -o check_file_perms_utils.bin
 	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_owned_by_utils.c   -lcheck -ltrusona -o check_owned_by_utils.bin
 	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_trim_utils.c       -lcheck -ltrusona -o check_trim_utils.bin
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_hmac.c             -lcheck -ltrusona -o check_hmac.bin
 	@ln -sf ../libtrusona.* .
 
 clean:
@@ -31,4 +32,5 @@ test: build
 	@./check_file_perms_utils.bin
 	@./check_owned_by_utils.bin
 	@./check_trim_utils.bin
+	@./check_hmac.bin
 	@make clean

@@ -20,6 +20,8 @@
 #include <openssl/hmac.h>
 #include <openssl/md5.h>
 #include <string.h>
+#include "base64.h"
+#include "utils.h"
 
 #ifndef MAX_STR
 #define MAX_STR 1024
