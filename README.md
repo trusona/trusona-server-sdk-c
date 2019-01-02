@@ -23,32 +23,34 @@ To successfully run the tests, you will need to install the [check](https://libc
 
 ## Building & Installation
 
-- With all the dependencies in place, `[sudo] make all` should complete successfully.
-- By default, `[sudo] make install` will install the shared libraries into `/usr/local/lib`.
-  - Development headers will be installed into `/usr/local/include`
+With all the dependencies in place, `[sudo] make all` should complete successfully.
+
+By default, `[sudo] make install` will install the shared libraries into `/usr/local/lib`.
+
+Development headers will be installed into `/usr/local/include`
 
 
-## Usage
+## API Usage
 
 ```c
 const enum TRUSONA_SDK_RESULT trusonafy_v2(const char* path_to_json_settings,
-                                            const char* valid_user_identifier);
+                                             const char* valid_user_identifier);
 ```
 
 Alternatively, for extended usage:
 
 ```c
 const enum TRUSONA_SDK_RESULT trusonafy_v2_ext(const char* path_to_json_settings,
-                                                const char* valid_user_identifier,
-                                                const bool prompt,
-                                                const bool user_presence);
+                                                 const char* valid_user_identifier,
+                                                 const bool prompt,
+                                                 const bool user_presence);
 ```
 
-##### Legacy Usage:
+#### Legacy API Usage:
 
 ```c
 const enum TRUSONA_SDK_RESULT trusonafy_v1(const char* path_to_json_settings,
-                                            const char* email_or_trusona_id);
+                                             const char* email_or_trusona_id);
 ```
 
 
@@ -67,14 +69,14 @@ enum TRUSONA_SDK_RESULT {
 A value of `TRUSONA_SUCCESS` indicates trusonafication was successful.
 
 
-## PAM Usage
+## PAM API Usage
 
-See the PAM [configuration](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/pam/README.md) documentation.
+See the PAM [configuration](src/pam/README.md) documentation.
 
-## Example
+## Example Implementation
 
-See [src/example/main.c](https://github.com/lighthauz/trusona-ceee-sdk/blob/master/src/example/main.c) for a fully functional implementation.
+See [src/example/main.c](src/example/main.c) for a fully functional implementation.
 
 ### TODO
 
-- Add debuging output option.
+- Add debuging output option
