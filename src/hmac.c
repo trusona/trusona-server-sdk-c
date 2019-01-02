@@ -25,13 +25,14 @@ char *generate_md5(const char *data)
     return(NULL);
   }
 
+  unsigned int   i;
   unsigned char *raw_digest;
   char *         hex_digest;
 
   hex_digest = calloc(1, sizeof(char) * MAX_STR);
   raw_digest = MD5((const unsigned char *)data, strnlen((const char *)data, MAX_STR), NULL);
 
-  for (int i = 0; i < MD5_BITS; i++) {
+  for (i = 0; i < MD5_BITS; i++) {
     snprintf((char *)&hex_digest[i * 2], MAX_STR, "%02x", (unsigned int)raw_digest[i]);
   }
 
