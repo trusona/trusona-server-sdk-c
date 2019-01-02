@@ -16,7 +16,7 @@
 
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
-LOCAL_LIBS=-L$(shell pwd)/..
+LOCAL_LIBS=-L./..
 
 all: objects
 	gcc $(LOCAL_LIBS) -shared *.o -lpam -ltrusona -o pam_trusona.so
