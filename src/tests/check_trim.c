@@ -15,7 +15,7 @@
 // limitations under the License.
 
 #include <check.h>
-#include "../utils.h"
+#include "../str_utils.h"
 
 START_TEST(will_remove_leading_and_trailing_whitespaces)
 {

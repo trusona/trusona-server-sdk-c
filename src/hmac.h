@@ -20,15 +20,16 @@
 #include <openssl/hmac.h>
 #include <openssl/md5.h>
 #include <string.h>
+
+#include "str_utils.h"
 #include "base64.h"
-#include "utils.h"
 
 #ifndef MAX_STR
-#define MAX_STR 1024
+#define MAX_STR    1024
 #endif
 
 char *generate_md5(const char *data);
 
 char *base64_hmac_sha256(const char *key, const char *data);
 
-#endif /* TRUSONA_HMAC_H */
+#endif // TRUSONA_HMAC_H

@@ -17,14 +17,10 @@
 #ifndef TRUSONA_UTILS_H
 #define TRUSONA_UTILS_H
 
-#include <sys/stat.h>
-#include <ctype.h>
 #include "trusona.h"
-
-char *trim(const char *str);
 
 const int file_perms(const char *file);
 
 const uid_t owned_by(const char *file);
 
-#endif /* TRUSONA_UTILS_H */
+#endif // TRUSONA_UTILS_H

@@ -23,10 +23,10 @@ const char *json_str_value(char **json, const char *data);
 
 const int  json_int_value(char **json, const char *data);
 
-const int  get_int_value(json_t  *root, const char  *data);
+const int  get_int_value(json_t *root, const char *data);
 
-const char *get_str_value(json_t  *root, const char  *data);
+const char *get_str_value(json_t *root, const char *data);
 
 const json_t *get_object(char **json, const char *key);
 
-#endif /* TRUSONA_JSON_H */
+#endif // TRUSONA_JSON_H

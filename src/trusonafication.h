@@ -19,14 +19,16 @@
 
 #include "trusona.h"
 
-enum TRUSONA_INPUT {
+enum TRUSONA_INPUT
+{
   EMAIL_ADDRESS,
   TRUSONA_ID,
   USER_IDENTIFIER,
   UNKNOWN
 };
 
-enum TRUSONA_SDK_RESULT {
+enum TRUSONA_SDK_RESULT
+{
   TRUSONA_SUCCESS,
   TRUSONA_INSUFFICIENT,
   TRUSONA_FAILURE,
@@ -36,6 +38,4 @@ enum TRUSONA_SDK_RESULT {
 
 const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session);
 
-#endif
-
-/* TRUSONAFICATION_H */
+#endif // TRUSONAFICATION_H

@@ -22,6 +22,7 @@
  *
  * @APPLE_LICENSE_HEADER_END@
  */
+
 /* ====================================================================
  * Copyright (c) 1995-1999 The Apache Group.  All rights reserved.
  *
@@ -79,23 +80,19 @@
  *
  */
 
-
-
-#ifndef _BASE64_H_
-#define _BASE64_H_
+#ifndef TRUSONA_BASE64_H_
+#define TRUSONA_BASE64_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int Base64encode_len(int len);
-int Base64encode(char * coded_dst, const char *plain_src,int len_plain_src);
+int Base64encode(char *coded_dst, const char *plain_src, int len_plain_src);
 
-int Base64decode_len(const char * coded_src);
-int Base64decode(char * plain_dst, const char *coded_src);
+int Base64decode(char *plain_dst, const char *coded_src);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif //_BASE64_H_
+#endif // TRUSONA_BASE64_H_

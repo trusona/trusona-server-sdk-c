@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "utils.h"
+#include "file_utils.h"
 
 const uid_t owned_by(const char *file)
 {
@@ -95,35 +95,4 @@ const int file_perms(const char *file)
   }
 
   return(result);
-}
-
-char *trim(const char *str)
-{
-  if (str == NULL) {
-    return(NULL);
-  }
-
-  char *ptr   = calloc(1, sizeof(char) * MAX_STR);
-  int   last  = strnlen(str, MAX_STR);
-  int   first = -1;
-  int   idx   = 0;
-
-  while (isspace(str[++first]))
-  {
-    // do nothing
-  }
-
-  while (isspace(str[--last]))
-  {
-    // do nothing
-  }
-
-  if (first != last) {
-    for (; first <= last;) {
-      ptr[idx++] = str[first++];
-    }
-  }
-
-  ptr[idx] = '\0';
-  return(ptr);
 }

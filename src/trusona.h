@@ -19,55 +19,59 @@
 
 #include <uuid/uuid.h>
 #include <curl/curl.h>
+#include <sys/stat.h>
 #include <jansson.h>
 #include <stdbool.h>
 #include <string.h>
 #include <syslog.h>
 #include <unistd.h>
+#include <limits.h>
+#include <ctype.h>
 
 #include "session.h"
 #include "internal.h"
 #include "json.h"
 #include "net.h"
 #include "hmac.h"
-#include "utils.h"
+#include "str_utils.h"
+#include "file_utils.h"
 #include "trusonafication.h"
 
 #ifndef TRUSONA_MAX_WAIT
-#define TRUSONA_MAX_WAIT 99 // 99 seconds
+#define TRUSONA_MAX_WAIT    99 // 99 seconds
 #endif
 
 #ifndef MIN_LOA_LEVEL
-#define MIN_LOA_LEVEL 1
+#define MIN_LOA_LEVEL    1
 #endif
 
 #ifndef MAX_LOA_LEVEL
-#define MAX_LOA_LEVEL 4
+#define MAX_LOA_LEVEL    4
 #endif
 
 #ifndef TRUSONA_SLEEP
-#define TRUSONA_SLEEP 5 // 5 seconds
+#define TRUSONA_SLEEP    5 // 5 seconds
 #endif
 
 #ifndef MAX_STR
-#define MAX_STR 256
+#define MAX_STR    256
 #endif
 
 #ifndef FALSE
-#define FALSE 0
+#define FALSE    0
 #undef TRUE
-#define TRUE !FALSE
+#define TRUE     !FALSE
 #endif
 
 #ifndef TRUSONA_LIB
-#define TRUSONA_LIB "TRUSONA"
+#define TRUSONA_LIB    "TRUSONA"
 #endif
 
-const enum TRUSONA_SDK_RESULT trusonafy_v1(const char* json_settings, const char* email_or_trusona_id);
+const enum TRUSONA_SDK_RESULT trusonafy_v1(const char *json_settings, const char *email_or_trusona_id);
 
 // default; with prompt and with presence
-const enum TRUSONA_SDK_RESULT trusonafy_v2(const char* json_settings, const char* user_identifier);
+const enum TRUSONA_SDK_RESULT trusonafy_v2(const char *json_settings, const char *user_identifier);
 
-const enum TRUSONA_SDK_RESULT trusonafy_v2_ext(const char* json_settings, const char* user_identifier, const bool prompt, const bool presence);
+const enum TRUSONA_SDK_RESULT trusonafy_v2_ext(const char *json_settings, const char *user_identifier, const bool prompt, const bool presence);
 
-#endif /* TRUSONA_H */
+#endif // TRUSONA_H

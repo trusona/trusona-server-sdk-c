@@ -17,11 +17,11 @@
 #ifndef TRUSONA_SESSION_H
 #define TRUSONA_SESSION_H
 
-
-typedef struct TrusonaSession {
-  int input_type;
-  int desired_level;
-  int expires_in_x_seconds;
+typedef struct TrusonaSession
+{
+  int   input_type;
+  int   desired_level;
+  int   expires_in_x_seconds;
 
   char *user_identifier;
   char *trusonafications_uri;
@@ -33,11 +33,10 @@ typedef struct TrusonaSession {
   char *action;
   char *resource;
 
-  bool user_presence;
-  bool prompt;
+  bool  user_presence;
+  bool  prompt;
 
-  bool valid;
-
+  bool  valid;
 } TrusonaSession;
 
-#endif /* TRUSONA_SESSION_H */
+#endif // TRUSONA_SESSION_H

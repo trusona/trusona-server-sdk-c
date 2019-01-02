@@ -15,7 +15,7 @@
 // limitations under the License.
 
 #include <check.h>
-#include "../utils.h"
+#include "../file_utils.h"
 
 const char *r_file = "test.empty.txt";
 const char *r_link = "test.link.txt";

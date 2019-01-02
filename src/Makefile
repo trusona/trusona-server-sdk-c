@@ -22,10 +22,11 @@ all: objects
 
 objects: clean
 	gcc $(INCLUDES) -Wall -fPIC -c trusonafication.c
+	gcc $(INCLUDES) -Wall -fPIC -c file_utils.c
+	gcc $(INCLUDES) -Wall -fPIC -c str_utils.c
 	gcc $(INCLUDES) -Wall -fPIC -c internal.c
 	gcc $(INCLUDES) -Wall -fPIC -c trusona.c
 	gcc $(INCLUDES) -Wall -fPIC -c base64.c
-	gcc $(INCLUDES) -Wall -fPIC -c utils.c
 	gcc $(INCLUDES) -Wall -fPIC -c json.c
 	gcc $(INCLUDES) -Wall -fPIC -c hmac.c
 	gcc $(INCLUDES) -Wall -fPIC -c net.c

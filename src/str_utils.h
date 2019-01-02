@@ -14,30 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef TRUSONA_INTERNAL_H
-#define TRUSONA_INTERNAL_H
+#ifndef TRUSONA_STR_UTILS_H
+#define TRUSONA_STR_UTILS_H
 
 #include "trusona.h"
-#include "str_utils.h"
 
-#ifndef VALID_REQ
-#define VALID_REQ    0
-#endif
+char *trim(const char *str);
 
-#ifndef INVALID_REQ
-#define INVALID_REQ    -1
-#endif
+char *concat_str(const char *arr1, const char *arr2);
 
-struct MemoryStruct
-{
-  char * data;
-  size_t size;
-};
+void append_str(char **buffer, const char *data);
 
-TrusonaSession load_settings(const char *json_settings_file);
-
-char *now_rfc1123();
-
-char *rfc8601(int from_now_seconds);
-
-#endif // TRUSONA_INTERNAL_H
+#endif // TRUSONA_STR_UTILS_H

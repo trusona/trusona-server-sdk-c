@@ -19,18 +19,18 @@ INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 COMPILE_OPTIONS=-L$(LOCAL_LIBS) $(INCLUDES) -Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS)
 
 build: clean
-	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_file_perms_utils.c -lcheck -ltrusona -o check_file_perms_utils.bin
-	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_owned_by_utils.c   -lcheck -ltrusona -o check_owned_by_utils.bin
-	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_trim_utils.c       -lcheck -ltrusona -o check_trim_utils.bin
-	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_hmac.c             -lcheck -ltrusona -o check_hmac.bin
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_file_perms.c -lcheck -ltrusona -o check_file_perms.bin
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_owned_by.c   -lcheck -ltrusona -o check_owned_by.bin
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_trim.c       -lcheck -ltrusona -o check_trim.bin
+	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_hmac.c       -lcheck -ltrusona -o check_hmac.bin
 	@ln -sf ../libtrusona.* .
 
 clean:
 	@rm -f *.bin libtrusona.*
 
 test: build
-	@./check_file_perms_utils.bin
-	@./check_owned_by_utils.bin
-	@./check_trim_utils.bin
+	@./check_file_perms.bin
+	@./check_owned_by.bin
+	@./check_trim.bin
 	@./check_hmac.bin
 	@make clean

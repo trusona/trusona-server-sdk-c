@@ -16,26 +16,6 @@
 
 #include "internal.h"
 
-char *concat_str(const char *arr1, const char *arr2)
-{
-  char *val = calloc(1, sizeof(char) * MAX_STR);
-
-  if (val != NULL) {
-    append_str(&val, arr1);
-    append_str(&val, arr2);
-
-    int c = strnlen(arr1, MAX_STR) + strnlen(arr2, MAX_STR);
-    val[c] = '\0';
-  }
-
-  return(val);
-}
-
-void append_str(char **buffer, const char *data)
-{
-  strncat(*buffer, data, strnlen(data, MAX_STR));
-}
-
 char *generate_guid()
 {
   uuid_t raw_guid;

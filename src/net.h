@@ -23,4 +23,4 @@ int get_request(TrusonaSession settings, const char *uri, char **response);
 
 int post_request(TrusonaSession settings, const char *uri, const char *post_data, char **response);
 
-#endif /* TRUSONA_NET_H */
+#endif // TRUSONA_NET_H
