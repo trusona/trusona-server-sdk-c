@@ -23,7 +23,7 @@ To successfully run the tests, you will need to install the [check](https://libc
 
 ## Building & Installation
 
-With all the dependencies in place, `[sudo] make all` should complete successfully.
+With all the dependencies in place, `make all` should complete successfully.
 
 By default, `[sudo] make install` will install the shared libraries into `/usr/local/lib`.
 
