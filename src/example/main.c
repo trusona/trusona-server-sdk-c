@@ -17,6 +17,11 @@
 #include <getopt.h>
 
 #include "../trusona.h"
+//
+// OR the following after "make install"
+//
+// #include <trusona/trusona.h>
+//
 
 const char *default_json_settings = "/usr/local/etc/trusona/settings.json";
 
