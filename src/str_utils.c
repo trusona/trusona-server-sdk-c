@@ -18,14 +18,18 @@
 
 char *concat_str(const char *arr1, const char *arr2)
 {
-  char *val = calloc(1, sizeof(char) * MAX_STR);
+  char *val = NULL;
 
-  if (val != NULL) {
-    append_str(&val, arr1);
-    append_str(&val, arr2);
+  if (arr1 != NULL && arr2 != NULL) {
+    val = calloc(1, sizeof(char) * MAX_STR);
 
-    int c = strnlen(arr1, MAX_STR) + strnlen(arr2, MAX_STR);
-    val[c] = '\0';
+    if (val != NULL) {
+      append_str(&val, arr1);
+      append_str(&val, arr2);
+
+      int c = strnlen(arr1, MAX_STR) + strnlen(arr2, MAX_STR);
+      val[c] = '\0';
+    }
   }
 
   return(val);

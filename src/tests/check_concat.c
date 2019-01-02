@@ -17,26 +17,27 @@
 #include <check.h>
 #include "../str_utils.h"
 
-START_TEST(will_remove_leading_and_trailing_whitespaces)
+START_TEST(will_concatenate_strings_successfully)
 {
-  ck_assert_pstr_eq(trim("     test"), "test");
-  ck_assert_pstr_eq(trim("   test  "), "test");
-  ck_assert_pstr_eq(trim("test     "), "test");
-  ck_assert_pstr_eq(trim("test"), "test");
+  ck_assert_pstr_eq(concat_str("1234", "5678"), "12345678");
+  ck_assert_pstr_eq(concat_str("", "test"), "test");
+  ck_assert_pstr_eq(concat_str("test", ""), "test");
+  ck_assert_pstr_eq(concat_str("", ""), "");
 }
 END_TEST;
 
-START_TEST(will_not_fail_on_blank_input)
+START_TEST(will_not_trim_spaces_from_concatenated_strings)
 {
-  ck_assert_pstr_eq(trim("  "), "");
-  ck_assert_pstr_eq(trim(""), "");
+  ck_assert_pstr_eq(concat_str(" 1234 ", " 5678 "), " 1234  5678 ");
+  ck_assert_pstr_eq(concat_str(" ", " "), "  ");
 }
 END_TEST;
 
-START_TEST(will_not_fail_on_NULL_input)
+START_TEST(will_return_NULL_if_any_inputs_are_NULL)
 {
-  ck_assert_pstr_eq(trim(NULL), NULL);
-  ck_assert_pstr_ne(trim(NULL), "");
+  ck_assert_pstr_eq(concat_str(NULL, " test "), NULL);
+  ck_assert_pstr_eq(concat_str(NULL, NULL), NULL);
+  ck_assert_pstr_eq(concat_str("test", NULL), NULL);
 }
 END_TEST;
 
@@ -45,12 +46,12 @@ Suite *utils_suite(void)
   Suite *suite;
   TCase *tests;
 
-  suite = suite_create("Trim Tests");
+  suite = suite_create("String Concatenation Tests");
   tests = tcase_create("tests");
 
-  tcase_add_test(tests, will_remove_leading_and_trailing_whitespaces);
-  tcase_add_test(tests, will_not_fail_on_blank_input);
-  tcase_add_test(tests, will_not_fail_on_NULL_input);
+  tcase_add_test(tests, will_concatenate_strings_successfully);
+  tcase_add_test(tests, will_not_trim_spaces_from_concatenated_strings);
+  tcase_add_test(tests, will_return_NULL_if_any_inputs_are_NULL);
 
   suite_add_tcase(suite, tests);
 
@@ -70,5 +71,5 @@ int main(void)
   srunner_run_all(runner, CK_NORMAL);
   failures = srunner_ntests_failed(runner);
   srunner_free(runner);
-  return((failures == 0) ? EXIT_SUCCESS : EXIT_FAILURE);
+  return(failures == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
