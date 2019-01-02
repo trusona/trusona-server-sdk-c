@@ -17,28 +17,48 @@
 #include <check.h>
 #include "../str_utils.h"
 
-START_TEST(will_concatenate_strings_successfully)
+char *buffer = NULL;
+
+void setup()
 {
-  ck_assert_pstr_eq(concat_str("1234", "5678"), "12345678");
-  ck_assert_pstr_eq(concat_str("", "test"), "test");
-  ck_assert_pstr_eq(concat_str("test", ""), "test");
-  ck_assert_pstr_eq(concat_str("", ""), "\0");
-  ck_assert_pstr_eq(concat_str("", ""), "");
+  buffer = calloc(1, sizeof(char) * MAX_STR);
+}
+
+void teardown()
+{
+  free(buffer);
+  buffer = NULL;
+}
+
+START_TEST(will_append_strings_successfully)
+{
+  strcpy(buffer, "1234");
+  append_str(&buffer, "5678");
+  ck_assert_pstr_eq(buffer, "12345678");
 }
 END_TEST;
 
-START_TEST(will_not_trim_spaces_from_concatenated_strings)
+START_TEST(will_append_strings_with_whitespace_successfully)
 {
-  ck_assert_pstr_eq(concat_str(" 1234 ", " 5678 "), " 1234  5678 ");
-  ck_assert_pstr_eq(concat_str(" ", " "), "  ");
+  strcpy(buffer, " 1234 ");
+  append_str(&buffer, " 5678 ");
+  ck_assert_pstr_eq(buffer, " 1234  5678 ");
 }
 END_TEST;
 
-START_TEST(will_return_NULL_if_any_inputs_are_NULL)
+START_TEST(will_not_perform_any_operations_if_source_is_NULL)
 {
-  ck_assert_pstr_eq(concat_str(NULL, " test "), NULL);
-  ck_assert_pstr_eq(concat_str(NULL, NULL), NULL);
-  ck_assert_pstr_eq(concat_str("test", NULL), NULL);
+  strcpy(buffer, " 1234 ");
+  append_str(&buffer, NULL);
+  ck_assert_pstr_eq(buffer, " 1234 ");
+}
+END_TEST;
+
+START_TEST(will_not_perform_any_operations_if_destination_is_NULL)
+{
+  append_str(NULL, "1234");
+  ck_assert_pstr_eq(buffer, "\0"); // OR
+  ck_assert_pstr_eq(buffer, "");
 }
 END_TEST;
 
@@ -47,12 +67,15 @@ Suite *utils_suite(void)
   Suite *suite;
   TCase *tests;
 
-  suite = suite_create("String Concatenation Tests");
+  suite = suite_create("String Append Tests");
   tests = tcase_create("tests");
 
-  tcase_add_test(tests, will_concatenate_strings_successfully);
-  tcase_add_test(tests, will_not_trim_spaces_from_concatenated_strings);
-  tcase_add_test(tests, will_return_NULL_if_any_inputs_are_NULL);
+  tcase_add_checked_fixture(tests, setup, teardown);
+
+  tcase_add_test(tests, will_append_strings_successfully);
+  tcase_add_test(tests, will_append_strings_with_whitespace_successfully);
+  tcase_add_test(tests, will_not_perform_any_operations_if_destination_is_NULL);
+  tcase_add_test(tests, will_not_perform_any_operations_if_source_is_NULL);
 
   suite_add_tcase(suite, tests);
 

@@ -37,7 +37,9 @@ char *concat_str(const char *arr1, const char *arr2)
 
 void append_str(char **buffer, const char *data)
 {
-  strncat(*buffer, data, strnlen(data, MAX_STR));
+  if (buffer != NULL && data != NULL) {
+    strncat(*buffer, data, strnlen(data, MAX_STR));
+  }
 }
 
 char *trim(const char *str)
