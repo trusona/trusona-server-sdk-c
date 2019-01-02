@@ -57,6 +57,7 @@ END_TEST;
 START_TEST(will_not_perform_any_operations_if_destination_is_NULL)
 {
   append_str(NULL, "1234");
+  ck_assert_pstr_eq(buffer, "\0"); // OR
   ck_assert_pstr_eq(buffer, "");
 }
 END_TEST;

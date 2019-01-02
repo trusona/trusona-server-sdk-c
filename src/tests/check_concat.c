@@ -22,6 +22,7 @@ START_TEST(will_concatenate_strings_successfully)
   ck_assert_pstr_eq(concat_str("1234", "5678"), "12345678");
   ck_assert_pstr_eq(concat_str("", "test"), "test");
   ck_assert_pstr_eq(concat_str("test", ""), "test");
+  ck_assert_pstr_eq(concat_str("", ""), "\0");
   ck_assert_pstr_eq(concat_str("", ""), "");
 }
 END_TEST;

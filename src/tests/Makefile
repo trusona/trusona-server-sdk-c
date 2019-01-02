@@ -33,10 +33,10 @@ clean:
 test: build
 	@./check_file_perms.bin
 	@./check_owned_by.bin
-	@./check_trim.bin
 	@./check_concat.bin
 	@./check_append.bin
 	@./check_hmac.bin
+	@./check_trim.bin
 	@make clean
 
 all: test

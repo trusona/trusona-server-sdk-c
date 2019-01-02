@@ -30,6 +30,9 @@ START_TEST(will_not_fail_on_blank_input)
 {
   ck_assert_pstr_eq(trim("  "), "");
   ck_assert_pstr_eq(trim(""), "");
+
+  ck_assert_pstr_eq(trim("  "), "\0");
+  ck_assert_pstr_eq(trim(""), "\0");
 }
 END_TEST;
 
