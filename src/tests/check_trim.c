@@ -19,17 +19,17 @@
 
 START_TEST(will_remove_leading_and_trailing_whitespaces)
 {
-  ck_assert_str_eq(trim("     test"), "test");
-  ck_assert_str_eq(trim("   test  "), "test");
-  ck_assert_str_eq(trim("test     "), "test");
-  ck_assert_str_eq(trim("test"), "test");
+  ck_assert_pstr_eq(trim("     test"), "test");
+  ck_assert_pstr_eq(trim("   test  "), "test");
+  ck_assert_pstr_eq(trim("test     "), "test");
+  ck_assert_pstr_eq(trim("test"), "test");
 }
 END_TEST;
 
 START_TEST(will_not_fail_on_blank_input)
 {
-  ck_assert_str_eq(trim("  "), "");
-  ck_assert_str_eq(trim(""), "");
+  ck_assert_pstr_eq(trim("  "), "");
+  ck_assert_pstr_eq(trim(""), "");
 }
 END_TEST;
 
