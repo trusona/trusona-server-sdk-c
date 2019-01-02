@@ -71,7 +71,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
 
   syslog(LOG_NOTICE, "%s: JSON sent to create trusonafication: %s\n", TRUSONA_LIB, body);
 
-  if (do_post_request(trusona_session, trusona_session.trusonafications_uri, body, &json) == INVALID_REQ) {
+  if (post_request(trusona_session, trusona_session.trusonafications_uri, body, &json) == INVALID_REQ) {
     return(rc = TRUSONA_SERVICE_ERROR);
   }
 
@@ -99,7 +99,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
 
   while (cnt < TRUSONA_MAX_WAIT)
   {
-    if (do_get_request(trusona_session, uri, &json) == INVALID_REQ) {
+    if (get_request(trusona_session, uri, &json) == INVALID_REQ) {
       rc = TRUSONA_INSUFFICIENT;
       break;
     }
