@@ -19,9 +19,10 @@
 
 #include <sys/stat.h>
 #include <math.h>
+#include <pwd.h>
 #include "../trusona.h"
 
-const char *configured_user_identifier(const char *home_dir);
+const char *configured_user_identifier(const char *home_dir, const uid_t p_uid);
 
 #endif
 
