@@ -63,6 +63,8 @@ char *now_rfc1123()
 
   strftime(val, MAX_STR, "%a, %d %b %Y %H:%M:%S %Z", timeinfo);
 
+  timeinfo = NULL;
+
   return(val);
 }
 
@@ -95,6 +97,9 @@ TrusonaSession load_settings(const char *json_settings_file)
 
     syslog(LOG_NOTICE, "%s: Yea! Settings loaded from '%s'", TRUSONA_LIB, json_settings_file);
   }
+
+  error = NULL;
+  root  = NULL;
 
   return(trusona_settings);
 }

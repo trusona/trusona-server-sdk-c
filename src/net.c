@@ -109,7 +109,7 @@ int get_request(TrusonaSession trusona_session, const char *uri, char **json)
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&output);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, false);
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, false); // todo: make this configurable
     curl_easy_setopt(curl, CURLOPT_URL, url);
 
     code = curl_easy_perform(curl);
@@ -194,7 +194,7 @@ int post_request(TrusonaSession trusona_session, const char *uri, const char *po
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&output);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_data);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, false);
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, false); // todo: make this configurable
     curl_easy_setopt(curl, CURLOPT_URL, url);
 
     code = curl_easy_perform(curl);
@@ -210,15 +210,18 @@ int post_request(TrusonaSession trusona_session, const char *uri, const char *po
       strncpy(*json, output.data, cnt);
     }
     else {
-      syslog(LOG_WARNING, "%s: %s: Failed POST to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
+      syslog(LOG_NOTICE, "%s: %s: Failed POST to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
       *json = NULL;
     }
 
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
 
-    //auth_header = hmac_parts = signature = NULL;
-    //md5_hash    = url = now = NULL;
+    auth_header = hmac_parts = signature = NULL;
+    md5_hash    = url = now = NULL;
+  }
+  else {
+    syslog(LOG_NOTICE, "%s: Failed to initialize curl library", TRUSONA_LIB);
   }
 
   curl_global_cleanup();
