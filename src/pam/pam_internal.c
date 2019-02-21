@@ -44,7 +44,7 @@ const char *file_contents(const char *filename)
   return(trim(file_buffer));
 }
 
-const char *configured_user_identifier(const char *home_dir)
+const char *configured_user_identifier(const char *home_dir, const uid_t p_uid)
 {
   const uid_t e_uid = geteuid();
   const uid_t c_uid = getuid();
@@ -66,8 +66,8 @@ const char *configured_user_identifier(const char *home_dir)
     syslog(LOG_WARNING, "%s: %s/.trusona does not exist or is not a regular file", TRUSONA_LIB, home_dir);
     return(NULL);
   }
-  else if (owner != e_uid) {
-    syslog(LOG_WARNING, "%s: %s/.trusona is not owned by the current user with ID %d", TRUSONA_LIB, home_dir, e_uid);
+  else if (owner != p_uid) {
+    syslog(LOG_WARNING, "%s: %s/.trusona is owned by UID %d; the current user has UID %d", TRUSONA_LIB, home_dir, owner, p_uid);
     return(NULL);
   }
   else if (perms == 600 || perms == 400) {
@@ -76,7 +76,7 @@ const char *configured_user_identifier(const char *home_dir)
     return(user_identifier);
   }
   else {
-    syslog(LOG_WARNING, "%s: File permissions for '%s' are expected to be 0400 or 0600", TRUSONA_LIB, file);
+    syslog(LOG_WARNING, "%s: File permissions (currently: %d) for '%s' are expected to be 0400 or 0600", TRUSONA_LIB, perms, file);
     return(NULL);
   }
 }

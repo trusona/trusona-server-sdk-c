@@ -22,6 +22,8 @@ const json_t *get_object(char **json, const char *key)
   json_t *     root   = json_loads(*json, 0, &error);
   json_t *     result = json_object_get(root, key);
 
+  root = NULL;
+
   return(result);
 }
 
@@ -35,7 +37,7 @@ const char *json_str_value(char **json, const char *data)
     return(NULL);
   }
 
-  const char *key;
+  const char *key = NULL;
   char *      val = NULL;
   json_t *    value;
 
@@ -45,6 +47,9 @@ const char *json_str_value(char **json, const char *data)
       val = (char *)json_string_value(value);
     }
   }
+
+  key   = NULL;
+  value = NULL;
 
   return(val);
 }
@@ -65,9 +70,16 @@ const int json_int_value(char **json, const char *data)
   json_object_foreach(root, key, value)
   {
     if (strcmp(key, data) == 0) {
+      root = NULL;
+      key  = NULL;
+
       return((int)json_integer_value(value));
     }
   }
+
+  root  = NULL;
+  key   = NULL;
+  value = NULL;
 
   return(INT_MIN);
 }
@@ -80,9 +92,12 @@ const int get_int_value(json_t *root, const char *data)
   json_object_foreach(root, key, value)
   {
     if (strcmp(key, data) == 0) {
+      key = NULL;
       return((int)json_integer_value(value));
     }
   }
+
+  key = NULL;
 
   return(INT_MIN);
 }
@@ -99,6 +114,9 @@ const char *get_str_value(json_t *root, const char *data)
       val = (char *)json_string_value(value);
     }
   }
+
+  key   = NULL;
+  value = NULL;
 
   return(val);
 }

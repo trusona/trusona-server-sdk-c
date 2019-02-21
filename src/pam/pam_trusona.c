@@ -30,7 +30,7 @@ int pam_trusona(pam_handle_t *pam, int flags, int argc, const char **argv)
   bool tilted   = FALSE;
   int  i;
 
-  struct passwd *pwd;
+  const struct passwd *pwd;
   struct key_value
   {
     char *key;
@@ -75,7 +75,7 @@ int pam_trusona(pam_handle_t *pam, int flags, int argc, const char **argv)
   settings = settings == NULL ? default_settings : settings;
 
   if ((pwd = getpwnam(username)) != NULL) {
-    user_identifier = configured_user_identifier(pwd->pw_dir);
+    user_identifier = configured_user_identifier(pwd->pw_dir, pwd->pw_uid);
   }
 
   if (user_identifier == NULL && domain != NULL) {
