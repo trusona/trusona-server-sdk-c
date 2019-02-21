@@ -75,7 +75,7 @@ This file must be a regular file - not a symbolic link - and should have octal p
 
 The file must be owned by the owner of `$HOME`.
 
-At runtime, `getuid()` must equal `geteuid()` as a precaution against any `setuid(uid_t)` bugs.
+At runtime, `getuid()` must equal `geteuid()` as a precaution against any `setuid(uid_t)` [vulnerabilities](http://timetobleed.com/detailed-explanation-of-a-recent-privilege-escalation-bug-in-linux-cve-2010-3301/).
 
 Additionally, the contents of this file should be less than 128 bytes; otherwise, bytes beyond that count will be ignored.
 
