@@ -22,4 +22,4 @@ notifications:
     on_success: always
     on_failure: always
     rooms:
-      - scifry:kuS40rO81YsCx92RjfEZZpsy
+      - lighthauz:L9vNoLRwptkWOXxmnX7ztYjQ
