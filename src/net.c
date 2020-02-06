@@ -116,7 +116,7 @@ int get_request(TrusonaSession trusona_session, const char *uri, char **json)
 
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
-    if (code == CURLE_OK && (status == 200 || status == 201)) {
+    if (code == CURLE_OK && status == 200) {
       syslog(LOG_NOTICE, "%s: %s: Successful GET to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
 
       int cnt = output.size + 1;
@@ -201,7 +201,7 @@ int post_request(TrusonaSession trusona_session, const char *uri, const char *po
 
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
 
-    if (code == CURLE_OK && (status == 200 || status == 201)) {
+    if (code == CURLE_OK && status == 201) {
       syslog(LOG_NOTICE, "%s: %s: Successful POST to %s (%lu)", TRUSONA_LIB, trusona_session.request_id, url, status);
 
       int cnt = output.size + 1;
