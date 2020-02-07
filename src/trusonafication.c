@@ -20,6 +20,7 @@ static const char *ACCEPTED_AT_HIGHER_LEVEL_CODE = "ACCEPTED_AT_HIGHER_LEVEL";
 static const char *ACCEPTED_AT_LOWER_LEVEL_CODE  = "ACCEPTED_AT_LOWER_LEVEL";
 static const char *ACCEPTED_CODE = "ACCEPTED";
 static const char *REJECTED_CODE = "REJECTED";
+static const char *CANCELED_CODE = "CANCELED";
 
 char *create_trusonafication(struct TrusonaSession trusona_session)
 {
@@ -145,7 +146,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
         break;
       }
     }
-    else if (status && strcmp(status, REJECTED_CODE) == 0) {
+    else if (status && (strcmp(status, CANCELED_CODE) == 0 || strcmp(status, REJECTED_CODE) == 0)) {
       rc = TRUSONA_FAILURE;
       break;
     }
