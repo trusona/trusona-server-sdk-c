@@ -1,6 +1,6 @@
 // Apache License. Version 2.0, January 2004
 //
-// Copyright (c) 2016, 2017, 2018 Trusona Inc (https://trusona.com) All Rights Reserved
+// Copyright (c) 2016-2020 Trusona Inc (https://trusona.com) All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ char *rfc8601(int from_now_seconds)
   char *val = calloc(1, sizeof(char) * MAX_STR);
 
   long secs = from_now_seconds + time(&rawtime);
+
   timeinfo = gmtime(&secs);
 
   strftime(val, MAX_STR, "%Y-%m-%dT%H:%M:%SZ", timeinfo);
@@ -76,6 +77,7 @@ TrusonaSession load_settings(const char *json_settings_file)
   root = json_load_file(json_settings_file, 0, error);
 
   struct TrusonaSession trusona_settings;
+
   trusona_settings.valid = false;
 
   if (root) {

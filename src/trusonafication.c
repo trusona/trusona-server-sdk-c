@@ -1,6 +1,6 @@
 // Apache License. Version 2.0, January 2004
 //
-// Copyright (c) 2016, 2017, 2018 Trusona Inc (https://trusona.com) All Rights Reserved
+// Copyright (c) 2016-2020 Trusona Inc (https://trusona.com) All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,6 +78,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
   }
 
   const char *trusonafication_id = json_str_value(&json, "id");
+
   status = (char *)json_str_value(&json, "status");
 
   if (!trusonafication_id || strcmp(status, "IN_PROGRESS") != 0) {
@@ -97,6 +98,7 @@ const enum TRUSONA_SDK_RESULT trusonafy(TrusonaSession trusona_session)
   }
 
   unsigned int cnt = 0;
+
   json = NULL;
 
   while (cnt < TRUSONA_MAX_WAIT)
