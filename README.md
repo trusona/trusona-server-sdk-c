@@ -1,6 +1,6 @@
 # Trusona C SDK
 
-[![Build Status](https://travis-ci.com/lighthauz/trusona-c-sdk.svg?token=ERoqgs7tKf7xAGTsABr8&branch=master)](https://travis-ci.com/lighthauz/trusona-c-sdk)
+[![Build Status](https://travis-ci.com/trusona/trusona-server-sdk-c.svg?token=ERoqgs7tKf7xAGTsABr8&branch=master)](https://travis-ci.com/trusona/trusona-server-sdk-c)
 
 ## Build Tools
 
