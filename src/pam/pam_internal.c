@@ -1,6 +1,6 @@
 // Apache License. Version 2.0, January 2004
 //
-// Copyright (c) 2016, 2017, 2018 Trusona Inc (https://trusona.com) All Rights Reserved
+// Copyright (c) 2016-2020 Trusona Inc (https://trusona.com) All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ const char *file_contents(const char *filename)
 
   fseek(file, 0, SEEK_END);
   long file_size = min(ftell(file), 128); // max bytes are 128
+
   fseek(file, 0, SEEK_SET);
 
   if (file_size <= 0) {
@@ -39,6 +40,7 @@ const char *file_contents(const char *filename)
   }
 
   char *file_buffer = calloc(1, sizeof(char) * (file_size + 1)); // plus 1 for \0
+
   fread(file_buffer, 1, file_size, file);
   fclose(file);
   return(trim(file_buffer));

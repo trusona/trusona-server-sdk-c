@@ -1,6 +1,6 @@
 // Apache License. Version 2.0, January 2004
 //
-// Copyright (c) 2016, 2017, 2018 Trusona Inc (https://trusona.com) All Rights Reserved
+// Copyright (c) 2016-2020 Trusona Inc (https://trusona.com) All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,11 +63,12 @@
 
 #ifndef CONST
 #  if defined(__sun) || defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__APPLE__)
+
 /*
  *  On older versions of Solaris, you may have to change this to:
  *  #define CONST
  */
-#    define CONST const
+#    define CONST    const
 #  else
 #    define CONST
 #  endif
@@ -75,30 +76,29 @@
 
 #ifndef PAM_EXTERN
 #  ifdef __sun
-#    define PAM_EXTERN extern
+#    define PAM_EXTERN    extern
 #  else
 #    define PAM_EXTERN
 #  endif
 #endif
 
-
 /*************************************************************************
 * Useful macros and defines
 *************************************************************************/
 
-#define _pam_forget(X) if (X) {memset(X, 0, strlen(X)); free(X); X = NULL; }
+#define _pam_forget(X)    if (X) { memset(X, 0, strlen(X)); free(X); X = NULL; }
 #ifndef _pam_drop
-#define _pam_drop(X) if (X) {free(X); X = NULL; }
+#define _pam_drop(X)      if (X) { free(X); X = NULL; }
 #endif
 
-#define PAM_DEBUG_ARG      1
-#define PAM_SKIP_PASSWD    2
-#define PAM_USE_FIRST_PASS 4
-#define PAM_TRY_FIRST_PASS 8
-#define PAM_RUSER_ARG      16
+#define PAM_DEBUG_ARG         1
+#define PAM_SKIP_PASSWD       2
+#define PAM_USE_FIRST_PASS    4
+#define PAM_TRY_FIRST_PASS    8
+#define PAM_RUSER_ARG         16
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE           1024
 #endif
 
 #ifndef PAM_SM_AUTH
