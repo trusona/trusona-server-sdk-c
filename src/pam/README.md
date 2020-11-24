@@ -1,92 +1,196 @@
-# Trusona PAM Configuration
+# Configuring Trusona C SDK for PAM
 
-PAM Configuration varies across Linux & Unix distributions; however the gist of the settings is always the same.
+This guide assumes a new install and was written for Ubuntu v20 LTS. Some steps may not be required on an existing and configured installation. Other flavors of linux will be similar, but package names, paths, and directories will differ.
 
-It typically involves:
-  - naming an authorization process i.e. `auth`, `account`, `password`, or `session`
-  - providing a control flag - `optional` or `required`
-  - the name (and path?) of the configured module; and
-  - key-value settings if required by the module
+## Dependencies
+
+The following dependencies are required to build the Trusona C SDK:
+
+* [libcurl](https://curl.haxx.se/libcurl/c)
+* [jansson](https://github.com/akheron/jansson)
+* [openssl](https://www.openssl.org)
+* [ossp-uuid](https://github.com/sean-/ossp-uuid)
+
+On Ubuntu, they can be installed with:
+
+```bash
+sudo apt install build-essential uuid-dev libcurl4-openssl-dev lib-jansson-dev libssl-dev libpam0g-dev
+```
+
+### SDK token and secret
+
+To use the Trusona C SDK, you'll need an SDK token and secret.
+
+1. Navigate to https://dashboard.trusona.com
+2. Login using Trusona
+3. Click "SDK Credentials" in the sidebar navigation
+4. Click the "Create Server Credentials" button
+5. Save your token and secret in a safe and secure place
+
+## Build the SDK
+
+1. Clone or download the Trusona C SDK
+2. Make and install the project
+
+```bash
+
+sudo make && sudo make install
+
+```
+
+## Configuration
 
 
-## Trusona PAM Settings
-Trusona's PAM module has several key-value settings:
+### Trusona settings
 
-- `settings`
-  - Optional
-  - If provided, expected to be the absolute path to the Trusona settings JSON file
-  - If not provided, the default path of `/usr/local/etc/trusona/settings.json` is used
+Create a `trusona` directory in `/usr/local/etc`:
 
-- `tilted`
-  - Optional
-  - Expected to be either `yes` or `no`
-  - If `yes`, a 2nd generation trusonafication will be sent
+```bash
 
-- `prompt`
-  - Optional
-  - Expected to be either `yes` or `no`
-  - Only valid when `tilted=yes` is also specified
-  - If `yes`, trusonafication will require an affirming prompt; otherwise not
+sudo mkdir /usr/local/etc/trusona
 
-- `presence`
-  - Optional
-  - Expected to be either `yes` or `no`
-  - Only valid when `tilted=yes` is also specified
-  - If `yes`, trusonafication will require verification of presence, otherwise not
+```
 
-- `domain`
-  - Optional
-  - Would be a top-level email domain - for instance `example.com`
-  - If provided, it is appended to the username to form a valid email address to be sent a trusonafication
+Create a file `settings.json` in the `/usr/local/etc` directory:
 
-## The `settings.json` file
-The settings file is a JSON file with a simple object with various properties that are needed by the PAM module.
+```bash
 
-By default, it is expected to be found at `/usr/local/etc/trusona/settings.json`
+touch /usr/local/etc/trusona/settings.json
 
-| name | type | description | required? |
-|------|------|-------------|-----------|
-| `access_token` | string | your server SDK token from Trusona | yes |
-| `mac_key` | string | your server SDK secret from Trusona | yes |
-| `api_host` | string | Base URL for Trusona services. Use `https://api.trusona.net` unless otherwise instructed | yes |
-| `desired_level` | integer | Set to `2` for Essential, `3` for Executive | yes |
-| `action` | string | The `action` shown to the user in the Trusonafication prompt | yes |
-| `resource` | string | The `resource` shown to the user in the Trusonafication prompt | yes |
-| `expires_in_x_seconds` | integer | number of seconds before the Trusonafication expires (must be within 0-300) | no |
+```
 
-### Example
-```json
+Edit the file to add the following Trusona settings:
+
+```
 {
-  "access_token": "real_access_token",
-  "mac_key": "real_mac_key",
+  "access_token": "<your token here>",
+  "mac_key": "<your secret here>",
   "api_host": "https://api.trusona.net",
   "desired_level": 2,
   "expires_in_x_seconds": 99,
-  "action": "action",
-  "resource": "resource"
+  "action": "login",
+  "resource": "Ubuntu"
 }
 ```
 
-## User Identifier Configuration via `$HOME/.trusona`
-
-An alternative way to specify a user identifier that is different from the username is to create a file at `$HOME/.trusona` and insert a single line of the desired user identifier who owns `$HOME`.
-
-This file must be a regular file - not a symbolic link - and should have octal permissions of `10400` or `10600`.
-
-The file must be owned by the owner of `$HOME`.
-
-At runtime, `getuid()` must equal `geteuid()` as a precaution against any `setuid(uid_t)` [vulnerabilities](http://timetobleed.com/detailed-explanation-of-a-recent-privilege-escalation-bug-in-linux-cve-2010-3301/).
-
-Additionally, the contents of this file should be less than 128 bytes; otherwise, bytes beyond that count will be ignored.
-
-Finally, if this file is found, and its contents read, concatenation of the value specified by the `domain` setting will not be done.
+|     Setting name     |                            Description                            |
+| :------------------- | :---------------------------------------------------------------- |
+| access_token         | The Trusona API token you got from https://dashboard.trusona.com  |
+| mac_key              | The Trusona API secret you got from https://dashboard.trusona.com |
+| api_host             | Trusona's API host                                                |
+| desired_level        | 2 – For Trusona Essential, 3 – For Trusona Executive              |
+| expires_in_x_seconds | Trusonafication expiration time in seconds                        |
+| action               | The action displayed to the user when authenticating              |
+| resource             | The resource displayed to the user when authenticating            |
 
 
+### Trusona PAM configuration
 
-### Example
+Move the generated `pam_trusona.so` and `libtrusona.so` files from `/usr/local/lib` to `/usr/local`:
 
-```plain
-auth required /absolute/path/to/pam_trusona.so  \
-  settings=/absolute/path/to/trusona/settings.json  \
-    domain=[optional-example.com] prompt=[no|yes] presence=[no|yes] tilted=[no|yes]
+```bash
+
+sudo mv /usr/local/lib/pam_trusona.so /usr/lib
+sudo mv /usr/local/lib/libtrusona.so /usr/lib
 ```
+
+Create a new PAM configuration file in `/etc/pam.d/sshd`:
+
+```bash
+
+sudo touch /etc/pam.d/sshd/trusona
+```
+
+Edit the file to include the following:
+
+```plaintext
+
+session required /usr/lib/pam_trusona.so settings=/usr/local/etc/trusona/settings.json prompt=yes presence=yes tilted=no
+```
+
+To enable Trusona for SSHD, edit `/etc/pam.d/sshd` to include a reference to Trusona.
+
+An abbreviated example of `/etc/pam.d/ssh` with `@include trusona` directive:
+
+```plaintext
+# ...snip...
+
+# Create a new session keyring.
+session    optional     pam_keyinit.so force revoke
+
+# Standard Un*x session setup and teardown.
+@include common-session
+
+@include trusona
+
+# Print the message of the day upon successful login.
+# This includes a dynamically generated part from /run/motd.dynamic
+# and a static (admin-editable) part from /etc/motd.
+session    optional     pam_motd.so  motd=/run/motd.dynamic
+session    optional     pam_motd.so noupdate
+
+# ...snip...
+```
+
+### User configuration
+
+Each user connecting to the system with SSH needs to define their Trusona username in their home directory. In the following example, we will configure your user.
+
+Create a file named `.trusona` in your home directory:
+
+```bash
+touch ~/.trusona
+```
+
+In this file, specify the email address you used to register in the Trusona App.
+
+```bash
+echo "user@example.com" > ~/.trusona
+```
+
+Restrict access to the file:
+
+```bash
+chmod 600 ~/.trusona
+```
+
+Some additional notes on user configuration:
+
+* This file must be a regular file - not a symbolic link - and should have octal permissions of `10400` or `10600`.
+* The file must be owned by the owner of `$HOME`.
+* At runtime, `getuid()` must equal `geteuid()` as a precaution against any `setuid(uid_t)` [vulnerabilities](http://timetobleed.com/detailed-explanation-of-a-recent-privilege-escalation-bug-in-linux-cve-2010-3301/).
+* Additionally, the contents of this file should be less than 128 bytes; otherwise, bytes beyond that count will be ignored.
+* Finally, if this file is found, and its contents read, concatenation of the value specified by the `domain` setting will not be done.
+
+### Testing the configuration
+
+To test the configuration, attempt to send yourself a Trusonafication:
+
+```bash
+
+sudo trusona --user user@example.com
+
+```
+
+Where user@example.com is the email address you used to register in the Trusona App.
+
+If the test fails, check the following:
+
+1. Permissions of `/usr/local/etc/trusona/settings.json`
+2. Validity of your API token and secret
+3. Your email address is correct
+4. Permissions and access of `~/.trusona`
+5. Typos in `/usr/local/etc/trusona/settings.json`
+
+## Enabling Trusona for SSH
+
+Before completing the following steps, ensure that you have existing access to the machine where Trusona is being enabled for SSH. **This is critical in the event you need to revert any changes**
+
+Restart the SSH service:
+
+```bash
+
+sudo service ssh restart
+
+```
+
