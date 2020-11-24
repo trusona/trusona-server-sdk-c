@@ -1,7 +1,3 @@
-branches:
-  only:
-  - /^master.*$/
-
 language: c
 compiler:
   - gcc
@@ -22,4 +18,4 @@ notifications:
     on_success: always
     on_failure: always
     rooms:
-      - lighthauz:L9vNoLRwptkWOXxmnX7ztYjQ
+      secure: "GE81cCQusHHozG9/jXDKQFKC79NcgxeALLD4UEozoLsM5ZZGAMId0axbgpJ3rb2pHZr6k2nVlmvsPrNSs3JG+z2eDYIoTFL/AfL71RniCgEK3xwT9M8ggHCHGX/fjSev9XEZjuYxc8Rcydbuw+axSdR9aVaW9H/iXkSRMVt7wz0lpIsLrvWzgBCxoFtOLElLX+u3szKiyHCkOI5E8vkZkZRwAWgZNfKpZwH4NcJ3n/DftdnsocIOqa2JAK5IeiFrm4DsWIYatmDofrzQGNAw2EV7Sxl3UZ16dlxKQZyxvWE9VDJcnp7/f1fPluNNqY22CUM3q95B040eRXokRi5nJKoRL+SHFF/V4e9YBFC3aBMJxXmWFiXepDcrSA7acxlWxLWzJ15ajckm00CiWtAYsxh48q3UBwVZJ+cgbIlL5AUX3ptkpbofXk0uPiAKCU7hFwr+/I9JI3mBAGUCfTUKG/lIHhtp7LpBIOnuRwXxrBwmjschq6ONKfiBPFD5p1NiIxJYfLM2HPdlAeisJ0ewXPlSUcCzkagH76YNwLn+B0MRwdGvPod1c5HrF5NLK++xezgWVhO0gashVDMdS5Wmo0w7lP8C8sXrC1X6uQtDUjpub1Q5I2IlOJyi5e+UjGkGJ/NzTjZGJeG+jpJUhwobj6YMD3xtkTSFl1yeIAnf/Qc="
