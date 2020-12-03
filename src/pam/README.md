@@ -67,21 +67,21 @@ Edit the file to add the following Trusona settings:
   "mac_key": "<your secret here>",
   "api_host": "https://api.trusona.net",
   "desired_level": 2,
-  "expires_in_x_seconds": 99,
+  "expires_in_x_seconds": 60,
   "action": "login",
   "resource": "Ubuntu"
 }
 ```
 
-|     Setting name     |                            Description                            |
-| :------------------- | :---------------------------------------------------------------- |
-| access_token         | The Trusona API token you got from https://dashboard.trusona.com  |
-| mac_key              | The Trusona API secret you got from https://dashboard.trusona.com |
-| api_host             | Trusona's API host                                                |
-| desired_level        | 2 – For Trusona Essential, 3 – For Trusona Executive              |
-| expires_in_x_seconds | Trusonafication expiration time in seconds                        |
-| action               | The action displayed to the user when authenticating              |
-| resource             | The resource displayed to the user when authenticating            |
+| Setting name         | Recommended value         | Description                                                       |
+|----------------------|:--------------------------|-------------------------------------------------------------------|
+| access_token         | Your production token     | The Trusona API token you got from https://dashboard.trusona.com  |
+| mac_key              | Your production secret    | The Trusona API secret you got from https://dashboard.trusona.com |
+| api_host             | `https://api.trusona.net` | Trusona's API host                                                |
+| desired_level        | `2`                       | 2 – For Trusona Essential, 3 – For Trusona Executive              |
+| expires_in_x_seconds | `60`                      | Trusonafication expiration time in seconds                        |
+| action               | `login`                   | The action displayed to the user when authenticating              |
+| resource             | SSH server host name      | The resource displayed to the user when authenticating            |
 
 
 ### Trusona PAM configuration
