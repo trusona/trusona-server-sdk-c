@@ -27,7 +27,7 @@ With all the dependencies in place, `make all` should complete successfully.
 
 By default, `[sudo] make install` will install the shared libraries into `/usr/local/lib`.
 
-Development headers will be installed into `/usr/local/include`
+Development headers will be installed into `/usr/local/include/trusona`
 
 
 ## API Usage
