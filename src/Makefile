@@ -15,6 +15,7 @@
 # limitations under the License.
 
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
+LIBRARY_PATH=/usr/local/opt/openssl/lib
 
 all: objects
 	if [ `uname` = "Linux" ] || [ `uname` = "FreeBSD" ]; then gcc -shared  *.o -luuid -lcurl -ljansson -lcrypto -o libtrusona.so; fi

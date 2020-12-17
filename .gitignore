@@ -57,3 +57,6 @@ dkms.conf
 .libs/
 *.slo
 *.bin
+
+# Mac Desktop Services Store
+.DS_Store
