@@ -10,16 +10,13 @@ You will need a [C](https://en.wikipedia.org/wiki/C_programming_language) langua
 
 - [libcurl](https://curl.haxx.se/libcurl/c) ver. 7.61.0, for interweb communication
 - [jansson](https://github.com/akheron/jansson) ver. [2.12](https://github.com/akheron/jansson/releases) for JSON manipulation
-- [openssl](https://www.openssl.org) ver. [1.0.2q](https://www.openssl.org/source) for cryptographic functions
+- [openssl](https://www.openssl.org) ver. [1.1.1](https://www.openssl.org/source) for cryptographic functions
 - [ossp-uuid](https://github.com/sean-/ossp-uuid) - or equivalent provider of `uuid/uuid.h` - for UUID v4 generation
 - [PAM](http://tldp.org/HOWTO/User-Authentication-HOWTO/x115.html) - optional. If you do not require PAM support, delete `src/pam` before running any `make` commands
 
 ### Test Dependencies
 
-To successfully run the tests, you will need to install the [check](https://libcheck.github.io/check) library in your local environment.
-
-> See their [installation](https://libcheck.github.io/check/web/install.html) page for various ways to get that accomplished.
-
+To successfully run the tests via `make test`, you will need to have the [check](https://libcheck.github.io/check) and [subunit](https://github.com/testing-cabal/subunit/tree/master/c) libraries in your environment.
 
 ## Building & Installation
 
