@@ -5,9 +5,10 @@ set -e
 ##
 ## grab latest Jansson - https://github.com/akheron/jansson
 ##
-wget -q https://github.com/akheron/jansson/archive/v2.12.tar.gz -O jansson-2.12.tar.gz
-tar xzf jansson-2.12.tar.gz
-cd jansson-2.12
+version=2.13.1
+wget -q https://github.com/akheron/jansson/archive/v$version.tar.gz -O jansson-$version.tar.gz
+tar xzf jansson-$version.tar.gz
+cd jansson-$version
 autoreconf --install
 ./configure
 make
@@ -18,9 +19,10 @@ cd ..
 ##
 ## Grab and install check - https://github.com/libcheck/check
 ##
-wget -q https://github.com/libcheck/check/archive/0.12.0.tar.gz -O check-0.12.0.tar.gz
-tar xzf check-0.12.0.tar.gz
-cd check-0.12.0
+version=0.15.2
+wget -q https://github.com/libcheck/check/archive/$version.tar.gz -O check-$version.tar.gz
+tar xzf check-$version.tar.gz
+cd check-$version
 autoreconf --install
 ./configure
 make
