@@ -19,7 +19,7 @@ INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 COMPILE_OPTIONS=-L$(LOCAL_LIBS) $(INCLUDES) -Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS)
 UNAME:=$(shell uname)
 
-ifeq ($(UNAME),Darwin)
+ifeq ($(UNAME), Darwin)
 	LIB_OPTIONS=-lcheck -ltrusona -lm -lpthread
 else
 	LIB_OPTIONS=-lcheck -ltrusona -lsubunit -lrt -lm -lpthread
