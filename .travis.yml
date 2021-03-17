@@ -17,7 +17,6 @@ install:
 
 stages:
   - name: build
-  - name: test
   - name: package
 
 jobs:
@@ -25,9 +24,6 @@ jobs:
   - name: build
     stage: build
     script: make
-  - name: test
-    stage: test
-    script: make test
   - name: package debian
     stage: package
     script: sudo -H debian/package-builder.sh 1.0.0
