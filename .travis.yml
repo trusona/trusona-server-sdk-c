@@ -12,6 +12,7 @@ install:
 
 script:
   - make
+  - make test
 
 notifications:
   slack:
