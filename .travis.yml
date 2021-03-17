@@ -24,9 +24,12 @@ jobs:
   - name: build
     stage: build
     script: make
-  - name: package debian
+  - name: package DEB package
     stage: package
     script: sudo -H debian/package-builder.sh 1.0.0
+  - name: package RPM package
+    stage: package
+    script: sudo -H rpm/package-builder.sh 1.0.0
 
 notifications:
   slack:
