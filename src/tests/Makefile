@@ -17,9 +17,13 @@
 LOCAL_LIBS=./..
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 COMPILE_OPTIONS=-L$(LOCAL_LIBS) $(INCLUDES) -Wl,-rpath,/usr/local/lib -Wl,-rpath,$(LOCAL_LIBS)
+UNAME:=$(shell uname)
 
-#LIB_OPTIONS=-lcheck -ltrusona -lsubunit -lrt -lm -lpthread
-LIB_OPTIONS=-lcheck -ltrusona
+ifeq ($(UNAME),Darwin)
+	LIB_OPTIONS=-lcheck -ltrusona -lm -lpthread
+else
+	LIB_OPTIONS=-lcheck -ltrusona -lsubunit -lrt -lm -lpthread
+endif
 
 build: clean
 	gcc $(COMPILE_OPTIONS) -Wall -fPIC check_file_perms.c $(LIB_OPTIONS) -o check_file_perms.bin
