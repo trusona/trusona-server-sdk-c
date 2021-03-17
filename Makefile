@@ -18,7 +18,6 @@ all:
 	make -C src
 	make -C src/example
 	if [ -d "src/pam" ]; then make -C src/pam; fi
-	@make test
 
 install:
 	make install -C src
