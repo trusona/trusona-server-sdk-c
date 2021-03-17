@@ -15,10 +15,22 @@ before_install:
 install:
   - sudo -H ci/dependencies.sh > /dev/null
 
-script:
-  - make
-  - make test
-  - sudo -H debian/package-builder.sh 1.0.0
+stages:
+  - name: build
+  - name: test
+  - name: package
+
+jobs:
+  include:
+  - name: build
+    stage: build
+    script: make
+  - name: test
+    stage: test
+    script: make test
+  - name: package debian
+    stage: package
+    script: sudo -H debian/package-builder.sh 1.0.0
 
 notifications:
   slack:
