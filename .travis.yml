@@ -32,12 +32,10 @@ jobs:
 
 deploy:
   - provider: releases
-    edge: true
     api_key: $GITHUB_ROBOT_TOKEN
     cleanup: false
     overwrite: true
-    file:
-      - trusona-server-sdk_$TRAVIS_BRANCH-1_amd64.deb
+    file: trusona-server-sdk_$TRAVIS_BRANCH-1_amd64.deb
     on:
       tags: true
 
