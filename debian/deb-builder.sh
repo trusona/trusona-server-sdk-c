@@ -3,10 +3,7 @@
 set -e
 
 version=$1
-
-if [ -z $version ]; then
-  version="0.0.1-unspecified"
-fi
+version=${version:=0.0.1-unspecified}
 
 if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-)?[a-z]*$ ]]; then
   echo "Error: expecting tag version in semver format e.g. 1.2.3 or 4.5.6-beta"
