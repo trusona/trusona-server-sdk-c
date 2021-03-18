@@ -26,7 +26,7 @@ jobs:
   include:
   - name: create .DEB package
     stage: package
-    script: sudo -H debian/deb-builder.sh 0.0.1-ci
+    script: sudo -H debian/deb-builder.sh
   - name: deploy to github
     stage: deploy
     if: tag IS present
