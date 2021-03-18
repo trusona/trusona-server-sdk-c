@@ -29,3 +29,5 @@ make
 make install
 
 cd ..
+
+rm -rf check-* jansson-*

@@ -6,7 +6,9 @@ compiler:
 
 env:
   global:
-    - PACKAGES="libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev dh-autoreconf autotools-dev clang cmake pkg-config texinfo libssl-dev libsubunit-dev libsubunit0 checkinstall"
+    - DEV_PACKAGES="libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev autotools-dev libssl-dev libsubunit-dev"
+    - BUILD_PACKAGES="dh-autoreconf clang cmake pkg-config texinfo libsubunit0 checkinstall obs-build"
+    - PACKAGES="$DEV_PACKAGES $BUILD_PACKAGES"
 
 before_install:
   - sudo -H apt-get -q -qq -y update > /dev/null
@@ -16,17 +18,28 @@ install:
   - sudo -H ci/dependencies.sh > /dev/null
 
 stages:
-  - name: build
-  - name: package
+  - test # travis magic because of compiler matrix
+  - package
+  - deploy
 
 jobs:
   include:
-  - name: build
-    stage: build
-    script: make
-  - name: package debian
+  - name: create .DEB package
     stage: package
-    script: sudo -H debian/package-builder.sh 1.0.0
+    script: sudo -H debian/deb-builder.sh
+  - name: deploy to github
+    stage: deploy
+    if: tag IS present
+    before_deploy: sudo -H debian/deb-builder.sh $TRAVIS_BRANCH
+    deploy:
+      - provider: releases
+        api_key: $GITHUB_ROBOT_TOKEN
+        overwrite: true
+        cleanup: false
+        edge: true
+        file: trusona-server-sdk_$TRAVIS_BRANCH-1_amd64.deb
+        on:
+          tags: true
 
 notifications:
   slack:
