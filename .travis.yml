@@ -18,9 +18,10 @@ install:
   - sudo -H ci/dependencies.sh > /dev/null
 
 stages:
-  - name: build
-  - name: package
-  - name: deploy
+  - build
+  - test
+  - package
+  - deploy
 
 jobs:
   include:
