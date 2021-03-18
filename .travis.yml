@@ -31,7 +31,8 @@ jobs:
     script: sudo -H debian/deb-builder.sh 0.0.1-ci
 
 before_deploy:
-  - rm -rf check-* jansson-*
+  - sudo -H rm -rf check-* jansson-*
+  - sudo -H debian/deb-builder.sh 0.0.1-ci
 
 deploy:
   - provider: releases
