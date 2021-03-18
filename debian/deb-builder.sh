@@ -13,7 +13,7 @@ fi
 rm -f *.deb
 
 checkinstall -y \
-  --requires=libssl-dev,uuid-dev,libjansson-dev,libcurl4-openssl-dev,libjansson4,libuuid1,uuid-runtime,openssl \
+  --requires=libssl-dev,libpam0g-dev,uuid-dev,libjansson-dev,libcurl4-openssl-dev,libjansson4,libuuid1,uuid-runtime,openssl \
   --maintainer="engineering@trusona.com" \
   --pkgversion=$version \
   --pkglicense=MIT \
