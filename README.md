@@ -39,6 +39,7 @@ The following commands will download and prompt for the installation of the bina
 
 ```bash
 wget -q https://github.com/trusona/trusona-server-sdk-c/releases/download/1.0.0/trusona-server-sdk_1.0.0-1_amd64.deb -O trusona-server-sdk.deb
+sudo apt-get update
 sudo apt-get install ./trusona-server-sdk.deb
 ```
 
@@ -46,6 +47,7 @@ sudo apt-get install ./trusona-server-sdk.deb
 
 ```bash
 curl -sL https://github.com/trusona/trusona-server-sdk-c/releases/download/1.0.0/trusona-server-sdk_1.0.0-1_amd64.deb -o trusona-server-sdk.deb
+sudo apt-get update
 sudo apt-get install ./trusona-server-sdk.deb
 ```
 
