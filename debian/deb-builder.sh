@@ -4,7 +4,7 @@ set -e
 
 version=$1
 
-if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-)?(\w)*$ ]]; then
+if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-)?[a-z]*$ ]]; then
   echo "Error: expecting tag version in semver format e.g. 1.2.3 or 4.5.6-beta"
   exit -1
 fi
