@@ -18,16 +18,12 @@ install:
   - sudo -H ci/dependencies.sh > /dev/null
 
 stages:
-  - build
-  - test
+  - test # travis magic because of compiler matrix
   - package
   - deploy
 
 jobs:
   include:
-  - name: build
-    stage: build
-    script: make
   - name: create .DEB package
     stage: package
     script: sudo -H debian/deb-builder.sh 0.0.1-ci
