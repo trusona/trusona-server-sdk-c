@@ -26,6 +26,33 @@ By default, `[sudo] make install` will install the shared libraries into `/usr/l
 
 Development headers will be installed into `/usr/local/include/trusona`
 
+## Debian Ubuntu Package Installation
+
+Debian Ubuntu packages are made available on the [releases](https://github.com/trusona/trusona-server-sdk-c/releases) page.
+
+The packages are currently built for `Ubuntu 20.04` aka [Focal Fossa](https://releases.ubuntu.com/20.04).
+
+The following commands will download and prompt for the installation of the binary including all dependencies.
+
+
+### Install using `wget`
+
+```bash
+wget -q https://github.com/trusona/trusona-server-sdk-c/releases/download/1.0.0/trusona-server-sdk_1.0.0-1_amd64.deb -O trusona-server-sdk.deb
+sudo apt-get update
+sudo apt-get install ./trusona-server-sdk.deb
+```
+
+### Install using `curl`
+
+```bash
+curl -sL https://github.com/trusona/trusona-server-sdk-c/releases/download/1.0.0/trusona-server-sdk_1.0.0-1_amd64.deb -o trusona-server-sdk.deb
+sudo apt-get update
+sudo apt-get install ./trusona-server-sdk.deb
+```
+
+After successful installation, see the [documentation](https://docs.trusona.com/integrations/ssh-linux) for next steps to get it configured.
+
 
 ## API Usage
 
