@@ -20,6 +20,7 @@ install:
 stages:
   - name: build
   - name: package
+  - name: deploy
 
 jobs:
   include:
@@ -29,20 +30,19 @@ jobs:
   - name: create .DEB package
     stage: package
     script: sudo -H debian/deb-builder.sh 0.0.1-ci
-
-before_deploy:
-  - sudo -H rm -rf check-* jansson-*
-  - sudo -H debian/deb-builder.sh $TRAVIS_BRANCH
-
-deploy:
-  - provider: releases
-    api_key: $GITHUB_ROBOT_TOKEN
-    overwrite: true
-    cleanup: false
-    edge: true
-    file: trusona-server-sdk_$TRAVIS_BRANCH-1_amd64.deb
-    on:
-      tags: true
+  - name: deploy to github
+    stage: deploy
+    if: tag IS present
+    before_deploy: sudo -H debian/deb-builder.sh $TRAVIS_BRANCH
+    deploy:
+      - provider: releases
+        api_key: $GITHUB_ROBOT_TOKEN
+        overwrite: true
+        cleanup: false
+        edge: true
+        file: trusona-server-sdk_$TRAVIS_BRANCH-1_amd64.deb
+        on:
+          tags: true
 
 notifications:
   slack:
