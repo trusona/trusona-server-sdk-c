@@ -30,6 +30,9 @@ jobs:
     stage: package
     script: sudo -H debian/deb-builder.sh 0.0.1-ci
 
+before_deploy:
+  - rm -rf check-* jansson-*
+
 deploy:
   - provider: releases
     api_key: $GITHUB_ROBOT_TOKEN
