@@ -51,6 +51,9 @@ sudo apt-get update
 sudo apt-get install ./trusona-server-sdk.deb
 ```
 
+After successful installation, see the [documentation](https://docs.trusona.com/integrations/ssh-linux) for next steps to get it configured.
+
+
 ## API Usage
 
 ```c
