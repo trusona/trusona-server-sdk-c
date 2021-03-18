@@ -32,7 +32,7 @@ jobs:
 
 before_deploy:
   - sudo -H rm -rf check-* jansson-*
-  - sudo -H debian/deb-builder.sh 0.0.1-ci
+  - sudo -H debian/deb-builder.sh $TRAVIS_BRANCH
 
 deploy:
   - provider: releases
