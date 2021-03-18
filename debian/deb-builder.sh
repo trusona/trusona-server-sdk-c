@@ -9,6 +9,8 @@ if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-)?[a-z]*$ ]]; then
   exit -1
 fi
 
+rm -f *.deb
+
 checkinstall -y \
   --requires=libssl-dev,uuid-dev,libjansson-dev,libcurl4-openssl-dev,libjansson4,libuuid1,uuid-runtime,openssl \
   --maintainer="engineering@trusona.com" \
