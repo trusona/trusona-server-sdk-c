@@ -7,7 +7,7 @@ compiler:
 env:
   global:
     - DEV_PACKAGES="libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev autotools-dev libssl-dev libsubunit-dev"
-    - BUILD_PACKAGES="dh-autoreconf clang cmake pkg-config texinfo libsubunit0 checkinstall obs-build"
+    - BUILD_PACKAGES="dh-autoreconf clang cmake pkg-config texinfo libsubunit0 checkinstall"
     - PACKAGES="$DEV_PACKAGES $BUILD_PACKAGES"
 
 before_install:
