@@ -15,6 +15,9 @@
 # limitations under the License.
 
 
+PAM_FILE=/etc/pam.d/trusona
+PAM_CONF=session required /usr/local/lib/pam_trusona.so settings=/usr/local/etc/trusona/settings.json prompt=yes presence=yes tilted=no
+
 INCLUDES=-I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include
 LOCAL_LIBS=-L./..
 
@@ -23,10 +26,14 @@ all: objects
 
 install: all
 	mkdir -p /usr/local/lib && cp pam_trusona.so /usr/local/lib
+	@make pam_conf
 	@make clean
 
+pam_conf:
+	if ( ! [ -f $(PAM_FILE) ] ) && [ `uname` = "Linux" ]; then echo $(PAM_CONF) > $(PAM_FILE); fi
+
 uninstall:
-	rm -f /usr/local/lib/pam_trusona.so
+	rm -f /usr/local/lib/pam_trusona.so /etc/pam.d/trusona
 
 objects: clean
 	gcc $(INCLUDES) -Wall -fPIC -c pam_internal.c
