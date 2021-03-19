@@ -26,14 +26,14 @@ all: objects
 
 install: all
 	mkdir -p /usr/local/lib && cp pam_trusona.so /usr/local/lib
-	@make install_pam
+	@make pam_conf
 	@make clean
 
-trusona_pam:
-	if ( ! [ -f $(TRUSONA_PAM) ] ) && [ `uname` = "Linux" ]; then echo $(PAM_CONF) > $(PAM_FILE); fi
+pam_conf:
+	if ( ! [ -f $(PAM_FILE) ] ) && [ `uname` = "Linux" ]; then echo $(PAM_CONF) > $(PAM_FILE); fi
 
 uninstall:
-	rm -f /usr/local/lib/pam_trusona.so
+	rm -f /usr/local/lib/pam_trusona.so /etc/pam.d/trusona
 
 objects: clean
 	gcc $(INCLUDES) -Wall -fPIC -c pam_internal.c
