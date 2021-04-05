@@ -7,8 +7,8 @@ compiler:
 
 env:
   global:
-    - DEV_PACKAGES="libc6-dev uuid-dev libpam0g-dev libcurl4-openssl-dev autotools-dev libssl-dev libsubunit-dev"
-    - BUILD_PACKAGES="dh-autoreconf clang cmake pkg-config texinfo libsubunit0 checkinstall"
+    - DEV_PACKAGES="libc6-dev uuid-dev libpam0g-dev libcrypt-dev libcurl4-openssl-dev autotools-dev libssl-dev libsubunit-dev libjansson-dev"
+    - BUILD_PACKAGES="dh-autoreconf clang cmake make gcc pkg-config texinfo libsubunit0 checkinstall libjansson4"
     - PACKAGES="$DEV_PACKAGES $BUILD_PACKAGES"
 
 before_install:
